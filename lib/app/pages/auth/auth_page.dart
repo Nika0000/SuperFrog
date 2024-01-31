@@ -1,11 +1,12 @@
 // ignore_for_file: constant_identifier_names
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moon_design/moon_design.dart';
+import 'package:superfrog/app/pages/auth/sign_in.dart';
+import 'package:superfrog/app/pages/auth/sign_up.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 import 'package:superfrog/data/blocs/common_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthPage extends StatefulWidget {
   final AuthPageRoutes route;
@@ -19,20 +20,15 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SafeArea(
+      body: BlocListener<AuthenticationBloc, AuthenticationState>(
+        bloc: CommonBloc.authenticationBloc,
+        listener: (context, authState) => authState.whenOrNull(error: (error) {
+          MoonToast.clearToastQueue();
+          return MoonToast.show(context, label: Text(error));
+        }),
         child: switch (widget.route) {
-          AuthPageRoutes.SIGNIN => Center(
-              child: MoonFilledButton(
-                onTap: () {
-                  Supabase.instance.client.auth.signInWithOAuth(
-                    OAuthProvider.google,
-                    redirectTo: kIsWeb ? 'http://localhost:8080/auth/oauth/callback' : 'myapp://auth/callback',
-                  );
-                },
-                label: const Text('Continue with Google'),
-              ),
-            ),
-          AuthPageRoutes.SIGNUP => const Center(child: Text('SignUp')),
+          AuthPageRoutes.SIGNIN => const SignInPage(),
+          AuthPageRoutes.SIGNUP => const SignUpPage()
         },
       ),
     );

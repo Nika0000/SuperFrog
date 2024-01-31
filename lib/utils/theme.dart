@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:moon_design/moon_design.dart';
@@ -18,19 +19,29 @@ class AppTheme {
 
   static ThemeData get light {
     return ThemeData.light().copyWith(
-      extensions: <ThemeExtension<dynamic>>[
-        MoonTheme(tokens: MoonTokens.light.copyWith(colors: _colorsLight))
-      ],
+      extensions: <ThemeExtension<dynamic>>[MoonTheme(tokens: MoonTokens.light.copyWith(colors: _colorsLight))],
       scaffoldBackgroundColor: _colorsLight.gohan,
+      dividerColor: _colorsLight.beerus,
+      appBarTheme: AppBarTheme(
+        backgroundColor: _colorsLight.gohan,
+        titleTextStyle: MoonTypography.typography.heading.text18.copyWith(color: _colorsLight.bulma),
+        shadowColor: _colorsLight.beerus,
+      ),
+      dividerTheme: DividerThemeData(color: _colorsLight.beerus),
     );
   }
 
   static ThemeData get dark {
     return ThemeData.dark().copyWith(
-      extensions: <ThemeExtension<dynamic>>[
-        MoonTheme(tokens: MoonTokens.dark.copyWith(colors: _colorsDark))
-      ],
+      extensions: <ThemeExtension<dynamic>>[MoonTheme(tokens: MoonTokens.dark.copyWith(colors: _colorsDark))],
       scaffoldBackgroundColor: _colorsDark.gohan,
+      dividerColor: _colorsDark.beerus,
+      appBarTheme: AppBarTheme(
+        titleTextStyle: MoonTypography.typography.heading.text18.copyWith(color: _colorsDark.bulma),
+        backgroundColor: _colorsDark.gohan,
+        shadowColor: _colorsDark.beerus,
+      ),
+      dividerTheme: DividerThemeData(color: _colorsDark.beerus),
     );
   }
 

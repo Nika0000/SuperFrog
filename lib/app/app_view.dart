@@ -21,6 +21,7 @@ class _AppViewState extends State<AppView> {
       title: 'Demo App',
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.dark,
       routerConfig: AppRoutes.router,
       locale: context.locale,
       localizationsDelegates: context.localizationDelegates,

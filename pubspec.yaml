@@ -22,7 +22,6 @@ dependencies:
   moon_design: ^0.47.0
   shared_preferences: ^2.2.2
   easy_localization: ^3.0.3
-  url_launcher: ^6.2.4
 
 dev_dependencies:
   flutter_test:

@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moon_design/moon_design.dart';
@@ -20,25 +21,29 @@ class _HomePageState extends State<HomePage> {
           bloc: CommonBloc.authenticationBloc,
           builder: (context, authState) {
             return authState.maybeWhen(
-              authenticated: (user) => Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  CircleAvatar(
-                    backgroundImage: NetworkImage(
-                      user?.userMetadata!['avatar_url'],
+              authenticated: (user) => kIsWeb
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: NetworkImage(
+                            user?.userMetadata!['avatar_url'],
+                          ),
+                        ),
+                        const SizedBox(height: 16.0),
+                        Text(user?.userMetadata!['name'] ?? 'Undefined'),
+                        const SizedBox(height: 8.0),
+                        Text(user?.userMetadata!['email'] ?? 'Undefined'),
+                        const SizedBox(height: 16.0),
+                        MoonFilledButton(
+                          onTap: () => CommonBloc.authenticationBloc.add(const AuthenticationEvent.signOut()),
+                          label: const Text('Sign out'),
+                        )
+                      ],
+                    )
+                  : Center(
+                      child: Text(user?.id ?? 'undefined'),
                     ),
-                  ),
-                  const SizedBox(height: 16.0),
-                  Text(user?.userMetadata!['name'] ?? 'Undefined'),
-                  const SizedBox(height: 8.0),
-                  Text(user?.userMetadata!['email'] ?? 'Undefined'),
-                  const SizedBox(height: 16.0),
-                  MoonFilledButton(
-                    onTap: () => CommonBloc.authenticationBloc.add(const AuthenticationEvent.signOut()),
-                    label: const Text('Sign out'),
-                  )
-                ],
-              ),
               orElse: () => Container(),
             );
           },
