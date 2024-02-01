@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 import 'package:superfrog/data/blocs/common_bloc.dart';
 import 'package:superfrog/routes/app_routes.dart';
-import 'package:superfrog/utils/theme.dart';
+import 'package:superfrog/utils/theme_provider.dart';
 
 class AppView extends StatefulWidget {
   const AppView({super.key});
@@ -19,24 +19,21 @@ class _AppViewState extends State<AppView> {
     return MaterialApp.router(
       debugShowCheckedModeBanner: false,
       title: 'Demo App',
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.dark,
+      theme: ThemeProvider.light,
+      darkTheme: ThemeProvider.dark,
+      themeMode: context.watch<ThemeProvider>().state,
       routerConfig: AppRoutes.router,
       locale: context.locale,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
       builder: (context, child) {
-        return AnnotatedRegion(
-          value: AppTheme.of(context).overlayStyles,
-          child: BlocListener<AuthenticationBloc, AuthenticationState>(
-            bloc: CommonBloc.authenticationBloc..add(const AuthenticationEvent.start()),
-            listener: (context, authState) => authState.whenOrNull(
-              authenticated: (user) => AppRoutes.router.replaceNamed(AppRoutes.HOME),
-              unAuthenticated: () => AppRoutes.router.replaceNamed(AppRoutes.SIGNIN),
-            ),
-            child: child,
+        return BlocListener<AuthenticationBloc, AuthenticationState>(
+          bloc: CommonBloc.authenticationBloc..add(const AuthenticationEvent.start()),
+          listener: (context, authState) => authState.whenOrNull(
+            authenticated: (user) => AppRoutes.router.replaceNamed(AppRoutes.HOME),
+            unAuthenticated: () => AppRoutes.router.replaceNamed(AppRoutes.SIGNIN),
           ),
+          child: child,
         );
       },
     );

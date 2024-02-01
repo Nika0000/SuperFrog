@@ -15,10 +15,10 @@ class PreferenceConfiguration {
   static const bool DEFAULT_IS_FIRST_TIME = true;
   static const String DEFAULT_THEME_MODE = 'system';
 
-  PreferenceConfiguration get() {
+  static PreferenceConfiguration get() {
     return PreferenceConfiguration(
       isFirstTime: LocalPref.getBool(PREF_STR_FIRST_TIME) ?? DEFAULT_IS_FIRST_TIME,
-      themeMode: _stringToThemeMode(LocalPref.getString(PREF_STR_THEME_MODE)),
+      themeMode: stringToThemeMode(LocalPref.getString(PREF_STR_THEME_MODE)),
     );
   }
 
@@ -29,12 +29,16 @@ class PreferenceConfiguration {
     ]);
   }
 
-  ThemeMode _stringToThemeMode(String? theme) {
+  static ThemeMode stringToThemeMode(String? theme) {
     return switch (theme) {
       'dark' => ThemeMode.dark,
       'light' => ThemeMode.light,
       _ => ThemeMode.system,
     };
+  }
+
+  static void changeTheme(ThemeMode mode) {
+    LocalPref.setString(PREF_STR_THEME_MODE, mode == ThemeMode.dark ? 'dark' : 'light');
   }
 }
 
