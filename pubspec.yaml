@@ -22,6 +22,7 @@ dependencies:
   moon_design: ^0.47.0
   shared_preferences: ^2.2.2
   easy_localization: ^3.0.3
+  flutter_svg: ^2.0.9
 
 dev_dependencies:
   flutter_test:
@@ -35,6 +36,7 @@ flutter:
 
   assets:
     - assets/locales/
+    - assets/images/
 
   
   

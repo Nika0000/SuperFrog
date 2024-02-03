@@ -36,6 +36,7 @@ class MoonAppBar extends StatelessWidget {
       collapsedHeight: effectiveCollapsedHeight,
       surfaceTintColor: Colors.transparent,
       toolbarHeight: toolbarHeight,
+      backgroundColor: context.moonColors?.goku,
       scrolledUnderElevation: 2.0,
       foregroundColor: context.moonColors?.bulma,
       flexibleSpace: _ScrollUnderFlexibleSpace(

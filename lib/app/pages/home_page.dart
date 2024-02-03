@@ -13,20 +13,65 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          border: Border(
+            top: BorderSide(color: context.moonColors!.beerus),
+          ),
+        ),
+        child: BottomNavigationBar(
+          onTap: (val) => setState(() => _selectedIndex = val),
+          currentIndex: _selectedIndex,
+          items: const [
+            BottomNavigationBarItem(
+              icon: MoonIcon(MoonIcons.generic_home_24_light),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: MoonIcon(MoonIcons.chart_dashboard_24_light),
+              label: 'Owerview',
+            ),
+            BottomNavigationBarItem(
+              icon: MoonIcon(MoonIcons.mail_box_24_light),
+              label: 'Messages',
+            ),
+          ],
+        ),
+      ),
+      appBar: AppBar(
+        backgroundColor: context.moonColors?.goku,
+        elevation: 0.0,
+        surfaceTintColor: Colors.transparent,
+        centerTitle: true,
+        leading: Center(
+          child: MoonButton.icon(
+            onTap: () {},
+            icon: const MoonIcon(MoonIcons.generic_burger_regular_24_regular),
+          ),
+        ),
+        title: const Text('Dashboard'),
+        actions: [
+          MoonButton.icon(
+            onTap: () {},
+            icon: const MoonIcon(MoonIcons.generic_settings_24_regular),
+          ),
+          const SizedBox(width: 8.0),
+        ],
+      ),
+      backgroundColor: context.moonColors!.goku,
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               MoonMenuItem(
-                onTap: () {
-                  CommonBloc.themeProvider.toggleTheme();
-                },
+                onTap: () => CommonBloc.themeProvider.toggleTheme(),
                 backgroundColor: context.moonColors?.heles,
                 label: const Text('Theme'),
                 leading: const MoonIcon(MoonIcons.other_water_24_light),

@@ -25,6 +25,9 @@ class ThemeProvider extends Cubit<ThemeMode> {
     piccolo: const Color(0xFF37996B),
     goku: const Color(0xFFF8F9FA),
     gohan: const Color(0xFFFBFCFD),
+    beerus: const Color(0xFFE6E8EB),
+    trunks: const Color(0xFF687076),
+    jiren: const Color(0x2910B981),
     chichi: const Color(0xFFE5484D),
     chichi10: const Color(0x1AE5484D),
     cell60: const Color(0x99E5484D),
@@ -40,6 +43,8 @@ class ThemeProvider extends Cubit<ThemeMode> {
     goku: const Color(0xFF1C1C1C),
     gohan: const Color(0xFF232323),
     beerus: const Color(0xFF2E2E2E),
+    trunks: const Color(0xFF7E7E7E),
+    jiren: const Color(0x2910B981),
     chichi: const Color(0xFFE5484D),
     chichi10: const Color(0x1AE5484D),
     cell60: const Color(0x99E5484D),
@@ -59,10 +64,20 @@ class ThemeProvider extends Cubit<ThemeMode> {
     dividerColor: _colorsLight.beerus,
     appBarTheme: AppBarTheme(
       backgroundColor: _colorsLight.gohan,
+      surfaceTintColor: Colors.transparent,
       titleTextStyle: MoonTypography.typography.heading.text18.copyWith(color: _colorsLight.bulma),
-      shadowColor: _colorsLight.beerus,
+      shape: Border(
+        bottom: BorderSide(color: _colorsLight.beerus, width: 1),
+      ),
     ),
     dividerTheme: DividerThemeData(color: _colorsLight.beerus),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: _colorsLight.gohan,
+      selectedItemColor: _colorsLight.bulma,
+      unselectedItemColor: _colorsLight.trunks,
+      selectedLabelStyle: MoonTypography.typography.body.text12,
+      unselectedLabelStyle: MoonTypography.typography.body.text12,
+    ),
   );
 
   static final ThemeData dark = ThemeData.dark().copyWith(
@@ -72,11 +87,21 @@ class ThemeProvider extends Cubit<ThemeMode> {
     scaffoldBackgroundColor: _colorsDark.goku,
     dividerColor: _colorsDark.beerus,
     appBarTheme: AppBarTheme(
-      titleTextStyle: MoonTypography.typography.heading.text18.copyWith(color: _colorsDark.bulma),
       backgroundColor: _colorsDark.gohan,
-      shadowColor: _colorsDark.beerus,
+      surfaceTintColor: Colors.transparent,
+      titleTextStyle: MoonTypography.typography.heading.text18.copyWith(color: _colorsDark.bulma),
+      shape: Border(
+        bottom: BorderSide(color: _colorsDark.beerus, width: 1),
+      ),
     ),
     dividerTheme: DividerThemeData(color: _colorsDark.beerus),
+    bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      backgroundColor: _colorsDark.gohan,
+      selectedItemColor: _colorsDark.bulma,
+      unselectedItemColor: _colorsDark.trunks,
+      selectedLabelStyle: MoonTypography.typography.body.text12,
+      unselectedLabelStyle: MoonTypography.typography.body.text12,
+    ),
   );
 
   final SystemUiOverlayStyle _darkOverlays = SystemUiOverlayStyle.dark.copyWith(
