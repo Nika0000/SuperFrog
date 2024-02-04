@@ -14,6 +14,7 @@ class AppRoutes {
 
   static const String SIGNIN = 'signin';
   static const String SIGNUP = 'signup';
+  static const String RECOVERY = 'recovery';
 
   static GoRouter router = GoRouter(
     initialLocation: '/home',
@@ -37,6 +38,11 @@ class AppRoutes {
             name: SIGNUP,
             path: 'signup',
             builder: (_, __) => const AuthPage(AuthPageRoutes.SIGNUP),
+          ),
+          GoRoute(
+            name: RECOVERY,
+            path: 'forgot-password',
+            builder: (_, __) => const AuthPage(AuthPageRoutes.RECOVERY),
           ),
           GoRoute(
             path: 'oauth/callback',
