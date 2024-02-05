@@ -9,6 +9,7 @@ import 'package:superfrog/app/pages/auth/signin_page.dart';
 import 'package:superfrog/app/pages/auth/signup_page.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 import 'package:superfrog/data/blocs/common_bloc.dart';
+import 'package:superfrog/utils/extensions.dart';
 import 'package:superfrog/utils/theme_provider.dart';
 
 class AuthPage extends StatefulWidget {
@@ -22,49 +23,58 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocConsumer<AuthenticationBloc, AuthenticationState>(
-        listener: (context, authState) => authState.whenOrNull(
-          error: (error) {
-            MoonToast.clearToastQueue();
-            return MoonToast.show(context, label: Text(error));
-          },
+    return BlocConsumer<AuthenticationBloc, AuthenticationState>(
+      listener: (context, authState) => authState.whenOrNull(
+        error: (error) {
+          MoonToast.clearToastQueue();
+          return MoonToast.show(context, label: Text(error));
+        },
+      ),
+      builder: (context, authState) => Scaffold(
+        backgroundColor: context.moonColors?.gohan,
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          //backgroundColor: context.moonColors?.goku,
+          title: SvgPicture.asset(
+            context.read<ThemeProvider>().state == ThemeMode.dark
+                ? 'assets/images/logo_light.svg'
+                : 'assets/images/logo_dark.svg',
+            height: 24.0,
+          ),
+          bottom: PreferredSize(
+            preferredSize: const Size.fromHeight(2),
+            child: authState.maybeWhen(
+              loading: () => const MoonLinearLoader(
+                linearLoaderSize: MoonLinearLoaderSize.x6s,
+              ),
+              orElse: () => const SizedBox(),
+            ),
+          ),
         ),
-        builder: (context, authState) => Scaffold(
-          appBar: AppBar(
-            automaticallyImplyLeading: false,
-            backgroundColor: context.moonColors?.goku,
-            title: SvgPicture.network(
-              context.read<ThemeProvider>().state == ThemeMode.dark
-                  ? 'https://cloudplay.b-cdn.net/assets/images/supabase-logo-wordmark--dark.svg'
-                  : 'https://cloudplay.b-cdn.net/assets/images/supabase-logo-wordmark--light.svg',
-              height: 24.0,
-            ),
-            bottom: PreferredSize(
-              preferredSize: const Size.fromHeight(2),
-              child: authState.maybeWhen(
-                loading: () => const MoonLinearLoader(
-                  linearLoaderSize: MoonLinearLoaderSize.x6s,
+        body: Stack(
+          children: [
+            Align(
+              alignment: context.responsiveWhen(Alignment.center, sm: Alignment.topCenter),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(maxWidth: context.responsiveWhen(480, sm: double.infinity)),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+                  reverse: true,
+                  child: switch (widget.route) {
+                    AuthPageRoutes.SIGNIN => const SignInPage(),
+                    AuthPageRoutes.SIGNUP => const SignUpPage(),
+                    AuthPageRoutes.RECOVERY => const RecoveryPage(),
+                  },
                 ),
-                orElse: () => const SizedBox(),
               ),
             ),
-          ),
-          body: Stack(
-            children: [
-              switch (widget.route) {
-                AuthPageRoutes.SIGNIN => const SignInPage(),
-                AuthPageRoutes.SIGNUP => const SignUpPage(),
-                AuthPageRoutes.RECOVERY => const RecoveryPage(),
-              },
-              authState.maybeWhen(
-                loading: () => Container(
-                  color: Colors.black.withOpacity(.5),
-                ),
-                orElse: () => const SizedBox(),
+            authState.maybeWhen(
+              loading: () => Container(
+                color: Colors.black.withOpacity(.5),
               ),
-            ],
-          ),
+              orElse: () => const SizedBox(),
+            ),
+          ],
         ),
       ),
     );

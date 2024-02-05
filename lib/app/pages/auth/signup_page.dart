@@ -35,99 +35,98 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SingleChildScrollView(
-        reverse: true,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24.0),
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Form(
+      key: _formKey,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Get started',
+            style: MoonTypography.typography.heading.text24,
+          ),
+          const SizedBox(height: 8.0),
+          Text(
+            'Create a new account',
+            style: MoonTypography.typography.body.text14.copyWith(color: context.moonColors?.trunks),
+          ),
+          const SizedBox(height: 32.0),
+          MoonButton(
+            showBorder: true,
+            backgroundColor: context.moonColors?.gohan,
+            borderColor: context.moonColors?.beerus,
+            onTap: () {},
+            leading: SvgPicture.asset(
+              'assets/images/logo_google.svg',
+              height: 24,
+              width: 24,
+            ),
+            isFullWidth: true,
+            label: const Text('Continue with Google'),
+          ),
+          const SizedBox(height: 16.0),
+          const TextDivider(text: 'or'),
+          const SizedBox(height: 16.0),
+          Text(
+            'Email',
+            style: MoonTypography.typography.heading.text14.copyWith(color: context.moonColors?.trunks),
+          ),
+          const SizedBox(height: 8.0),
+          MoonFormTextInput(
+            onTap: () {},
+            controller: _emailController,
+            textInputSize: MoonTextInputSize.md,
+            hintText: 'you@example.com',
+            textInputAction: TextInputAction.next,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            keyboardType: TextInputType.emailAddress,
+            validator: (email) => FormValidation.email(email),
+          ),
+          const SizedBox(height: 16.0),
+          Text(
+            'Password',
+            style: MoonTypography.typography.heading.text14.copyWith(
+              color: context.moonColors?.trunks,
+            ),
+          ),
+          const SizedBox(height: 8.0),
+          MoonFormTextInput(
+            controller: _passwordController,
+            textInputSize: MoonTextInputSize.md,
+            obscureText: true,
+            hintText: 'password',
+            textInputAction: TextInputAction.done,
+            keyboardType: TextInputType.visiblePassword,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            validator: (password) => FormValidation.password(password),
+            onSubmitted: (_) => _submitForm(),
+          ),
+          const SizedBox(height: 48.0),
+          MoonFilledButton(
+            isFullWidth: true,
+            label: const Text('Sign Up'),
+            onTap: _submitForm,
+          ),
+          const SizedBox(height: 24.0),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                'Get started',
-                style: MoonTypography.typography.heading.text32,
-              ),
-              const SizedBox(height: 8.0),
-              Text(
-                'Create a new account',
+                'Have an account?',
                 style: MoonTypography.typography.body.text14.copyWith(color: context.moonColors?.trunks),
               ),
-              const SizedBox(height: 32.0),
-              MoonOutlinedButton(
-                onTap: () {},
-                leading: SvgPicture.asset(
-                  'assets/images/logo_google.svg',
-                  height: 24,
-                  width: 24,
-                ),
-                isFullWidth: true,
-                label: const Text('Continue with Google'),
-              ),
-              const SizedBox(height: 16.0),
-              const TextDivider(text: 'or'),
-              const SizedBox(height: 16.0),
-              Text(
-                'Email',
-                style: MoonTypography.typography.heading.text14.copyWith(color: context.moonColors?.trunks),
-              ),
-              const SizedBox(height: 8.0),
-              MoonFormTextInput(
-                onTap: () {},
-                controller: _emailController,
-                textInputSize: MoonTextInputSize.md,
-                hintText: 'you@example.com',
-                textInputAction: TextInputAction.next,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (email) => FormValidation.email(email),
-              ),
-              const SizedBox(height: 16.0),
-              Text(
-                'Password',
-                style: MoonTypography.typography.heading.text14.copyWith(
-                  color: context.moonColors?.trunks,
-                ),
-              ),
-              const SizedBox(height: 8.0),
-              MoonFormTextInput(
-                controller: _passwordController,
-                textInputSize: MoonTextInputSize.md,
-                obscureText: true,
-                hintText: 'password',
-                textInputAction: TextInputAction.done,
-                autovalidateMode: AutovalidateMode.onUserInteraction,
-                validator: (password) => FormValidation.password(password),
-                onSubmitted: (_) => _submitForm(),
-              ),
-              const SizedBox(height: 48.0),
-              MoonFilledButton(
-                isFullWidth: true,
-                label: const Text('Sign Up'),
-                onTap: _submitForm,
-              ),
-              const SizedBox(height: 24.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Have an account?',
-                    style: MoonTypography.typography.body.text14,
+              const SizedBox(width: 8.0),
+              GestureDetector(
+                onTap: () => context.replaceNamed(AppRoutes.SIGNIN),
+                child: Text(
+                  'Sign In Now',
+                  style: MoonTypography.typography.heading.text14.copyWith(
+                    decoration: TextDecoration.underline,
                   ),
-                  const SizedBox(width: 8.0),
-                  GestureDetector(
-                    onTap: () => context.replaceNamed(AppRoutes.SIGNIN),
-                    child: Text(
-                      'Sign In Now',
-                      style: MoonTypography.typography.heading.text14.copyWith(
-                        decoration: TextDecoration.underline,
-                      ),
-                    ),
-                  ),
-                ],
+                ),
               ),
             ],
           ),
-        ),
+        ],
       ),
     );
   }
