@@ -65,7 +65,7 @@ class ThemeProvider extends Cubit<ThemeMode> {
     scaffoldBackgroundColor: _lightToken.colors.goku,
     dividerColor: _lightToken.colors.beerus,
     appBarTheme: AppBarTheme(
-      backgroundColor: _lightToken.colors.gohan,
+      backgroundColor: _lightToken.colors.goku,
       surfaceTintColor: Colors.transparent,
       titleTextStyle: MoonTypography.typography.heading.text18.copyWith(color: _lightToken.colors.bulma),
       shape: Border(
@@ -87,7 +87,7 @@ class ThemeProvider extends Cubit<ThemeMode> {
     scaffoldBackgroundColor: _darkToken.colors.goku,
     dividerColor: _darkToken.colors.beerus,
     appBarTheme: AppBarTheme(
-      backgroundColor: _darkToken.colors.gohan,
+      backgroundColor: _darkToken.colors.goku,
       surfaceTintColor: Colors.transparent,
       titleTextStyle: MoonTypography.typography.heading.text18.copyWith(color: _darkToken.colors.bulma),
       shape: Border(

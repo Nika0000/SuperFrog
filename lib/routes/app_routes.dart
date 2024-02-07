@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:superfrog/app/pages/auth/auth_page.dart';
 import 'package:superfrog/app/pages/error_page.dart';
 import 'package:superfrog/app/pages/home_page.dart';
+import 'package:superfrog/app/pages/main_page.dart';
 
 class AppRoutes {
   const AppRoutes._();
@@ -23,7 +24,7 @@ class AppRoutes {
       GoRoute(
         name: HOME,
         path: '/home',
-        builder: (_, __) => const HomePage(),
+        builder: (_, __) => const MainPage(MainPageRoutes.HOME),
       ),
       GoRoute(
         path: '/auth',

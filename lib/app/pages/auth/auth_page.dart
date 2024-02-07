@@ -52,14 +52,15 @@ class _AuthPageState extends State<AuthPage> {
           ),
         ),
         body: Stack(
+          fit: StackFit.expand,
           children: [
             Align(
               alignment: context.responsiveWhen(Alignment.center, sm: Alignment.topCenter),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(maxWidth: context.responsiveWhen(480, sm: double.infinity)),
-                child: SingleChildScrollView(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
-                  reverse: true,
+              child: SingleChildScrollView(
+                reverse: true,
+                padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
+                child: ConstrainedBox(
+                  constraints: BoxConstraints(maxWidth: context.responsiveWhen(480, sm: double.infinity)),
                   child: switch (widget.route) {
                     AuthPageRoutes.SIGNIN => const SignInPage(),
                     AuthPageRoutes.SIGNUP => const SignUpPage(),

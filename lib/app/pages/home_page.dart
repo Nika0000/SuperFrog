@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moon_design/moon_design.dart';
-import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
-import 'package:superfrog/data/blocs/common_bloc.dart';
-import 'package:superfrog/utils/theme_provider.dart';
+import 'package:superfrog/utils/extensions.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -13,86 +10,110 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int _selectedIndex = 0;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomNavigationBar: Container(
-        decoration: BoxDecoration(
-          border: Border(
-            top: BorderSide(color: context.moonColors!.beerus),
-          ),
-        ),
-        child: BottomNavigationBar(
-          onTap: (val) => setState(() => _selectedIndex = val),
-          currentIndex: _selectedIndex,
-          items: const [
-            BottomNavigationBarItem(
-              icon: MoonIcon(MoonIcons.generic_home_24_light),
-              label: 'Home',
-            ),
-            BottomNavigationBarItem(
-              icon: MoonIcon(MoonIcons.chart_dashboard_24_light),
-              label: 'Owerview',
-            ),
-            BottomNavigationBarItem(
-              icon: MoonIcon(MoonIcons.mail_box_24_light),
-              label: 'Messages',
-            ),
-          ],
-        ),
-      ),
-      appBar: AppBar(
-        backgroundColor: context.moonColors?.goku,
-        elevation: 0.0,
-        surfaceTintColor: Colors.transparent,
-        centerTitle: true,
-        leading: Center(
-          child: MoonButton.icon(
-            onTap: () {},
-            icon: const MoonIcon(MoonIcons.generic_burger_regular_24_regular),
-          ),
-        ),
-        title: const Text('Dashboard'),
-        actions: [
-          MoonButton.icon(
-            onTap: () {},
-            icon: const MoonIcon(MoonIcons.generic_settings_24_regular),
-          ),
-          const SizedBox(width: 8.0),
-        ],
-      ),
-      backgroundColor: context.moonColors!.goku,
-      body: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              MoonMenuItem(
-                onTap: () => CommonBloc.themeProvider.toggleTheme(),
-                backgroundColor: context.moonColors?.heles,
-                label: const Text('Theme'),
-                leading: const MoonIcon(MoonIcons.other_water_24_light),
-                trailing: MoonSwitch(
-                  activeTrackWidget: const MoonIcon(MoonIcons.other_moon_16_light),
-                  inactiveTrackWidget: const MoonIcon(MoonIcons.other_sun_16_light),
-                  value: context.read<ThemeProvider>().currentTheme == ThemeMode.dark ? true : false,
-                  onChanged: (val) => CommonBloc.themeProvider.toggleTheme(),
+      body: Row(
+        children: [
+          ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 280),
+            child: Column(
+              children: [
+                AppBar(
+                  title: const Text('Database'),
                 ),
-              ),
-              const SizedBox(height: 16.0),
-              MoonFilledButton(
-                isFullWidth: true,
-                onTap: () async {
-                  context.read<AuthenticationBloc>().add(const AuthenticationEvent.signOut());
-                },
-                label: const Text('Sign Out'),
-              ),
-            ],
+                SingleChildScrollView(
+                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                  child: Column(
+                    children: List.generate(
+                      8,
+                      (index) => MoonMenuItem(
+                        onTap: () {},
+                        label: index == 0
+                            ? Text('Table #$index')
+                            : Text(
+                                'Table #$index',
+                                style: MoonTypography.typography.heading.text14.copyWith(
+                                  color: context.moonColors?.trunks,
+                                ),
+                              ),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ),
+          const VerticalDivider(width: 1),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                AppBar(),
+                SingleChildScrollView(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    padding: EdgeInsets.symmetric(horizontal: context.responsiveWhen(64, sm: 24), vertical: 24.0),
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(maxWidth: 1440),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Database Tables",
+                            style: MoonTypography.typography.heading.text20,
+                          ),
+                          const SizedBox(height: 24.0),
+                          MoonTabBar(
+                            tabs: [
+                              MoonTab(
+                                label: Text('Scheduled backups'),
+                                tabStyle: MoonTabStyle(
+                                  selectedTextColor: context.moonColors?.goten,
+                                  indicatorColor: context.moonColors?.goten,
+                                  textColor: context.moonColors?.trunks,
+                                ),
+                              ),
+                              MoonTab(
+                                tabStyle: MoonTabStyle(
+                                  selectedTextColor: context.moonColors?.goten,
+                                  indicatorColor: context.moonColors?.goten,
+                                  textColor: context.moonColors?.trunks,
+                                ),
+                                label: Text('Scheduled backups'),
+                              ),
+                            ],
+                          ),
+                          Divider(
+                            height: 1,
+                          ),
+                          const SizedBox(height: 24.0),
+                          Text(
+                            'Projects are backed up daily around midnight of your project`s region and can be restored at any time.',
+                            style: MoonTypography.typography.body.text14.copyWith(color: context.moonColors?.trunks),
+                          ),
+                          const SizedBox(height: 24.0),
+                          MoonAlert.filled(
+                            leading: MoonIcon(MoonIcons.time_clock_32_light),
+                            backgroundColor: context.moonColors!.gohan,
+                            label: Text(
+                              'Free Plan does not include project backups.',
+                            ),
+                            trailing: MoonFilledButton(
+                              onTap: () {},
+                              buttonSize: MoonButtonSize.sm,
+                              label: Text('Upgrade Pro'),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
       ),
     );
   }
