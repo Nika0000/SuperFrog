@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:superfrog/app/pages/auth/auth_page.dart';
 import 'package:superfrog/app/pages/error_page.dart';
-import 'package:superfrog/app/pages/home_page.dart';
 import 'package:superfrog/app/pages/main_page.dart';
 
 class AppRoutes {

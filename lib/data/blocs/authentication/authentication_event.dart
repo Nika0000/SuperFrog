@@ -21,6 +21,10 @@ class AuthenticationEvent with _$AuthenticationEvent {
     required String password,
   }) = _SignUpWithPassword;
 
+  const factory AuthenticationEvent.resetPassword({
+    required String email,
+  }) = _ResetPassword;
+
   const factory AuthenticationEvent.signOut() = _SignOut;
 
   const factory AuthenticationEvent.verifySession(Uri url) = _VerifySession;

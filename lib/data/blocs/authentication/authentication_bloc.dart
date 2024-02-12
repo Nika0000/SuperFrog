@@ -68,6 +68,23 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       ),
     );
 
+    on<_ResetPassword>(
+      (event, emit) => catchAsync(
+        () async {
+          emit(const AuthenticationState.loading());
+
+          await _authService.resetPassword(email: event.email);
+
+          if (_authService.isSignedIn) {
+            return emit(AuthenticationState.authenticated(_authService.currentUser));
+          }
+
+          emit(const AuthenticationState.unitialized());
+        },
+        onError: (error) => emit(AuthenticationState.error(error)),
+      ),
+    );
+
     on<_SignOut>(
       (event, emit) => catchAsync(
         () async {

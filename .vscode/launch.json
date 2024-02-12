@@ -32,6 +32,25 @@
             "toolArgs": [
                 "-d",
                 "web-server",
+                "--web-hostname",
+                "192.168.52.214",
+                "--web-port",
+                "8080",
+                "--web-renderer",
+                "html",
+                "--dart-define-from-file",
+                "env.prod.json"
+            ]
+        },   {
+            "name": "SuperFrog Web (Release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release",
+            "toolArgs": [
+                "-d",
+                "web-server",
+                "--web-hostname",
+                "192.168.52.214",
                 "--web-port",
                 "8080",
                 "--web-renderer",

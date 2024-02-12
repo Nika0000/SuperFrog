@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moon_design/moon_design.dart';
+import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 import 'package:superfrog/utils/extensions.dart';
 
 class HomePage extends StatefulWidget {
@@ -16,29 +18,60 @@ class _HomePageState extends State<HomePage> {
       body: Row(
         children: [
           ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 280),
+            constraints: const BoxConstraints(maxWidth: 260),
             child: Column(
               children: [
                 AppBar(
                   title: const Text('Database'),
+                  backgroundColor: context.moonColors?.goku,
                 ),
                 SingleChildScrollView(
                   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
                   child: Column(
-                    children: List.generate(
-                      8,
-                      (index) => MoonMenuItem(
-                        onTap: () {},
-                        label: index == 0
-                            ? Text('Table #$index')
-                            : Text(
-                                'Table #$index',
-                                style: MoonTypography.typography.heading.text14.copyWith(
-                                  color: context.moonColors?.trunks,
-                                ),
-                              ),
+                    children: [
+/*                       List.generate(
+                        8,
+                        (index) => Padding(
+                          padding: EdgeInsets.only(bottom: 8.0),
+                          child: MoonMenuItem(
+                              onTap: () {},
+                              backgroundColor: index == 0 ? context.moonColors?.heles : null,
+                              label: Text('Table #$index')),
+                        ),
+                      ), */
+                      MoonButton(
+                        onTap: () {
+                          context.read<AuthenticationBloc>().add(AuthenticationEvent.signOut());
+                        },
+                        isFullWidth: true,
+                        leading: Text('Table #032'),
                       ),
-                    ),
+                      SizedBox(height: 8.0),
+                      MoonButton(
+                        onTap: () {},
+                        backgroundColor: context.moonColors?.heles,
+                        isFullWidth: true,
+                        leading: Text('Table #032'),
+                      ),
+                      SizedBox(height: 8.0),
+                      MoonButton(
+                        onTap: () {},
+                        isFullWidth: true,
+                        leading: Text('Table #032'),
+                      ),
+                      SizedBox(height: 8.0),
+                      MoonButton(
+                        onTap: () {},
+                        isFullWidth: true,
+                        leading: Text('Table #032'),
+                      ),
+                      SizedBox(height: 8.0),
+                      MoonButton(
+                        onTap: () {},
+                        isFullWidth: true,
+                        leading: Text('Table #032'),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -49,7 +82,9 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                AppBar(),
+                AppBar(
+                  backgroundColor: context.moonColors?.goku,
+                ),
                 SingleChildScrollView(
                   child: SingleChildScrollView(
                     scrollDirection: Axis.horizontal,
@@ -69,15 +104,15 @@ class _HomePageState extends State<HomePage> {
                               MoonTab(
                                 label: Text('Scheduled backups'),
                                 tabStyle: MoonTabStyle(
-                                  selectedTextColor: context.moonColors?.goten,
-                                  indicatorColor: context.moonColors?.goten,
+                                  selectedTextColor: context.moonColors?.bulma,
+                                  indicatorColor: context.moonColors?.bulma,
                                   textColor: context.moonColors?.trunks,
                                 ),
                               ),
                               MoonTab(
                                 tabStyle: MoonTabStyle(
-                                  selectedTextColor: context.moonColors?.goten,
-                                  indicatorColor: context.moonColors?.goten,
+                                  selectedTextColor: context.moonColors?.bulma,
+                                  indicatorColor: context.moonColors?.bulma,
                                   textColor: context.moonColors?.trunks,
                                 ),
                                 label: Text('Scheduled backups'),
