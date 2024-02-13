@@ -8,7 +8,7 @@ class AuthService {
 
   bool get isSignedIn => _supabase.auth.currentSession != null;
 
-  User? get currentUser => _supabase.auth.currentUser;
+  User? get currentUser => _supabase.auth.currentSession?.user;
 
   Future<User?> signIn({
     required String email,
@@ -42,6 +42,11 @@ class AuthService {
       email,
       redirectTo: kIsWeb ? null : 'com.example.app/auth/callback',
     );
+  }
+
+  Future<User?> verifyOTP({required String email, required String token}) async {
+    final res = await _supabase.auth.verifyOTP(email: email, token: token, type: OtpType.recovery);
+    return res.user;
   }
 
   Future<void> signOut() async {

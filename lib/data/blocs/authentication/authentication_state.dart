@@ -12,6 +12,6 @@ class AuthenticationState with _$AuthenticationState {
   const factory AuthenticationState.loading() = _Loading;
   const factory AuthenticationState.authenticated(User? user) = _Authenticated;
   const factory AuthenticationState.unAuthenticated() = _UaAuthenticated;
-  const factory AuthenticationState.error(String message) =
-      _AuthenticationError;
+  const factory AuthenticationState.message(String message) = _AuthenticationMessage;
+  const factory AuthenticationState.error(String message) = _AuthenticationError;
 }

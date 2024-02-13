@@ -79,7 +79,28 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
             return emit(AuthenticationState.authenticated(_authService.currentUser));
           }
 
+          emit(
+            const AuthenticationState.message(
+              'If you registered using your email and password, you will receive a password reset email.',
+            ),
+          );
           emit(const AuthenticationState.unitialized());
+        },
+        onError: (error) => emit(AuthenticationState.error(error)),
+      ),
+    );
+
+    on<_VerifyRecoveryOTP>(
+      (event, emit) => catchAsync(
+        () async {
+          emit(const AuthenticationState.loading());
+
+          await _authService.verifyOTP(
+            email: event.email,
+            token: event.token,
+          );
+
+          print('invoke function');
         },
         onError: (error) => emit(AuthenticationState.error(error)),
       ),
@@ -101,6 +122,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         onError: (error) => emit(AuthenticationState.error(error)),
       ),
     );
+
     on<_VerifySession>(
       (event, emit) => catchAsync(
         () async {

@@ -25,6 +25,9 @@ class AuthenticationEvent with _$AuthenticationEvent {
     required String email,
   }) = _ResetPassword;
 
+  const factory AuthenticationEvent.verifyRecoveryOTP({required String email, required String token}) =
+      _VerifyRecoveryOTP;
+
   const factory AuthenticationEvent.signOut() = _SignOut;
 
   const factory AuthenticationEvent.verifySession(Uri url) = _VerifySession;

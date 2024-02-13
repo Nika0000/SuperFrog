@@ -3,12 +3,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:moon_design/moon_design.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:superfrog/app/pages/auth/recovery_page.dart';
 import 'package:superfrog/app/pages/auth/signin_page.dart';
 import 'package:superfrog/app/pages/auth/signup_page.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 import 'package:superfrog/data/blocs/common_bloc.dart';
+import 'package:superfrog/routes/app_routes.dart';
 import 'package:superfrog/utils/extensions.dart';
 import 'package:superfrog/utils/theme_provider.dart';
 
@@ -28,10 +31,10 @@ class _AuthPageState extends State<AuthPage> {
       listener: (context, state) {
         state.whenOrNull(
           error: (error) {
-            return MoonToast.show(
-              context,
-              label: Text(error),
-            );
+            return MoonToast.show(context, toastShadows: context.moonShadows?.sm, label: Text(error));
+          },
+          message: (message) {
+            return MoonToast.show(context, toastShadows: context.moonShadows?.sm, label: Text(message));
           },
         );
       },
@@ -40,6 +43,7 @@ class _AuthPageState extends State<AuthPage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: context.moonColors?.gohan,
+          //shape: const Border(),
           title: SvgPicture.asset(
             context.read<ThemeProvider>().state == ThemeMode.dark
                 ? 'assets/images/logo_light.svg'
@@ -58,6 +62,7 @@ class _AuthPageState extends State<AuthPage> {
                 AuthPageRoutes.SIGNIN => const SignInPage(),
                 AuthPageRoutes.SIGNUP => const SignUpPage(),
                 AuthPageRoutes.RECOVERY => const RecoveryPage(),
+                AuthPageRoutes.UPDATE_PASSWORD => OAuthCallBack(url: Uri()),
               },
             ),
           ),
@@ -67,27 +72,108 @@ class _AuthPageState extends State<AuthPage> {
   }
 }
 
-enum AuthPageRoutes { SIGNIN, SIGNUP, RECOVERY }
+enum AuthPageRoutes { SIGNIN, SIGNUP, RECOVERY, UPDATE_PASSWORD }
 
 class OAuthCallBack extends StatelessWidget {
   final Uri url;
-  const OAuthCallBack({required this.url, super.key});
+  final OtpType? otpType;
+  const OAuthCallBack({required this.url, this.otpType = OtpType.recovery, super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: SafeArea(
-        child: Column(
+    return switch (otpType) {
+      OtpType.recovery => Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            ElevatedButton(
-              onPressed: () async {
-                CommonBloc.authenticationBloc.add(AuthenticationEvent.verifySession(url));
-              },
-              child: const Text('Verify Session'),
+            Text(
+              'Reset Password',
+              style: MoonTypography.typography.heading.text24,
+            ),
+            const SizedBox(height: 16.0),
+            MoonAlert.filled(
+              show: true,
+              color: context.moonColors?.krillin,
+              backgroundColor: context.moonColors?.krillin10,
+              leading: const MoonIcon(MoonIcons.generic_alarm_24_light),
+              label: const Text(
+                'For security purposes, after resetting your password, the withdrawal function will be suspended for 24 hours.',
+              ),
+            ),
+            const SizedBox(height: 32.0),
+            Text(
+              'New Password',
+              style: MoonTypography.typography.heading.text14.copyWith(color: context.moonColors?.trunks),
+            ),
+            const SizedBox(height: 8.0),
+            MoonFormTextInput(
+              textInputSize: MoonTextInputSize.md,
+              hintText: 'password',
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.emailAddress,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              'Confirm Password',
+              style: MoonTypography.typography.heading.text14.copyWith(color: context.moonColors?.trunks),
+            ),
+            const SizedBox(height: 8.0),
+            MoonFormTextInput(
+              textInputSize: MoonTextInputSize.md,
+              hintText: 'password',
+              textInputAction: TextInputAction.next,
+              keyboardType: TextInputType.emailAddress,
+              autovalidateMode: AutovalidateMode.onUserInteraction,
+            ),
+            const SizedBox(height: 16.0),
+            Text(
+              'Verification Code',
+              style: MoonTypography.typography.heading.text14.copyWith(color: context.moonColors?.trunks),
+            ),
+            const SizedBox(height: 8.0),
+            MoonFormTextInput(
+              hintText: 'verification code',
+              trailing: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                child: MoonButton(
+                  label: const Text('Resent'),
+                  showBorder: true,
+                  textColor: context.moonColors?.textSecondary,
+                  buttonSize: MoonButtonSize.xs,
+                  borderColor: context.moonColors?.beerus,
+                  onTap: () {},
+                ),
+              ),
+            ),
+            const SizedBox(height: 48.0),
+            MoonFilledButton(
+              isFullWidth: true,
+              onTap: () {},
+              label: const Text('Update Password'),
+            ),
+            const SizedBox(height: 24.0),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Have an account?',
+                  style: MoonTypography.typography.body.text14.copyWith(color: context.moonColors?.trunks),
+                ),
+                const SizedBox(width: 8.0),
+                GestureDetector(
+                  onTap: () => context.replaceNamed(AppRoutes.SIGNIN),
+                  child: Text(
+                    'Sign In Now',
+                    style: MoonTypography.typography.heading.text14.copyWith(
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                ),
+              ],
             ),
           ],
         ),
-      ),
-    );
+      _ => const Text('_')
+    };
   }
 }

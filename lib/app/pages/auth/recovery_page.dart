@@ -49,7 +49,7 @@ class _RecoveryPageState extends State<RecoveryPage> {
                 'Type in your email and we`ll send you a link to reset your password',
                 style: MoonTypography.typography.body.text14.copyWith(color: context.moonColors?.textSecondary),
               ),
-              const SizedBox(height: 32.0),
+              const SizedBox(height: 24.0),
               Text(
                 'Email',
                 style: MoonTypography.typography.heading.text14.copyWith(color: context.moonColors?.trunks),
