@@ -22,8 +22,8 @@ class _HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 AppBar(
+                  automaticallyImplyLeading: false,
                   title: const Text('Database'),
-                  backgroundColor: context.moonColors?.goku,
                 ),
                 SingleChildScrollView(
                   padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 AppBar(
-                  backgroundColor: context.moonColors?.goku,
+                  automaticallyImplyLeading: false,
                 ),
                 SingleChildScrollView(
                   child: SingleChildScrollView(

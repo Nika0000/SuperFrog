@@ -31,10 +31,20 @@ class _AuthPageState extends State<AuthPage> {
       listener: (context, state) {
         state.whenOrNull(
           error: (error) {
-            return MoonToast.show(context, toastShadows: context.moonShadows?.sm, label: Text(error));
+            return MoonToast.show(
+              context,
+              toastShadows: context.moonShadows?.sm,
+              label: Text(error),
+              leading: const MoonIcon(MoonIcons.generic_alarm_24_light),
+            );
           },
           message: (message) {
-            return MoonToast.show(context, toastShadows: context.moonShadows?.sm, label: Text(message));
+            return MoonToast.show(
+              context,
+              toastShadows: context.moonShadows?.sm,
+              leading: const MoonIcon(MoonIcons.generic_check_rounded_24_light),
+              label: Text(message),
+            );
           },
         );
       },

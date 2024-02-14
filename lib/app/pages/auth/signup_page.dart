@@ -99,6 +99,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 textInputSize: MoonTextInputSize.md,
                 obscureText: true,
                 hintText: 'password',
+                obscuringCharacter: '●',
                 textInputAction: TextInputAction.done,
                 keyboardType: TextInputType.visiblePassword,
                 autovalidateMode: AutovalidateMode.onUserInteraction,

@@ -142,7 +142,7 @@ class _SignInPageState extends State<SignInPage> {
                         height: 10.0,
                         width: 10.0,
                         child: MoonCircularLoader(
-                          color: context.moonColors?.textPrimary,
+                          color: context.moonColors?.goten,
                           circularLoaderSize: MoonCircularLoaderSize.x2s,
                         ),
                       ),
