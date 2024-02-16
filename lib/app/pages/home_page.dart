@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
+import 'package:superfrog/data/blocs/common_bloc.dart';
 import 'package:superfrog/utils/extensions.dart';
 
 class HomePage extends StatefulWidget {
@@ -15,140 +16,107 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Row(
-        children: [
-          ConstrainedBox(
-            constraints: const BoxConstraints(maxWidth: 260),
-            child: Column(
-              children: [
-                AppBar(
-                  automaticallyImplyLeading: false,
-                  title: const Text('Database'),
-                ),
-                SingleChildScrollView(
-                  padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                  child: Column(
-                    children: [
-/*                       List.generate(
-                        8,
-                        (index) => Padding(
-                          padding: EdgeInsets.only(bottom: 8.0),
-                          child: MoonMenuItem(
-                              onTap: () {},
-                              backgroundColor: index == 0 ? context.moonColors?.heles : null,
-                              label: Text('Table #$index')),
-                        ),
-                      ), */
-                      MoonButton(
-                        onTap: () {
-                          context.read<AuthenticationBloc>().add(AuthenticationEvent.signOut());
-                        },
-                        isFullWidth: true,
-                        leading: Text('Table #032'),
-                      ),
-                      SizedBox(height: 8.0),
-                      MoonButton(
-                        onTap: () {},
-                        backgroundColor: context.moonColors?.heles,
-                        isFullWidth: true,
-                        leading: Text('Table #032'),
-                      ),
-                      SizedBox(height: 8.0),
-                      MoonButton(
-                        onTap: () {},
-                        isFullWidth: true,
-                        leading: Text('Table #032'),
-                      ),
-                      SizedBox(height: 8.0),
-                      MoonButton(
-                        onTap: () {},
-                        isFullWidth: true,
-                        leading: Text('Table #032'),
-                      ),
-                      SizedBox(height: 8.0),
-                      MoonButton(
-                        onTap: () {},
-                        isFullWidth: true,
-                        leading: Text('Table #032'),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const VerticalDivider(width: 1),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                AppBar(
-                  automaticallyImplyLeading: false,
-                ),
-                SingleChildScrollView(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    padding: EdgeInsets.symmetric(horizontal: context.responsiveWhen(64, sm: 24), vertical: 24.0),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(maxWidth: 1440),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Database Tables",
-                            style: MoonTypography.typography.heading.text20,
+      body: SafeArea(
+        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          bloc: CommonBloc.authenticationBloc,
+          builder: (context, state) {
+            return state.maybeWhen(
+              authenticated: (user) => Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: context.responsiveWhen(480, sm: double.maxFinite),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: context.moonColors!.beerus),
+                            borderRadius: BorderRadius.circular(4.0),
                           ),
-                          const SizedBox(height: 24.0),
-                          MoonTabBar(
-                            tabs: [
-                              MoonTab(
-                                label: Text('Scheduled backups'),
-                                tabStyle: MoonTabStyle(
-                                  selectedTextColor: context.moonColors?.bulma,
-                                  indicatorColor: context.moonColors?.bulma,
-                                  textColor: context.moonColors?.trunks,
-                                ),
+                          child: Column(
+                            children: [
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'ID',
+                                      style: MoonTypography.typography.body.text14.copyWith(
+                                        color: context.moonColors?.trunks,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(user!.id),
+                                ],
                               ),
-                              MoonTab(
-                                tabStyle: MoonTabStyle(
-                                  selectedTextColor: context.moonColors?.bulma,
-                                  indicatorColor: context.moonColors?.bulma,
-                                  textColor: context.moonColors?.trunks,
-                                ),
-                                label: Text('Scheduled backups'),
+                              const Divider(
+                                height: 24.0,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Provider',
+                                      style: MoonTypography.typography.body.text14.copyWith(
+                                        color: context.moonColors?.trunks,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(user.identities![0].provider),
+                                ],
+                              ),
+                              const Divider(
+                                height: 24.0,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Email',
+                                      style: MoonTypography.typography.body.text14.copyWith(
+                                        color: context.moonColors?.trunks,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(user.email!),
+                                ],
+                              ),
+                              const Divider(
+                                height: 24.0,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Last signed in',
+                                      style: MoonTypography.typography.body.text14.copyWith(
+                                        color: context.moonColors?.trunks,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(user.lastSignInAt!),
+                                ],
                               ),
                             ],
                           ),
-                          Divider(
-                            height: 1,
-                          ),
-                          const SizedBox(height: 24.0),
-                          Text(
-                            'Projects are backed up daily around midnight of your project`s region and can be restored at any time.',
-                            style: MoonTypography.typography.body.text14.copyWith(color: context.moonColors?.trunks),
-                          ),
-                          const SizedBox(height: 24.0),
-                          MoonAlert.filled(
-                            leading: MoonIcon(MoonIcons.time_clock_32_light),
-                            backgroundColor: context.moonColors!.gohan,
-                            label: Text(
-                              'Free Plan does not include project backups.',
-                            ),
-                            trailing: MoonFilledButton(
-                              onTap: () {},
-                              buttonSize: MoonButtonSize.sm,
-                              label: Text('Upgrade Pro'),
-                            ),
-                          )
-                        ],
-                      ),
+                        ),
+                        const SizedBox(height: 24.0),
+                        MoonFilledButton(
+                          isFullWidth: true,
+                          onTap: () => context.read<AuthenticationBloc>().add(const AuthenticationEvent.signOut()),
+                          label: const Text('Sign Out'),
+                        ),
+                      ],
                     ),
                   ),
-                )
-              ],
-            ),
-          )
-        ],
+                ),
+              ),
+              orElse: () => const SizedBox(),
+            );
+          },
+        ),
       ),
     );
   }
