@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moon_design/moon_design.dart';
+import 'package:superfrog/app/pages/splash_page.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 import 'package:superfrog/data/blocs/common_bloc.dart';
 import 'package:superfrog/utils/extensions.dart';
@@ -34,7 +35,7 @@ class _HomePageState extends State<HomePage> {
                           padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
                           decoration: BoxDecoration(
                             border: Border.all(color: context.moonColors!.beerus),
-                            borderRadius: BorderRadius.circular(4.0),
+                            borderRadius: BorderRadius.circular(8.0),
                           ),
                           child: Column(
                             children: [
@@ -113,7 +114,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ),
-              orElse: () => const SizedBox(),
+              orElse: () => const SplashPage(),
             );
           },
         ),

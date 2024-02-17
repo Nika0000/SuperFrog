@@ -71,7 +71,24 @@ class _RecoveryPageState extends State<RecoveryPage> {
                   loading: () => null,
                   orElse: () => _submitForm,
                 ),
-                label: const Text('Send Reset Email'),
+                label: state.maybeWhen(
+                  loading: () => Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SizedBox(
+                        height: 10.0,
+                        width: 10.0,
+                        child: MoonCircularLoader(
+                          color: context.moonColors?.goten,
+                          circularLoaderSize: MoonCircularLoaderSize.x2s,
+                        ),
+                      ),
+                      const SizedBox(width: 8.0),
+                      const Text('Send Reset Email')
+                    ],
+                  ),
+                  orElse: () => const Text('Send Reset Email'),
+                ),
               ),
               const SizedBox(height: 24.0),
               Row(
