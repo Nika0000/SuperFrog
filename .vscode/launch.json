@@ -32,6 +32,8 @@
             "toolArgs": [
                 "-d",
                 "web-server",
+                "--web-hostname",
+                "192.168.188.214",
                 "--web-port",
                 "8080",
                 "--web-renderer",
@@ -47,6 +49,8 @@
             "toolArgs": [
                 "-d",
                 "web-server",
+                "--web-hostname",
+                "192.168.188.214",
                 "--web-port",
                 "8080",
                 "--web-renderer",

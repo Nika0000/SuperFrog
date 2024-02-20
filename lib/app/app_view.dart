@@ -22,7 +22,7 @@ class _AppViewState extends State<AppView> {
       theme: ThemeProvider.light,
       darkTheme: ThemeProvider.dark,
       themeMode: context.watch<ThemeProvider>().state,
-      routerConfig: AppRoutes.router,
+      routerConfig: PageRouter.router,
       locale: context.locale,
       localizationsDelegates: context.localizationDelegates,
       supportedLocales: context.supportedLocales,
@@ -30,8 +30,8 @@ class _AppViewState extends State<AppView> {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
           bloc: CommonBloc.authenticationBloc..add(const AuthenticationEvent.start()),
           listener: (context, authState) => authState.whenOrNull(
-            authenticated: (user) => AppRoutes.router.replaceNamed(AppRoutes.HOME),
-            unAuthenticated: () => AppRoutes.router.replaceNamed(AppRoutes.SIGNIN),
+            authenticated: (user) => PageRouter.router.replaceNamed(AppRoutes.HOME.name),
+            unAuthenticated: () => PageRouter.router.replaceNamed(AppRoutes.SIGN_IN.name),
           ),
           child: child,
         );

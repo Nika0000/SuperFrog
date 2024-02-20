@@ -143,7 +143,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   const SizedBox(width: 8.0),
                   GestureDetector(
-                    onTap: () => context.replaceNamed(AppRoutes.SIGNIN),
+                    onTap: () => context.replaceNamed(AppRoutes.SIGN_IN.name),
                     child: Text(
                       'Sign In Now',
                       style: MoonTypography.typography.heading.text14.copyWith(

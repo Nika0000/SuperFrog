@@ -105,7 +105,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => context.goNamed(AppRoutes.RECOVERY),
+                    onTap: () => context.goNamed(AppRoutes.RECOVERY.name),
                     child: Text(
                       'Forgot Password?',
                       style: MoonTypography.typography.heading.text14.copyWith(color: context.moonColors?.trunks),
@@ -165,7 +165,7 @@ class _SignInPageState extends State<SignInPage> {
                   ),
                   const SizedBox(width: 8.0),
                   GestureDetector(
-                    onTap: () => context.replaceNamed(AppRoutes.SIGNUP),
+                    onTap: () => context.replaceNamed(AppRoutes.SIGN_UP.name),
                     child: Text(
                       'Sign Up Now',
                       style: MoonTypography.typography.heading.text14.copyWith(
