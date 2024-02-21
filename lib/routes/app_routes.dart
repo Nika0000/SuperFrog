@@ -2,77 +2,88 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:superfrog/app/pages/auth/auth_page.dart';
 import 'package:superfrog/app/pages/error_page.dart';
 import 'package:superfrog/app/pages/main_page.dart';
+import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 
-enum AppRoutes {
-  HOME(path: '/home', name: 'home'),
-
+enum AppPages {
+  HOME(path: '/home', name: 'home', pathFull: '/home'),
   PROFILE(path: '/profile', name: 'profile'),
-
   AUTH(path: '/auth', name: 'auth'),
-
-  SIGN_IN(path: '/signin', name: 'signin'),
-
-  SIGN_UP(path: '/signup', name: 'signup'),
-
-  RECOVERY(path: '/recovery', name: 'recovery'),
-
-  UPDATE_PASSWORD(path: 'update-password', name: 'update-password');
+  SIGN_IN(path: 'signin', name: 'signin', pathFull: '/auth/signin'),
+  SIGN_UP(path: 'signup', name: 'signup', pathFull: '/auth/signup'),
+  RECOVERY(path: 'recovery', name: 'recovery', pathFull: '/auth/recovery'),
+  UPDATE_PASSWORD(path: 'update-password', name: 'update-password', pathFull: '/auth/update-password');
 
   final String path;
   final String name;
-  const AppRoutes({required this.path, required this.name});
+  final String? pathFull;
+  const AppPages({
+    required this.path,
+    required this.name,
+    this.pathFull,
+  });
 }
 
-class PageRouter {
-  const PageRouter._();
+class AppRouter {
+  const AppRouter._();
 
   static GoRouter router = GoRouter(
     debugLogDiagnostics: kDebugMode,
-    initialLocation: AppRoutes.HOME.path,
+    initialLocation: AppPages.HOME.path,
     errorBuilder: (BuildContext context, __) => ErrorPage(
       title: '404 - PAGE NOT FOUND',
       description:
           'The page you are looking for might have been removed\nhad its name changed or it temorarily unvailable.',
       actions: [
         MoonOutlinedButton(
-          onTap: () => context.pushReplacementNamed(AppRoutes.HOME.name),
+          onTap: () => context.pushReplacementNamed(AppPages.HOME.name),
           label: const Text('Go Back'),
         )
       ],
     ),
     routes: [
       GoRoute(
-        name: AppRoutes.HOME.name,
-        path: AppRoutes.HOME.path,
+        name: AppPages.HOME.name,
+        path: AppPages.HOME.path,
         builder: (_, __) => const MainPage(MainPageRoutes.HOME),
+        redirect: (BuildContext context, GoRouterState state) {
+          final AuthenticationState authState = context.read<AuthenticationBloc>().state;
+
+          return authState.whenOrNull(unAuthenticated: () => AppPages.SIGN_IN.pathFull);
+        },
       ),
       GoRoute(
-        path: AppRoutes.AUTH.path,
+        path: AppPages.AUTH.path,
         builder: (_, __) => Container(),
+        redirect: (BuildContext context, GoRouterState state) {
+          final AuthenticationState authState = context.read<AuthenticationBloc>().state;
+
+          return authState.whenOrNull(authenticated: (_) => AppPages.HOME.pathFull);
+        },
         routes: [
           GoRoute(
-            name: AppRoutes.SIGN_IN.name,
-            path: 'signin',
+            name: AppPages.SIGN_IN.name,
+            path: AppPages.SIGN_IN.path,
             builder: (_, __) => const AuthPage(AuthPageRoutes.SIGNIN),
           ),
           GoRoute(
-            name: AppRoutes.SIGN_UP.name,
-            path: 'signup',
+            name: AppPages.SIGN_UP.name,
+            path: AppPages.SIGN_UP.path,
             builder: (_, __) => const AuthPage(AuthPageRoutes.SIGNUP),
           ),
           GoRoute(
-            name: AppRoutes.RECOVERY.name,
-            path: 'forgot-password',
+            name: AppPages.RECOVERY.name,
+            path: AppPages.RECOVERY.path,
             builder: (_, __) => const AuthPage(AuthPageRoutes.RECOVERY),
           ),
           GoRoute(
-            name: AppRoutes.UPDATE_PASSWORD.name,
-            path: 'update-password',
+            name: AppPages.UPDATE_PASSWORD.name,
+            path: AppPages.UPDATE_PASSWORD.path,
             builder: (_, __) => const AuthPage(AuthPageRoutes.UPDATE_PASSWORD),
           ),
           GoRoute(

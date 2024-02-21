@@ -23,6 +23,10 @@ dependencies:
   shared_preferences: ^2.2.2
   easy_localization: ^3.0.3
   flutter_svg: ^2.0.9
+  tus_client: ^1.0.2
+  cross_file: ^0.3.3+8
+  file_picker: ^6.1.1
+  mime: ^1.0.5
 
 dev_dependencies:
   flutter_test:

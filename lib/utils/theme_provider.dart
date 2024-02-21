@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -60,6 +61,17 @@ class ThemeProvider extends Cubit<ThemeMode> {
     ),
   );
 
+  static final PageTransitionsTheme _pageTransitionsTheme = PageTransitionsTheme(
+    builders: kIsWeb
+        ? {
+            // No animations for every OS if the app running on the web
+            for (final platform in TargetPlatform.values) platform: NoTransitionsBuilder(),
+          }
+        : const {
+            // handel other platforms you are targeting
+          },
+  );
+
   static final ThemeData light = ThemeData.light().copyWith(
     extensions: <ThemeExtension<dynamic>>[MoonTheme(tokens: _lightToken)],
     scaffoldBackgroundColor: _lightToken.colors.goku,
@@ -80,6 +92,7 @@ class ThemeProvider extends Cubit<ThemeMode> {
       selectedLabelStyle: MoonTypography.typography.body.text12,
       unselectedLabelStyle: MoonTypography.typography.body.text12,
     ),
+    pageTransitionsTheme: _pageTransitionsTheme,
   );
 
   static final ThemeData dark = ThemeData.dark().copyWith(
@@ -102,6 +115,7 @@ class ThemeProvider extends Cubit<ThemeMode> {
       selectedLabelStyle: MoonTypography.typography.body.text12,
       unselectedLabelStyle: MoonTypography.typography.body.text12,
     ),
+    pageTransitionsTheme: _pageTransitionsTheme,
   );
 
   final SystemUiOverlayStyle _darkOverlays = SystemUiOverlayStyle.dark.copyWith(
@@ -119,4 +133,20 @@ class ThemeProvider extends Cubit<ThemeMode> {
     systemNavigationBarContrastEnforced: false,
     statusBarIconBrightness: Brightness.dark,
   );
+}
+
+class NoTransitionsBuilder extends PageTransitionsBuilder {
+  const NoTransitionsBuilder();
+
+  @override
+  Widget buildTransitions<T>(
+    PageRoute<T>? route,
+    BuildContext? context,
+    Animation<double> animation,
+    Animation<double> secondaryAnimation,
+    Widget? child,
+  ) {
+    // only return the child without warping it with animations
+    return child!;
+  }
 }

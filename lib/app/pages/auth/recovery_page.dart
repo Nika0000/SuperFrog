@@ -100,7 +100,7 @@ class _RecoveryPageState extends State<RecoveryPage> {
                   ),
                   const SizedBox(width: 8.0),
                   GestureDetector(
-                    onTap: () => context.replaceNamed(AppRoutes.SIGN_IN.name),
+                    onTap: () => context.goNamed(AppPages.SIGN_IN.name),
                     child: Text(
                       'Sign In',
                       style: MoonTypography.typography.heading.text14.copyWith(
