@@ -9,6 +9,10 @@ part of 'storage_bloc.dart';
   map: FreezedMapOptions.none,
 )
 class StorageEvent with _$StorageEvent {
-  const factory StorageEvent.uploadFile() = _StorageUploadFile;
+  const factory StorageEvent.uploadFiles({
+    required List<XFile> files,
+    String? path,
+  }) = _StorageUploadFile;
+
   const factory StorageEvent.downloadFile() = _StorageDownloadFile;
 }

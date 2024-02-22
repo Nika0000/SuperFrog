@@ -401,10 +401,10 @@ packages:
     dependency: transitive
     description:
       name: http
-      sha256: "5895291c13fa8a3bd82e76d5627f69e0d85ca6a30dcac95c4ea19a5d555879c2"
+      sha256: a2bbf9d017fcced29139daa8ed2bba4ece450ab222871df93ca9eec6f80c34ba
       url: "https://pub.dev"
     source: hosted
-    version: "0.13.6"
+    version: "1.2.0"
   http_multi_server:
     dependency: transitive
     description:
@@ -794,6 +794,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.10.0"
+  speed_test_dart:
+    dependency: transitive
+    description:
+      name: speed_test_dart
+      sha256: "4131faa68d5c9259766626450a10e552bc11ff6e651bb6377cc56476443e1cfa"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.0.5+0"
+  sprintf:
+    dependency: transitive
+    description:
+      name: sprintf
+      sha256: "1fc9ffe69d4df602376b52949af107d8f5703b77cda567c4d7d86a0693120f23"
+      url: "https://pub.dev"
+    source: hosted
+    version: "7.0.0"
   stack_trace:
     dependency: transitive
     description:
@@ -850,6 +866,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.3.1"
+  sync:
+    dependency: transitive
+    description:
+      name: sync
+      sha256: f2ebb89eac969abb02b498562a35c4da63d6843396c4fe81948cd06a76845fce
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.0"
   term_glyph:
     dependency: transitive
     description:
@@ -874,14 +898,15 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.1"
-  tus_client:
+  tus_client_dart:
     dependency: "direct main"
     description:
-      name: tus_client
-      sha256: "59f6015cd67f7615b30dd8addf27229e4d6f72f24d8ca677a3b22940fcad2dd1"
-      url: "https://pub.dev"
-    source: hosted
-    version: "1.0.2"
+      path: "."
+      ref: master
+      resolved-ref: "74d2ac5d86307b850e3194cc60cdb9bcc71f10fc"
+      url: "https://github.com/martinralfreindl/tus_client.git"
+    source: git
+    version: "2.5.0"
   typed_data:
     dependency: transitive
     description:
@@ -890,6 +915,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.3.2"
+  universal_io:
+    dependency: transitive
+    description:
+      name: universal_io
+      sha256: "1722b2dcc462b4b2f3ee7d188dad008b6eb4c40bbd03a3de451d82c78bba9aad"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.2.2"
   url_launcher:
     dependency: transitive
     description:
@@ -954,6 +987,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+  uuid:
+    dependency: "direct main"
+    description:
+      name: uuid
+      sha256: cd210a09f7c18cbe5a02511718e0334de6559871052c90a90c0cca46a4aa81c8
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.3.3"
   vector_graphics:
     dependency: transitive
     description:
