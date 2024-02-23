@@ -34,7 +34,7 @@ class StorageService {
         "bucketName": "colo",
         "objectName": file.name,
         "contentType": file.mimeType ?? "",
-        "cacheControl": "3600",
+        "cacheControl": "60000",
       },
     );
   }
