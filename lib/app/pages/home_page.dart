@@ -28,135 +28,133 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Stack(
-          children: [
-            BlocBuilder<AuthenticationBloc, AuthenticationState>(
-              bloc: CommonBloc.authenticationBloc,
-              builder: (context, state) {
-                return state.maybeWhen(
-                  authenticated: (user) => Center(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                      child: ConstrainedBox(
-                        constraints: BoxConstraints(
-                          maxWidth: context.responsiveWhen(480, sm: double.maxFinite),
-                        ),
-                        child: Column(
-                          children: [
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
-                              decoration: BoxDecoration(
-                                border: Border.all(color: context.moonColors!.beerus),
-                                borderRadius: BorderRadius.circular(8.0),
-                              ),
-                              child: Column(
+        child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
+          bloc: CommonBloc.authenticationBloc,
+          builder: (context, state) {
+            return state.maybeWhen(
+              authenticated: (user) => Center(
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(
+                      maxWidth: context.responsiveWhen(480, sm: double.maxFinite),
+                    ),
+                    child: Column(
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 8.0),
+                          decoration: BoxDecoration(
+                            border: Border.all(color: context.moonColors!.beerus),
+                            borderRadius: BorderRadius.circular(8.0),
+                          ),
+                          child: Column(
+                            children: [
+                              Row(
                                 children: [
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          'ID',
-                                          style: MoonTypography.typography.body.text14.copyWith(
-                                            color: context.moonColors?.trunks,
-                                          ),
-                                        ),
+                                  Expanded(
+                                    child: Text(
+                                      'ID',
+                                      style: MoonTypography.typography.body.text14.copyWith(
+                                        color: context.moonColors?.trunks,
                                       ),
-                                      Text(user!.id),
-                                    ],
+                                    ),
                                   ),
-                                  const Divider(
-                                    height: 24.0,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          'Provider',
-                                          style: MoonTypography.typography.body.text14.copyWith(
-                                            color: context.moonColors?.trunks,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(user.identities![0].provider),
-                                    ],
-                                  ),
-                                  const Divider(
-                                    height: 24.0,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          'Email',
-                                          style: MoonTypography.typography.body.text14.copyWith(
-                                            color: context.moonColors?.trunks,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(user.email!),
-                                    ],
-                                  ),
-                                  const Divider(
-                                    height: 24.0,
-                                  ),
-                                  Row(
-                                    children: [
-                                      Expanded(
-                                        child: Text(
-                                          'Last signed in',
-                                          style: MoonTypography.typography.body.text14.copyWith(
-                                            color: context.moonColors?.trunks,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(user.lastSignInAt!),
-                                    ],
-                                  ),
+                                  Text(user!.id),
                                 ],
                               ),
-                            ),
-                            const SizedBox(height: 24.0),
-                            MoonFilledButton(
-                              isFullWidth: true,
-                              onTap: () => context.read<AuthenticationBloc>().add(const AuthenticationEvent.signOut()),
-                              label: const Text('Sign Out'),
-                            ),
-                            const SizedBox(height: 24.0),
-                            MoonFilledButton(
-                              isFullWidth: true,
-                              onTap: () async {
-                                final result = await FilePicker.platform.pickFiles(
-                                  type: FileType.media,
-                                  allowMultiple: true,
-                                );
-                                if (result != null && result.files.isNotEmpty) {
-                                  List<XFile> files;
+                              const Divider(
+                                height: 24.0,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Provider',
+                                      style: MoonTypography.typography.body.text14.copyWith(
+                                        color: context.moonColors?.trunks,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(user.identities![0].provider),
+                                ],
+                              ),
+                              const Divider(
+                                height: 24.0,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Email',
+                                      style: MoonTypography.typography.body.text14.copyWith(
+                                        color: context.moonColors?.trunks,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(user.email!),
+                                ],
+                              ),
+                              const Divider(
+                                height: 24.0,
+                              ),
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      'Last signed in',
+                                      style: MoonTypography.typography.body.text14.copyWith(
+                                        color: context.moonColors?.trunks,
+                                      ),
+                                    ),
+                                  ),
+                                  Text(user.lastSignInAt!),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24.0),
+                        MoonFilledButton(
+                          isFullWidth: true,
+                          onTap: () => context.read<AuthenticationBloc>().add(const AuthenticationEvent.signOut()),
+                          label: const Text('Sign Out'),
+                        ),
+                        const SizedBox(height: 24.0),
+                        MoonFilledButton(
+                          isFullWidth: true,
+                          onTap: () async {
+                            final result = await FilePicker.platform.pickFiles(
+                              type: FileType.media,
+                              allowMultiple: true,
+                            );
+                            if (result != null && result.files.isNotEmpty) {
+                              List<XFile> files;
 
-                                  files = result.files.map((PlatformFile file) {
-                                    if (kIsWeb) {
-                                      return XFile.fromData(
-                                        file.bytes!,
-                                        name: file.name,
-                                        mimeType: lookupMimeType(file.name),
-                                      );
-                                    } else {
-                                      return XFile(
-                                        file.path!,
-                                        mimeType: lookupMimeType(file.path!),
-                                      );
-                                    }
-                                  }).toList();
-
-                                  print(files.first.path);
-                                  setState(() {
-                                    uploadFile = files.first;
-                                  });
-                                  // CommonBloc.storageBloc.add(StorageEvent.addFilesToQueue(files: files));
+                              files = result.files.map((PlatformFile file) {
+                                if (kIsWeb) {
+                                  return XFile.fromData(
+                                    file.bytes!,
+                                    name: file.name,
+                                    mimeType: lookupMimeType(file.name),
+                                  );
+                                } else {
+                                  return XFile(
+                                    file.path!,
+                                    mimeType: lookupMimeType(file.path!),
+                                  );
                                 }
-                              },
-                              label: const Text('Add files to queue'),
-                            ),
-                            const SizedBox(height: 24.0),
+                              }).toList();
+
+                              print(files.first.path);
+                              setState(() {
+                                uploadFile = files.first;
+                              });
+                              // CommonBloc.storageBloc.add(StorageEvent.addFilesToQueue(files: files));
+                            }
+                          },
+                          label: const Text('Add files to queue'),
+                        ),
+                        /*  const SizedBox(height: 24.0),
                             BlocProvider<FileCubit>(
                               create: (context) => FileCubit(objectId: uuid.v4(), file: uploadFile)..uploadFile(),
                               child: BlocBuilder<FileCubit, FileState>(
@@ -189,17 +187,15 @@ class _HomePageState extends State<HomePage> {
                                   );
                                 },
                               ),
-                            )
-                          ],
-                        ),
-                      ),
+                            ) */
+                      ],
                     ),
                   ),
-                  orElse: () => const SplashPage(),
-                );
-              },
-            ),
-          ],
+                ),
+              ),
+              orElse: () => const SplashPage(),
+            );
+          },
         ),
       ),
     );
