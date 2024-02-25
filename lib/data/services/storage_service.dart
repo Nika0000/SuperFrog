@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:cross_file/cross_file.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tus_client_dart/tus_client_dart.dart';
 
@@ -8,18 +11,24 @@ class StorageService {
   Future<void> uploadFile({
     required XFile file,
     String? path,
-    bool? pause,
     Function(TusClient client, Duration? duration)? onStart,
     Function(double, Duration)? onProgress,
     Function()? onCompleted,
-    Function(Uri, XFile)? onPaused,
   }) async {
+    final tempDir = await getTemporaryDirectory();
+    final tempDirectory = Directory('${tempDir.path}/tus_uploads');
+    if (!tempDirectory.existsSync()) {
+      tempDirectory.createSync(recursive: true);
+    }
+
+    String endpoint = '${_supabase.storage.url}/upload/resumable';
+
     final tusClient = TusClient(
       file,
       retries: 3,
       retryInterval: 1,
+      store: TusFileStore(tempDirectory),
     );
-    String endpoint = '${_supabase.storage.url}/upload/resumable';
 
     await tusClient.upload(
       uri: Uri.parse(endpoint),

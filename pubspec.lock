@@ -558,7 +558,7 @@ packages:
     source: hosted
     version: "2.1.0"
   path:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: path
       sha256: "8829d8a55c13fc0e37127c29fedf290c102f4e40ae94ada574091fe0ff96c917"
@@ -917,11 +917,9 @@ packages:
   tus_client_dart:
     dependency: "direct main"
     description:
-      path: "."
-      ref: master
-      resolved-ref: "74d2ac5d86307b850e3194cc60cdb9bcc71f10fc"
-      url: "https://github.com/martinralfreindl/tus_client.git"
-    source: git
+      path: "../tus_client"
+      relative: true
+    source: path
     version: "2.5.0"
   typed_data:
     dependency: transitive

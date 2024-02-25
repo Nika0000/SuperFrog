@@ -8,20 +8,17 @@ part 'file_state.dart';
 part 'file_cubit.freezed.dart';
 
 class FileCubit extends Cubit<FileState> {
-  final String objectId;
-  final XFile file;
-  final String? path;
+  final String filePath;
+  late XFile _file;
 
-  FileCubit({
-    required this.objectId,
-    required this.file,
-    this.path,
-  }) : super(const FileState.initial());
+  FileCubit({required this.filePath}) : super(const FileState.initial()) {
+    _file = XFile(filePath);
+  }
 
   final StorageService _storageService = StorageService();
-  bool _isUploading = false;
-
   TusClient? _client;
+
+  bool _isUploading = false;
 
   void uploadFile() async {
     if (_isUploading) return;
@@ -29,18 +26,18 @@ class FileCubit extends Cubit<FileState> {
     _isUploading = true;
 
     await _storageService.uploadFile(
-      file: file,
-      path: path,
+      file: _file,
       onStart: (TusClient client, Duration? duration) async {
         _client = client;
 
         emit(const FileState.onStart());
       },
       onProgress: (p1, p2) {
-        print("${p2.inHours.toString()} sec");
         emit(FileState.onProgress(p1 / 100));
       },
-      onCompleted: () {
+      onCompleted: () async {
+        // await _storageService.removeFileMetadata(objectId);
+
         emit(const FileState.onCompleted());
         _isUploading = false;
       },
@@ -54,14 +51,10 @@ class FileCubit extends Cubit<FileState> {
       return emit(const FileState.onError("Client unitialized"));
     }
 
-    if (!await _client!.isResumable()) {
-      return emit(const FileState.onError('Upload cannot be a resumed'));
-    }
-
     uploadFile();
   }
 
-  void pause() {
+  void pause() async {
     if (_client == null) {
       emit(const FileState.onError("Client unitialized"));
     }
