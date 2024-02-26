@@ -2,8 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:superfrog/config/preference_config.dart';
 
 class AppConfig {
   static bool _initialized = false;
@@ -18,9 +19,6 @@ class AppConfig {
   }
 
   bool get isInitialized => _initialized;
-
-  static late SharedPreferences _preferences;
-  static SharedPreferences get preferences => _preferences;
 
   static Future<void> initialize() async {
     if (!_initialized) {
@@ -43,8 +41,7 @@ class AppConfig {
             debug: kDebugMode,
           ),
 
-          //SharedPreferences
-          SharedPreferences.getInstance().then((pref) => _preferences = pref),
+          Hive.initFlutter().then((value) => Preferences.init()),
         ],
       ).whenComplete(() => _initialized = true);
     }

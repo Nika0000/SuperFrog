@@ -1,109 +1,50 @@
 // ignore_for_file: constant_identifier_names
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:superfrog/config/app_config.dart';
+import 'package:hive/hive.dart';
 
-class PreferenceConfiguration {
-  bool isFirstTime;
-  ThemeMode themeMode;
+class Preferences {
+  static const _preferencesBox = 'preferences';
+  static const _keyTheme = 'theme';
 
-  PreferenceConfiguration({this.isFirstTime = DEFAULT_IS_FIRST_TIME, this.themeMode = ThemeMode.system});
+  static late Box _box;
 
-  static const String PREF_STR_FIRST_TIME = 'is_first_time';
-  static const String PREF_STR_THEME_MODE = 'theme_mode';
-
-  static const bool DEFAULT_IS_FIRST_TIME = true;
-  static const String DEFAULT_THEME_MODE = 'system';
-
-  static PreferenceConfiguration get() {
-    return PreferenceConfiguration(
-      isFirstTime: LocalPref.getBool(PREF_STR_FIRST_TIME) ?? DEFAULT_IS_FIRST_TIME,
-      themeMode: stringToThemeMode(LocalPref.getString(PREF_STR_THEME_MODE)),
-    );
+  static Future<void> init() async {
+    _box = await Hive.openBox(_preferencesBox);
   }
 
-  static Future<void> reset() async {
-    await Future.wait([
-      LocalPref.remove(PREF_STR_FIRST_TIME),
-      LocalPref.remove(PREF_STR_THEME_MODE),
-    ]);
+  static ThemeMode get currentTheme => ThemeMode.values[_box.get(_keyTheme, defaultValue: ThemeMode.system.index)];
+
+  static set setTheme(ThemeMode value) => _box.put(_keyTheme, value.index);
+
+  /* static Future<void> init() async {
+    Hive.registerAdapter();
+    var box = await Hive.openBox<Preferences>(_preferencesBox);
   }
 
-  static ThemeMode stringToThemeMode(String? theme) {
-    return switch (theme) {
-      'dark' => ThemeMode.dark,
-      'light' => ThemeMode.light,
-      _ => ThemeMode.system,
-    };
+  static Future<ThemeMode> get currentTheme async => switch (await _getValue(_keyTheme, defaultValue: 'system')) {
+        'dark' => ThemeMode.dark,
+        'light' => ThemeMode.light,
+        _ => ThemeMode.system,
+      };
+
+  static set setTheme(ThemeMode? mode) => mode != null ? _setValue(_keyTheme, mode.name) : null;
+
+  static Future<T> _getValue<T>(Object key, {required T defaultValue}) async {
+    final box = await Hive.openBox<Object>(_preferencesBox);
+    return box.get(key, defaultValue: defaultValue) as T;
   }
 
-  static void changeTheme(ThemeMode mode) {
-    LocalPref.setString(PREF_STR_THEME_MODE, mode == ThemeMode.dark ? 'dark' : 'light');
-  }
-}
-
-class LocalPref {
-  static Future<bool> clear() {
-    return AppConfig.preferences.clear();
+  Future<T?> _getValueOrNull<T>(Object key) async {
+    final box = await Hive.openBox<Object>(_preferencesBox);
+    return box.get(key) as T?;
   }
 
-  static bool containsKey(String key) {
-    return AppConfig.preferences.containsKey(key);
-  }
-
-  static dynamic get(String key) {
-    return AppConfig.preferences.get(key);
-  }
-
-  static bool? getBool(String key) {
-    return AppConfig.preferences.getBool(key);
-  }
-
-  static double? getDouble(String key) {
-    return AppConfig.preferences.getDouble(key);
-  }
-
-  static int? getInt(String key) {
-    return AppConfig.preferences.getInt(key);
-  }
-
-  static Set<String> getKeys() {
-    return AppConfig.preferences.getKeys();
-  }
-
-  static String? getString(String key) {
-    return AppConfig.preferences.getString(key);
-  }
-
-  static List<String>? getStringList(String key) {
-    return AppConfig.preferences.getStringList(key);
-  }
-
-  static Future<void> reload() {
-    return AppConfig.preferences.reload();
-  }
-
-  static Future<bool> remove(String key) {
-    return AppConfig.preferences.remove(key);
-  }
-
-  static Future<bool> setBool(String key, bool value) {
-    return AppConfig.preferences.setBool(key, value);
-  }
-
-  static Future<bool> setDouble(String key, double value) {
-    return AppConfig.preferences.setDouble(key, value);
-  }
-
-  static Future<bool> setInt(String key, int value) {
-    return AppConfig.preferences.setInt(key, value);
-  }
-
-  static Future<bool> setString(String key, String value) {
-    return AppConfig.preferences.setString(key, value);
-  }
-
-  static Future<bool> setStringList(String key, List<String> value) {
-    return AppConfig.preferences.setStringList(key, value);
-  }
+  static Future<void> _setValue(String key, Object value) async {
+    print('setvalue');
+    final box = await Hive.openBox<Object>(_preferencesBox);
+    return box.put(key, value);
+  } */
 }

@@ -382,7 +382,7 @@ packages:
     source: hosted
     version: "2.1.0"
   hive:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: hive
       sha256: "8dcf6db979d7933da8217edcec84e9df1bdb4e4edc7fc77dbd5aa74356d6d941"
@@ -390,7 +390,7 @@ packages:
     source: hosted
     version: "2.2.3"
   hive_flutter:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: hive_flutter
       sha256: dca1da446b1d808a51689fb5d0c6c9510c0a2ba01e22805d492c73b68e33eecc
@@ -710,7 +710,7 @@ packages:
     source: hosted
     version: "0.27.7"
   shared_preferences:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: shared_preferences
       sha256: "81429e4481e1ccfb51ede496e916348668fd0921627779233bd24cc3ff6abd02"
@@ -917,9 +917,11 @@ packages:
   tus_client_dart:
     dependency: "direct main"
     description:
-      path: "../tus_client"
-      relative: true
-    source: path
+      path: "."
+      ref: master
+      resolved-ref: "74d2ac5d86307b850e3194cc60cdb9bcc71f10fc"
+      url: "https://github.com/martinralfreindl/tus_client.git"
+    source: git
     version: "2.5.0"
   typed_data:
     dependency: transitive

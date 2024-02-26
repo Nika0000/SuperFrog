@@ -18,13 +18,7 @@ class FileCubit extends Cubit<FileState> {
   final StorageService _storageService = StorageService();
   TusClient? _client;
 
-  bool _isUploading = false;
-
   void uploadFile() async {
-    if (_isUploading) return;
-
-    _isUploading = true;
-
     await _storageService.uploadFile(
       file: _file,
       onStart: (TusClient client, Duration? duration) async {
@@ -39,11 +33,8 @@ class FileCubit extends Cubit<FileState> {
         // await _storageService.removeFileMetadata(objectId);
 
         emit(const FileState.onCompleted());
-        _isUploading = false;
       },
     );
-
-    _isUploading = false;
   }
 
   void resume() async {

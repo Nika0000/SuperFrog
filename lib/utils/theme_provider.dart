@@ -6,20 +6,25 @@ import 'package:moon_design/moon_design.dart';
 import 'package:superfrog/config/preference_config.dart';
 
 class ThemeProvider extends Cubit<ThemeMode> {
-  ThemeProvider() : super(PreferenceConfiguration.get().themeMode) {
+  ThemeProvider() : super(Preferences.currentTheme) {
+    _init();
+  }
+
+  void _init() async {
     SystemChrome.setSystemUIOverlayStyle(state == ThemeMode.dark ? _darkOverlays : _lightOverlays);
   }
 
   ThemeMode get currentTheme => state;
 
-  void toggleTheme({ThemeMode? mode}) {
+  void toggleTheme({ThemeMode? mode}) async {
     if (mode != null) {
       emit(mode);
     } else {
+      SystemChrome.setSystemUIOverlayStyle(state == ThemeMode.dark ? _darkOverlays : _lightOverlays);
       emit(state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark);
     }
-    SystemChrome.setSystemUIOverlayStyle(state == ThemeMode.dark ? _darkOverlays : _lightOverlays);
-    PreferenceConfiguration.changeTheme(state);
+    Preferences.setTheme = state;
+    print(await Preferences.currentTheme);
   }
 
   static final MoonTokens _lightToken = MoonTokens.light.copyWith(
