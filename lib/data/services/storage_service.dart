@@ -1,8 +1,10 @@
 import 'dart:io';
 
 import 'package:cross_file/cross_file.dart';
+import 'package:hive/hive.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:superfrog/data/models/tus_file.dart';
 import 'package:tus_client_dart/tus_client_dart.dart';
 
 class StorageService {
@@ -46,5 +48,36 @@ class StorageService {
         "cacheControl": "60000",
       },
     );
+  }
+}
+
+class TusStore {
+  final String _tusToreBox = 'tus_storage';
+
+  Future<void> set(UploadFileObject object) async {
+    Box box = await Hive.openBox<UploadFileObject>(_tusToreBox);
+
+    await box.put(object.objectId, object);
+    await box.close();
+  }
+
+  Future<UploadFileObject> get(String objectId) async {
+    Box box = await Hive.openBox<UploadFileObject>(_tusToreBox);
+
+    final UploadFileObject obj = await box.get(objectId);
+    return obj;
+  }
+
+  Future<List<UploadFileObject>> list() async {
+    Box box = await Hive.openBox<UploadFileObject>(_tusToreBox);
+
+    final List<UploadFileObject> objs = box.values.toList() as List<UploadFileObject>;
+    return objs;
+  }
+
+  Future<void> remove(String objectId) async {
+    Box box = await Hive.openBox<UploadFileObject>(_tusToreBox);
+    await box.delete(objectId);
+    await box.close();
   }
 }

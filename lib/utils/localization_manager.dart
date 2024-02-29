@@ -2,7 +2,8 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 enum Languages {
-  en(Locale('en'), 'English');
+  en(Locale('en'), 'English'),
+  ka(Locale('ka'), 'Georgia');
 
   final Locale locale;
   final String name;
@@ -16,6 +17,8 @@ class LocalizationManager {
     switch (currentLocale) {
       case 'en':
         return Languages.en;
+      case 'ka':
+        return Languages.ka;
       default:
         return Languages.en;
     }
@@ -25,5 +28,6 @@ class LocalizationManager {
 
   static List<Locale> get supportedLocales => [
         Languages.en.locale,
+        Languages.ka.locale,
       ];
 }

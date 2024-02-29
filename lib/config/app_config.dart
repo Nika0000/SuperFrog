@@ -34,14 +34,15 @@ class AppConfig {
           SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge),
           SystemChrome.setPreferredOrientations([DeviceOrientation.portraitDown, DeviceOrientation.portraitUp]),
 
+          //Hive & Preferences
+          Hive.initFlutter().then((value) => Preferences.init()),
+
           //Supabase
           Supabase.initialize(
             url: const String.fromEnvironment('SUPABASE_URL'),
             anonKey: const String.fromEnvironment('SUPABASE_ANON_KEY'),
             debug: kDebugMode,
           ),
-
-          Hive.initFlutter().then((value) => Preferences.init()),
         ],
       ).whenComplete(() => _initialized = true);
     }

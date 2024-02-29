@@ -19,6 +19,10 @@ class Preferences {
 
   static set setTheme(ThemeMode value) => _box.put(_keyTheme, value.index);
 
+  void close() async {
+    await _box.close();
+  }
+
   /* static Future<void> init() async {
     Hive.registerAdapter();
     var box = await Hive.openBox<Preferences>(_preferencesBox);
