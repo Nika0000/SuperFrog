@@ -105,7 +105,7 @@ class _SignInPageState extends State<SignInPage> {
                     ),
                   ),
                   GestureDetector(
-                    onTap: () => context.goNamed(AppPages.RECOVERY.name),
+                    onTap: () => context.pushNamed(AppPages.RECOVERY.name),
                     child: Text(
                       'Forgot Password?',
                       style: MoonTypography.typography.heading.text14.copyWith(color: context.moonColors?.trunks),

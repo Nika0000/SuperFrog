@@ -1,29 +1,14 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 
 enum Languages {
-  en(Locale('en'), 'English'),
-  ka(Locale('ka'), 'Georgia');
+  en(Locale('en')),
+  ka(Locale('ka'));
 
   final Locale locale;
-  final String name;
-  const Languages(this.locale, this.name);
+  const Languages(this.locale);
 }
 
 class LocalizationManager {
-  static Languages of(BuildContext context) {
-    String currentLocale = context.locale.languageCode;
-
-    switch (currentLocale) {
-      case 'en':
-        return Languages.en;
-      case 'ka':
-        return Languages.ka;
-      default:
-        return Languages.en;
-    }
-  }
-
   static const String localePath = 'assets/locales';
 
   static List<Locale> get supportedLocales => [

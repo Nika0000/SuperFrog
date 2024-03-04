@@ -7,10 +7,10 @@ class CommonBloc {
   static final authenticationBloc = AuthenticationBloc();
   static final themeProvider = ThemeProvider();
 
-  static final List<BlocProvider> blocProvider = [
-    BlocProvider<AuthenticationBloc>(create: (_) => authenticationBloc),
-    BlocProvider<ThemeProvider>(create: (_) => themeProvider),
-  ];
+  static List<BlocProvider> get blocProvider => [
+        BlocProvider<AuthenticationBloc>(create: (_) => authenticationBloc),
+        BlocProvider<ThemeProvider>(create: (_) => themeProvider),
+      ];
 
   Future<void> close() async {
     await authenticationBloc.close();

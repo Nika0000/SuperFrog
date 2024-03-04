@@ -59,10 +59,8 @@ class AppRouter {
       ),
       GoRoute(
         path: AppPages.AUTH.path,
-        builder: (_, __) => Container(),
         redirect: (BuildContext context, GoRouterState state) {
           final AuthenticationState authState = context.read<AuthenticationBloc>().state;
-
           return authState.whenOrNull(authenticated: (_) => AppPages.HOME.pathFull);
         },
         routes: [

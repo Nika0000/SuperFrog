@@ -47,3 +47,11 @@ extension Responsive on BuildContext {
                     : defaultValue;
   }
 }
+
+extension LanguageName on Locale {
+  String get name => switch (languageCode) {
+        'en' => 'English',
+        'ka' => 'Georgian',
+        _ => '_',
+      };
+}

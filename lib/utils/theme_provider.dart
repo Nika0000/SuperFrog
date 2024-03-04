@@ -7,10 +7,6 @@ import 'package:superfrog/config/preference_config.dart';
 
 class ThemeProvider extends Cubit<ThemeMode> {
   ThemeProvider() : super(Preferences.currentTheme) {
-    _init();
-  }
-
-  void _init() async {
     SystemChrome.setSystemUIOverlayStyle(state == ThemeMode.dark ? _darkOverlays : _lightOverlays);
   }
 
@@ -24,7 +20,6 @@ class ThemeProvider extends Cubit<ThemeMode> {
       emit(state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark);
     }
     Preferences.setTheme = state;
-    print(await Preferences.currentTheme);
   }
 
   static final MoonTokens _lightToken = MoonTokens.light.copyWith(

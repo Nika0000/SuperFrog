@@ -6,6 +6,7 @@
         android:label="superfrog"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
+        android:enableOnBackInvokedCallback="true"
         android:requestLegacyExternalStorage="true">
         <activity
             android:name=".MainActivity"
