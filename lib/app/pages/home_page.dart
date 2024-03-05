@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:superfrog/app/pages/splash_page.dart';
+import 'package:superfrog/config/preference_config.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 import 'package:superfrog/data/blocs/common_bloc.dart';
 import 'package:superfrog/utils/extensions.dart';
+import 'package:superfrog/utils/theme_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,6 +19,21 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          MoonSwitch(
+            inactiveTrackWidget: const MoonIcon(MoonIcons.other_sun_16_light),
+            activeTrackWidget: const MoonIcon(MoonIcons.other_moon_16_light),
+            onChanged: (value) {
+              setState(() {
+                context.read<ThemeProvider>().toggleTheme();
+              });
+            },
+            value: Preferences.currentTheme.index == ThemeMode.dark.index ? true : false,
+          ),
+          const SizedBox(width: 16.0),
+        ],
+      ),
       body: SafeArea(
         child: BlocBuilder<AuthenticationBloc, AuthenticationState>(
           bloc: CommonBloc.authenticationBloc,
