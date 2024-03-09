@@ -41,7 +41,7 @@ class AppRouter {
           'The page you are looking for might have been removed\nhad its name changed or it temorarily unvailable.',
       actions: [
         MoonOutlinedButton(
-          onTap: () => context.pushReplacementNamed(AppPages.HOME.name),
+          onTap: () => context.goNamed(AppPages.HOME.name),
           label: const Text('Go Back'),
         )
       ],
