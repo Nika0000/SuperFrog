@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -93,6 +95,15 @@ class ThemeProvider extends Cubit<ThemeMode> {
       unselectedLabelStyle: MoonTypography.typography.body.text12,
     ),
     pageTransitionsTheme: _pageTransitionsTheme,
+    cardTheme: CardTheme(
+      surfaceTintColor: Colors.transparent,
+      color: _lightToken.colors.gohan,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: _lightToken.borders.interactiveSm,
+        side: BorderSide(color: _lightToken.colors.beerus),
+      ),
+    ),
   );
 
   static final ThemeData dark = ThemeData.dark().copyWith(
@@ -116,6 +127,15 @@ class ThemeProvider extends Cubit<ThemeMode> {
       unselectedLabelStyle: MoonTypography.typography.body.text12,
     ),
     pageTransitionsTheme: _pageTransitionsTheme,
+    cardTheme: CardTheme(
+      surfaceTintColor: Colors.transparent,
+      color: _darkToken.colors.goku,
+      elevation: 0,
+      shape: RoundedRectangleBorder(
+        borderRadius: _darkToken.borders.interactiveSm,
+        side: BorderSide(color: _darkToken.colors.beerus),
+      ),
+    ),
   );
 
   final SystemUiOverlayStyle _darkOverlays = SystemUiOverlayStyle.dark.copyWith(
