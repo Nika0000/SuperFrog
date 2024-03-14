@@ -1,5 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:moon_design/moon_design.dart';
+import 'package:multi_split_view/multi_split_view.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -124,7 +128,7 @@ class _HomePageState extends State<HomePage> {
                 width: double.maxFinite,
                 child: PaginatedDataTable(
                   rowsPerPage: 12,
-                  headingRowColor: MaterialStatePropertyAll(context.moonColors?.gohan),
+                  headingRowColor: MaterialStatePropertyAll(context.moonColors?.heles),
                   columns: const <DataColumn>[
                     DataColumn(
                       label: Text('Name'),
@@ -366,80 +370,70 @@ class _PagPaneleBuilderState extends State<PagePanelBuilder> {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      children: [
-        /*  AnimatedContainer(
-          duration: const Duration(milliseconds: 250),
-          width: _isExpanded ? 250 : 0,
-          clipBehavior: Clip.hardEdge,
-          onEnd: () {
-            if (_isExpanded == false) {
-              setState(() {
-                _isVisiblePanel = false;
-              });
-            }
-          },
-          decoration: BoxDecoration(),
-          child: OverflowBox(
-            minWidth: 250,
-            child: Scaffold(
-              appBar: AppBar(
-                title: const Text('Game database'),
+    return MultiSplitViewTheme(
+      data: MultiSplitViewThemeData(dividerThickness: 3),
+      child: MultiSplitView(
+        axis: Axis.horizontal,
+        initialAreas: [
+          Area(size: 280.0),
+          Area(minimalWeight: 0.80),
+        ],
+        dividerBuilder: (axis, index, resizable, dragging, highlighted, themeData) {
+          return const VerticalDivider(thickness: 1);
+        },
+        children: [
+          Visibility(
+            child: OverflowBox(
+              minWidth: 250,
+              child: Scaffold(
+                appBar: AppBar(
+                  title: const Text('Game database'),
+                ),
+                body: widget.bodyPanel,
               ),
-              body: widget.bodyPanel,
             ),
           ),
-        ), */
-        ConstrainedBox(
-          constraints: BoxConstraints.loose(const Size.fromWidth(250)),
-          child: Scaffold(
-            appBar: AppBar(
-              title: const Text('Game database'),
-            ),
-            body: widget.bodyPanel,
-          ),
-        ),
-        const VerticalDivider(width: 1),
-        Expanded(
-          child: Scaffold(
-            appBar: AppBar(),
-            body: LayoutBuilder(
-              builder: (BuildContext context, BoxConstraints constraints) {
-                return ConstrainedBox(
-                  constraints: constraints.copyWith(minWidth: constraints.maxWidth, minHeight: constraints.maxHeight),
-                  child: Scrollbar(
-                    controller: _scrollControllerVertical,
+          Expanded(
+            child: Scaffold(
+              appBar: AppBar(),
+              body: LayoutBuilder(
+                builder: (BuildContext context, BoxConstraints constraints) {
+                  return ConstrainedBox(
+                    constraints: constraints.copyWith(minWidth: constraints.maxWidth, minHeight: constraints.maxHeight),
                     child: Scrollbar(
-                      controller: _scrollControllerHorizontal,
-                      notificationPredicate: (notif) => notif.depth == 1,
-                      child: Align(
-                        alignment: Alignment.topCenter,
-                        child: SingleChildScrollView(
-                          controller: _scrollControllerVertical,
+                      controller: _scrollControllerVertical,
+                      child: Scrollbar(
+                        controller: _scrollControllerHorizontal,
+                        notificationPredicate: (notif) => notif.depth == 1,
+                        child: Align(
+                          alignment: Alignment.topCenter,
                           child: SingleChildScrollView(
-                            controller: _scrollControllerHorizontal,
-                            scrollDirection: Axis.horizontal,
-                            child: ConstrainedBox(
-                              constraints: BoxConstraints(
-                                maxWidth: constraints.maxWidth > 1300
-                                    ? constraints.maxWidth
-                                    : constraints.maxWidth < 1300 && constraints.maxWidth > 720
-                                        ? constraints.maxWidth
-                                        : 720,
+                            controller: _scrollControllerVertical,
+                            child: SingleChildScrollView(
+                              controller: _scrollControllerHorizontal,
+                              scrollDirection: Axis.horizontal,
+                              child: ConstrainedBox(
+                                constraints: BoxConstraints(
+                                  maxWidth: constraints.maxWidth > 1300
+                                      ? constraints.maxWidth
+                                      : constraints.maxWidth < 1300 && constraints.maxWidth > 720
+                                          ? constraints.maxWidth
+                                          : 720,
+                                ),
+                                child: widget.body,
                               ),
-                              child: widget.body,
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
-          ),
-        )
-      ],
+          )
+        ],
+      ),
     );
   }
 }

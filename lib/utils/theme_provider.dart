@@ -98,6 +98,7 @@ class ThemeProvider extends Cubit<ThemeMode> {
     cardTheme: CardTheme(
       surfaceTintColor: Colors.transparent,
       color: _lightToken.colors.gohan,
+      clipBehavior: Clip.hardEdge,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: _lightToken.borders.interactiveSm,
@@ -129,7 +130,8 @@ class ThemeProvider extends Cubit<ThemeMode> {
     pageTransitionsTheme: _pageTransitionsTheme,
     cardTheme: CardTheme(
       surfaceTintColor: Colors.transparent,
-      color: _darkToken.colors.goku,
+      color: _darkToken.colors.gohan,
+      clipBehavior: Clip.hardEdge,
       elevation: 0,
       shape: RoundedRectangleBorder(
         borderRadius: _darkToken.borders.interactiveSm,
