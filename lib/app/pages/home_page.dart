@@ -1,9 +1,6 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:multi_split_view/multi_split_view.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,124 +25,8 @@ class _HomePageState extends State<HomePage> {
         child: _createNewGame(),
       ),
       body: PagePanelBuilder(
-        bodyPanel: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Manage',
-                style: MoonTypography.typography.heading.text12.copyWith(color: context.moonColors?.textSecondary),
-              ),
-              const SizedBox(height: 8.0),
-              MoonMenuItem(
-                onTap: () {},
-                height: 32,
-                backgroundColor: context.moonColors?.heles,
-                borderRadius: context.moonBorders?.interactiveXs,
-                menuItemPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-                label: Text(
-                  'Games',
-                  style: MoonTypography.typography.body.text12.copyWith(),
-                ),
-              ),
-              const SizedBox(height: 8.0),
-              MoonMenuItem(
-                onTap: () {},
-                height: 32,
-                borderRadius: context.moonBorders?.interactiveXs,
-                menuItemPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-                label: Text(
-                  'Storage',
-                  style: MoonTypography.typography.body.text12.copyWith(color: context.moonColors?.trunks),
-                ),
-              ),
-              const Divider(height: 16),
-              MoonMenuItem(
-                onTap: () {},
-                height: 32,
-                borderRadius: context.moonBorders?.interactiveXs,
-                menuItemPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-                label: Text(
-                  'Templates',
-                  style: MoonTypography.typography.body.text12.copyWith(color: context.moonColors?.trunks),
-                ),
-              ),
-              const SizedBox(height: 8.0),
-              MoonMenuItem(
-                onTap: () {},
-                height: 32,
-                borderRadius: context.moonBorders?.interactiveXs,
-                menuItemPadding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 4.0),
-                label: Text(
-                  'Stores',
-                  style: MoonTypography.typography.body.text12.copyWith(color: context.moonColors?.trunks),
-                ),
-              ),
-            ],
-          ),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 32.0, vertical: 32.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Row(
-                children: [
-                  MoonTextInput(
-                    width: 250,
-                    textInputSize: MoonTextInputSize.sm,
-                    backgroundColor: context.moonColors?.gohan,
-                    leading: MoonIcon(
-                      MoonIcons.generic_search_16_light,
-                      size: 16.0,
-                      color: context.moonColors?.trunks,
-                    ),
-                    hintText: 'Search game by name or id',
-                    activeBorderColor: context.moonColors?.bulma,
-                  ),
-                  const SizedBox(width: 16.0),
-                  MoonTextInput(
-                    width: 180,
-                    textInputSize: MoonTextInputSize.sm,
-                    backgroundColor: context.moonColors?.gohan,
-                    controller: TextEditingController(text: 'All Games'),
-                    activeBorderColor: context.moonColors?.bulma,
-                  ),
-                  const Expanded(child: SizedBox(width: 32.0)),
-                  MoonFilledButton(
-                    label: const Text('Create new game'),
-                    onTap: () {
-                      _drawerKey.currentState?.openEndDrawer();
-                    },
-                    buttonSize: MoonButtonSize.sm,
-                  ),
-                ],
-              ),
-              const SizedBox(height: 24.0),
-              SizedBox(
-                width: double.maxFinite,
-                child: PaginatedDataTable(
-                  rowsPerPage: 12,
-                  headingRowColor: MaterialStatePropertyAll(context.moonColors?.heles),
-                  columns: const <DataColumn>[
-                    DataColumn(
-                      label: Text('Name'),
-                    ),
-                    DataColumn(
-                      label: Text('Age'),
-                    ),
-                    DataColumn(
-                      label: Text('Role'),
-                    ),
-                  ],
-                  source: dataSource,
-                ),
-              ),
-            ],
-          ),
-        ),
+        bodyPanel: Container(),
+        body: Container(),
       ),
     );
   }
@@ -361,78 +242,72 @@ class PagePanelBuilder extends StatefulWidget {
   State<PagePanelBuilder> createState() => _PagPaneleBuilderState();
 }
 
-class _PagPaneleBuilderState extends State<PagePanelBuilder> {
+class _PagPaneleBuilderState extends State<PagePanelBuilder> with SingleTickerProviderStateMixin {
   final ScrollController _scrollControllerHorizontal = ScrollController();
   final ScrollController _scrollControllerVertical = ScrollController();
+  late final AnimationController _animationController;
+  late final Animation<double> _animation;
 
-/*   bool _isExpanded = true;
-  bool _isVisiblePanel = true; */
+  @override
+  void initState() {
+    _animationController = AnimationController(vsync: this, duration: const Duration(milliseconds: 250));
+    _animation = Tween(begin: 1.0, end: 5.0).animate(_animationController);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MultiSplitViewTheme(
-      data: MultiSplitViewThemeData(dividerThickness: 3),
-      child: MultiSplitView(
-        axis: Axis.horizontal,
-        initialAreas: [
-          Area(size: 280.0),
-          Area(minimalWeight: 0.80),
-        ],
-        dividerBuilder: (axis, index, resizable, dragging, highlighted, themeData) {
-          return const VerticalDivider(thickness: 1);
-        },
-        children: [
-          Visibility(
-            child: OverflowBox(
-              minWidth: 250,
-              child: Scaffold(
-                appBar: AppBar(
-                  title: const Text('Game database'),
-                ),
-                body: widget.bodyPanel,
+    return LayoutBuilder(
+      builder: (context, constraints) => MultiSplitViewTheme(
+        data: MultiSplitViewThemeData(dividerThickness: 5),
+        child: MultiSplitView(
+          axis: Axis.horizontal,
+          initialAreas: [
+            Area(size: 350),
+          ],
+          dividerBuilder: (axis, index, resizable, dragging, highlighted, themeData) {
+            bool canAnimate = highlighted && !_animationController.isAnimating;
+            canAnimate ? _animationController.forward() : _animationController.reverse();
+
+            return AnimatedBuilder(
+              animation: _animation,
+              builder: (BuildContext context, Widget? child) {
+                return VerticalDivider(
+                  thickness: _animation.value,
+                );
+              },
+            );
+          },
+          children: [
+            Scaffold(
+              appBar: AppBar(
+                title: const Text('Game database'),
               ),
+              body: widget.bodyPanel,
             ),
-          ),
-          Expanded(
-            child: Scaffold(
+            Scaffold(
               appBar: AppBar(),
-              body: LayoutBuilder(
-                builder: (BuildContext context, BoxConstraints constraints) {
-                  return ConstrainedBox(
-                    constraints: constraints.copyWith(minWidth: constraints.maxWidth, minHeight: constraints.maxHeight),
-                    child: Scrollbar(
+              body: Scrollbar(
+                controller: _scrollControllerVertical,
+                child: Scrollbar(
+                  controller: _scrollControllerHorizontal,
+                  //    notificationPredicate: (notif) => notif.depth == 1,
+                  child: Align(
+                    alignment: Alignment.topCenter,
+                    child: SingleChildScrollView(
                       controller: _scrollControllerVertical,
-                      child: Scrollbar(
+                      child: SingleChildScrollView(
                         controller: _scrollControllerHorizontal,
-                        notificationPredicate: (notif) => notif.depth == 1,
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: SingleChildScrollView(
-                            controller: _scrollControllerVertical,
-                            child: SingleChildScrollView(
-                              controller: _scrollControllerHorizontal,
-                              scrollDirection: Axis.horizontal,
-                              child: ConstrainedBox(
-                                constraints: BoxConstraints(
-                                  maxWidth: constraints.maxWidth > 1300
-                                      ? constraints.maxWidth
-                                      : constraints.maxWidth < 1300 && constraints.maxWidth > 720
-                                          ? constraints.maxWidth
-                                          : 720,
-                                ),
-                                child: widget.body,
-                              ),
-                            ),
-                          ),
-                        ),
+                        scrollDirection: Axis.horizontal,
+                        child: widget.body,
                       ),
                     ),
-                  );
-                },
+                  ),
+                ),
               ),
-            ),
-          )
-        ],
+            )
+          ],
+        ),
       ),
     );
   }

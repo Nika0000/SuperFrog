@@ -25,6 +25,7 @@ class _AppViewState extends State<AppView> {
       routerConfig: AppRouter.router,
       locale: context.locale,
       localizationsDelegates: context.localizationDelegates,
+      themeAnimationStyle: AnimationStyle.noAnimation,
       supportedLocales: context.supportedLocales,
       builder: (context, child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
