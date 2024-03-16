@@ -1,6 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:multi_split_view/multi_split_view.dart';
+import 'package:superfrog/app/widgets/menu_button.dart';
+import 'package:superfrog/utils/extensions.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,6 +21,8 @@ class _HomePageState extends State<HomePage> {
 
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey(); // Create a key
 
+  int _selectedIndex = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,7 +31,87 @@ class _HomePageState extends State<HomePage> {
         child: _createNewGame(),
       ),
       body: PagePanelBuilder(
-        bodyPanel: Container(),
+        bodyPanel: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              SizedBox(
+                width: double.maxFinite,
+                child: MenuButton(
+                  value: 0,
+                  groupValue: _selectedIndex,
+                  borderRadius: context.moonBorders?.surfaceXs,
+                  onTap: () {
+                    setState(() {
+                      _selectedIndex = 0;
+                    });
+                  },
+                  label: Text('Sample Data'),
+                ),
+              ),
+              const SizedBox(height: 4.0),
+              SizedBox(
+                width: double.maxFinite,
+                child: MenuButton(
+                  value: 1,
+                  groupValue: _selectedIndex,
+                  borderRadius: context.moonBorders?.surfaceXs,
+                  onTap: () {
+                    setState(() {
+                      _selectedIndex = 1;
+                    });
+                  },
+                  label: Text('Sample Data'),
+                ),
+              ),
+              const SizedBox(height: 4.0),
+              SizedBox(
+                width: double.maxFinite,
+                child: MenuButton(
+                  value: 2,
+                  groupValue: _selectedIndex,
+                  borderRadius: context.moonBorders?.surfaceXs,
+                  onTap: () {
+                    setState(() {
+                      _selectedIndex = 2;
+                    });
+                  },
+                  label: Text('Sample Data'),
+                ),
+              ),
+              const SizedBox(height: 4.0),
+              SizedBox(
+                width: double.maxFinite,
+                child: MenuButton(
+                  value: 3,
+                  groupValue: _selectedIndex,
+                  borderRadius: context.moonBorders?.surfaceXs,
+                  onTap: () {
+                    setState(() {
+                      _selectedIndex = 3;
+                    });
+                  },
+                  label: Text('Sample Data'),
+                ),
+              ),
+              const SizedBox(height: 4.0),
+              SizedBox(
+                width: double.maxFinite,
+                child: MenuButton(
+                  value: 4,
+                  groupValue: _selectedIndex,
+                  borderRadius: context.moonBorders?.surfaceXs,
+                  onTap: () {
+                    setState(() {
+                      _selectedIndex = 4;
+                    });
+                  },
+                  label: Text('Sample Data'),
+                ),
+              ),
+            ],
+          ),
+        ),
         body: Container(),
       ),
     );
@@ -41,7 +127,7 @@ class _HomePageState extends State<HomePage> {
       show: _showNotifications,
       onTapOutside: () => setState(() => _showNotifications = false),
       content: ConstrainedBox(
-        constraints: BoxConstraints(maxWidth: 380, minWidth: 280),
+        constraints: const BoxConstraints(maxWidth: 380, minWidth: 280),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -85,7 +171,7 @@ class _HomePageState extends State<HomePage> {
                         onTap: () {},
                         iconColor: context.moonColors?.trunks,
                         buttonSize: MoonButtonSize.sm,
-                        icon: MoonIcon(
+                        icon: const Icon(
                           MoonIcons.software_settings_16_light,
                           size: 16.0,
                         ),
@@ -257,14 +343,12 @@ class _PagPaneleBuilderState extends State<PagePanelBuilder> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(
-      builder: (context, constraints) => MultiSplitViewTheme(
+    return LayoutBuilder(builder: (context, constraints) {
+      return MultiSplitViewTheme(
         data: MultiSplitViewThemeData(dividerThickness: 5),
         child: MultiSplitView(
           axis: Axis.horizontal,
-          initialAreas: [
-            Area(size: 350),
-          ],
+          initialAreas: [Area(size: 280), Area(minimalSize: context.responsiveWhen(constraints.maxWidth - 350, sm: 0))],
           dividerBuilder: (axis, index, resizable, dragging, highlighted, themeData) {
             bool canAnimate = highlighted && !_animationController.isAnimating;
             canAnimate ? _animationController.forward() : _animationController.reverse();
@@ -279,11 +363,14 @@ class _PagPaneleBuilderState extends State<PagePanelBuilder> with SingleTickerPr
             );
           },
           children: [
-            Scaffold(
-              appBar: AppBar(
-                title: const Text('Game database'),
+            OverflowBox(
+              minWidth: 280,
+              child: Scaffold(
+                appBar: AppBar(
+                  title: const Text('Game database'),
+                ),
+                body: widget.bodyPanel,
               ),
-              body: widget.bodyPanel,
             ),
             Scaffold(
               appBar: AppBar(),
@@ -308,8 +395,8 @@ class _PagPaneleBuilderState extends State<PagePanelBuilder> with SingleTickerPr
             )
           ],
         ),
-      ),
-    );
+      );
+    });
   }
 }
 
