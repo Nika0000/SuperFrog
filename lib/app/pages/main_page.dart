@@ -2,13 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:superfrog/app/pages/home_page.dart';
 import 'package:superfrog/app/widgets/menu_button.dart';
-import 'package:superfrog/config/preference_config.dart';
-import 'package:superfrog/utils/theme_provider.dart';
 
 class MainPage extends StatefulWidget {
   final MainPageRoutes route;
@@ -24,16 +21,107 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
+  late MainPageRoutes _currentPage;
+
+  @override
+  void initState() {
+    _currentPage = widget.initialRoute!;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
+    return Scaffold(
       body: Row(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          NavigationBarDesktop(),
-          VerticalDivider(width: 1),
-          Expanded(child: HomePage()),
+          navigationRail(),
+          const VerticalDivider(width: 1),
+          const Expanded(child: HomePage()),
+        ],
+      ),
+    );
+  }
+
+  Widget navigationRail() {
+    return SizedBox.fromSize(
+      size: const Size.fromWidth(kToolbarHeight),
+      child: Column(
+        children: [
+          //TopBar
+          SizedBox(
+            height: kToolbarHeight,
+            child: SvgPicture.asset(
+              'assets/images/logo_small.svg',
+              height: 24,
+            ),
+          ),
+          //Menu Items
+          Expanded(
+            child: SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsetsDirectional.all(8.0),
+                child: Column(
+                  children: [
+                    MenuButton(
+                      value: MainPageRoutes.HOME,
+                      groupValue: _currentPage,
+                      onTap: () {
+                        setState(() {
+                          _currentPage = MainPageRoutes.HOME;
+                        });
+                      },
+                      label: const Icon(MoonIcons.generic_home_24_regular),
+                    ),
+                    const SizedBox(height: 8.0),
+                    MenuButton(
+                      value: MainPageRoutes.INSTANCES,
+                      groupValue: _currentPage,
+                      onTap: () {
+                        setState(() {
+                          _currentPage = MainPageRoutes.INSTANCES;
+                        });
+                      },
+                      label: const Icon(
+                        Icons.dns_outlined,
+                        weight: 100,
+                      ),
+                    ),
+                    const SizedBox(height: 8.0),
+                    MenuButton(
+                      value: MainPageRoutes.GAMES,
+                      groupValue: _currentPage,
+                      onTap: () {
+                        setState(() {
+                          _currentPage = MainPageRoutes.GAMES;
+                        });
+                      },
+                      label: const Icon(MoonIcons.sport_esport_generic_24_regular),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+
+          //Bottom
+
+          MenuButton(
+            onTap: () {},
+            value: 0,
+            label: const Icon(MoonIcons.generic_settings_24_regular),
+          ),
+          const SizedBox(height: 8.0),
+          MenuButton(
+            onTap: () {},
+            value: 0,
+            label: const Icon(MoonIcons.generic_user_24_regular),
+          ),
+
+          const Padding(
+            padding: EdgeInsetsDirectional.only(bottom: 16.0),
+          )
         ],
       ),
     );
@@ -42,6 +130,11 @@ class _MainPageState extends State<MainPage> {
 
 enum MainPageRoutes {
   HOME,
+  GAMES,
+  INSTANCES,
+  USERS,
+  SERVICES,
+  SETTINGS,
 }
 
 class NavigationBarDesktop extends StatefulWidget {

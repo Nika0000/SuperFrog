@@ -1,10 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/rendering.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:multi_split_view/multi_split_view.dart';
-import 'package:superfrog/app/widgets/menu_button.dart';
-import 'package:superfrog/utils/extensions.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,8 +18,6 @@ class _HomePageState extends State<HomePage> {
 
   final GlobalKey<ScaffoldState> _drawerKey = GlobalKey(); // Create a key
 
-  int _selectedIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,85 +26,13 @@ class _HomePageState extends State<HomePage> {
         child: _createNewGame(),
       ),
       body: PagePanelBuilder(
-        bodyPanel: Padding(
-          padding: const EdgeInsets.all(8.0),
+        appbar: AppBar(
+          actions: [notificationButton(), const SizedBox(width: 16.0)],
+        ),
+        bodyPanel: const Padding(
+          padding: EdgeInsets.all(8.0),
           child: Column(
-            children: [
-              SizedBox(
-                width: double.maxFinite,
-                child: MenuButton(
-                  value: 0,
-                  groupValue: _selectedIndex,
-                  borderRadius: context.moonBorders?.surfaceXs,
-                  onTap: () {
-                    setState(() {
-                      _selectedIndex = 0;
-                    });
-                  },
-                  label: Text('Sample Data'),
-                ),
-              ),
-              const SizedBox(height: 4.0),
-              SizedBox(
-                width: double.maxFinite,
-                child: MenuButton(
-                  value: 1,
-                  groupValue: _selectedIndex,
-                  borderRadius: context.moonBorders?.surfaceXs,
-                  onTap: () {
-                    setState(() {
-                      _selectedIndex = 1;
-                    });
-                  },
-                  label: Text('Sample Data'),
-                ),
-              ),
-              const SizedBox(height: 4.0),
-              SizedBox(
-                width: double.maxFinite,
-                child: MenuButton(
-                  value: 2,
-                  groupValue: _selectedIndex,
-                  borderRadius: context.moonBorders?.surfaceXs,
-                  onTap: () {
-                    setState(() {
-                      _selectedIndex = 2;
-                    });
-                  },
-                  label: Text('Sample Data'),
-                ),
-              ),
-              const SizedBox(height: 4.0),
-              SizedBox(
-                width: double.maxFinite,
-                child: MenuButton(
-                  value: 3,
-                  groupValue: _selectedIndex,
-                  borderRadius: context.moonBorders?.surfaceXs,
-                  onTap: () {
-                    setState(() {
-                      _selectedIndex = 3;
-                    });
-                  },
-                  label: Text('Sample Data'),
-                ),
-              ),
-              const SizedBox(height: 4.0),
-              SizedBox(
-                width: double.maxFinite,
-                child: MenuButton(
-                  value: 4,
-                  groupValue: _selectedIndex,
-                  borderRadius: context.moonBorders?.surfaceXs,
-                  onTap: () {
-                    setState(() {
-                      _selectedIndex = 4;
-                    });
-                  },
-                  label: Text('Sample Data'),
-                ),
-              ),
-            ],
+            children: [],
           ),
         ),
         body: Container(),
@@ -322,7 +245,8 @@ class _HomePageState extends State<HomePage> {
 class PagePanelBuilder extends StatefulWidget {
   final Widget bodyPanel;
   final Widget body;
-  const PagePanelBuilder({required this.bodyPanel, required this.body, super.key});
+  final AppBar appbar;
+  const PagePanelBuilder({required this.appbar, required this.bodyPanel, required this.body, super.key});
 
   @override
   State<PagePanelBuilder> createState() => _PagPaneleBuilderState();
@@ -343,117 +267,54 @@ class _PagPaneleBuilderState extends State<PagePanelBuilder> with SingleTickerPr
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (context, constraints) {
-      return MultiSplitViewTheme(
-        data: MultiSplitViewThemeData(dividerThickness: 5),
-        child: MultiSplitView(
-          axis: Axis.horizontal,
-          initialAreas: [Area(size: 280), Area(minimalSize: context.responsiveWhen(constraints.maxWidth - 350, sm: 0))],
-          dividerBuilder: (axis, index, resizable, dragging, highlighted, themeData) {
-            bool canAnimate = highlighted && !_animationController.isAnimating;
-            canAnimate ? _animationController.forward() : _animationController.reverse();
+    return MultiSplitViewTheme(
+      data: MultiSplitViewThemeData(dividerThickness: 5),
+      child: MultiSplitView(
+        axis: Axis.horizontal,
+        initialAreas: [Area(size: 280), Area()],
+        dividerBuilder: (axis, index, resizable, dragging, highlighted, themeData) {
+          bool canAnimate = highlighted && !_animationController.isAnimating;
+          canAnimate ? _animationController.forward() : _animationController.reverse();
 
-            return AnimatedBuilder(
-              animation: _animation,
-              builder: (BuildContext context, Widget? child) {
-                return VerticalDivider(
-                  thickness: _animation.value,
-                );
-              },
-            );
-          },
-          children: [
-            OverflowBox(
-              minWidth: 280,
-              child: Scaffold(
-                appBar: AppBar(
-                  title: const Text('Game database'),
-                ),
-                body: widget.bodyPanel,
-              ),
+          return AnimatedBuilder(
+            animation: _animation,
+            builder: (BuildContext context, Widget? child) {
+              return VerticalDivider(
+                thickness: _animation.value,
+              );
+            },
+          );
+        },
+        children: [
+          Scaffold(
+            appBar: AppBar(
+              title: const Text('Game database'),
             ),
-            Scaffold(
-              appBar: AppBar(),
-              body: Scrollbar(
-                controller: _scrollControllerVertical,
-                child: Scrollbar(
-                  controller: _scrollControllerHorizontal,
-                  //    notificationPredicate: (notif) => notif.depth == 1,
-                  child: Align(
-                    alignment: Alignment.topCenter,
+            body: widget.bodyPanel,
+          ),
+          Scaffold(
+            appBar: widget.appbar,
+            body: Scrollbar(
+              controller: _scrollControllerVertical,
+              child: Scrollbar(
+                controller: _scrollControllerHorizontal,
+                //    notificationPredicate: (notif) => notif.depth == 1,
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: SingleChildScrollView(
+                    controller: _scrollControllerVertical,
                     child: SingleChildScrollView(
-                      controller: _scrollControllerVertical,
-                      child: SingleChildScrollView(
-                        controller: _scrollControllerHorizontal,
-                        scrollDirection: Axis.horizontal,
-                        child: widget.body,
-                      ),
+                      controller: _scrollControllerHorizontal,
+                      scrollDirection: Axis.horizontal,
+                      child: widget.body,
                     ),
                   ),
                 ),
               ),
-            )
-          ],
-        ),
-      );
-    });
+            ),
+          )
+        ],
+      ),
+    );
   }
 }
-
-class MyDataSource extends DataTableSource {
-  @override
-  int get rowCount => 3;
-
-  @override
-  DataRow? getRow(int index) {
-    switch (index) {
-      case 0:
-        return DataRow(
-          onLongPress: () {},
-          cells: const <DataCell>[
-            DataCell(Text('Sarah')),
-            DataCell(Text('19')),
-            DataCell(Text('Student')),
-          ],
-        );
-      case 1:
-        return DataRow(
-          onLongPress: () {},
-          cells: const <DataCell>[
-            DataCell(Text('Janine')),
-            DataCell(Text('43')),
-            DataCell(Text('Professor')),
-          ],
-        );
-      case 2:
-        return DataRow(
-          onLongPress: () {},
-          cells: const <DataCell>[
-            DataCell(Text('William')),
-            DataCell(Text('27')),
-            DataCell(Text('Associate Professor')),
-          ],
-        );
-      case 3:
-        return DataRow(
-          onLongPress: () {},
-          cells: const <DataCell>[
-            DataCell(Text('William')),
-            DataCell(Text('27')),
-            DataCell(Text('Associate Professor')),
-          ],
-        );
-
-      default:
-        return null;
-    }
-  }
-
-  @override
-  bool get isRowCountApproximate => false;
-
-  @override
-  int get selectedRowCount => 0;
-}
-
-final DataTableSource dataSource = MyDataSource();
