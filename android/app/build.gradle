@@ -24,8 +24,8 @@ if (flutterVersionName == null) {
 
 android {
     namespace "com.example.superfrog"
-    compileSdkVersion 33
-    ndkVersion "23.2.8568313"
+    compileSdkVersion 34
+    ndkVersion "22.1.7171670"
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_11

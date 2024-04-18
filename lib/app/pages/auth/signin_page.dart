@@ -72,7 +72,7 @@ class _SignInPageState extends State<SignInPage> {
               MoonOutlinedButton(
                 borderColor: context.moonColors?.beerus,
                 onTap: () {},
-                leading: const MoonIcon(MoonIcons.other_lightning_24_light),
+                leading: const Icon(MoonIcons.other_lightning_24_light),
                 isFullWidth: true,
                 label: const Text('Send me a Magic Link'),
               ),

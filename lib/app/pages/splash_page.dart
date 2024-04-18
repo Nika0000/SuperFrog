@@ -78,7 +78,7 @@ class _SplashPageState extends State<SplashPage> {
                     borderColor: context.moonColors?.beerus,
                     color: context.moonColors?.trunks,
                     backgroundColor: context.moonColors?.gohan,
-                    leading: const MoonIcon(MoonIcons.generic_alarm_24_light),
+                    leading: const Icon(MoonIcons.generic_alarm_24_light),
                     label: const Text(
                       'Loading is taking longer then normal. Plsease be patient and ensure that you have a strong & stabile internet connection.',
                     ),

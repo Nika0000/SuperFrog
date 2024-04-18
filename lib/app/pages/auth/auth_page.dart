@@ -35,14 +35,14 @@ class _AuthPageState extends State<AuthPage> {
               context,
               toastShadows: context.moonShadows?.sm,
               label: Text(error),
-              leading: const MoonIcon(MoonIcons.generic_alarm_24_light),
+              leading: const Icon(MoonIcons.generic_alarm_24_light),
             );
           },
           message: (message) {
             return MoonToast.show(
               context,
               toastShadows: context.moonShadows?.sm,
-              leading: const MoonIcon(MoonIcons.generic_check_rounded_24_light),
+              leading: const Icon(MoonIcons.generic_check_rounded_24_light),
               label: Text(message),
             );
           },
@@ -104,7 +104,7 @@ class OAuthCallBack extends StatelessWidget {
               show: true,
               color: context.moonColors?.krillin,
               backgroundColor: context.moonColors?.krillin10,
-              leading: const MoonIcon(MoonIcons.generic_alarm_24_light),
+              leading: const Icon(MoonIcons.generic_alarm_24_light),
               label: const Text(
                 'For security purposes, after resetting your password, the withdrawal function will be suspended for 24 hours.',
               ),

@@ -1,6 +1,7 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:superfrog/data/services/auth_service.dart';
+import 'package:superfrog/routes/app_routes.dart';
 import 'package:superfrog/utils/catch_async.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -14,6 +15,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   AuthenticationBloc() : super(const AuthenticationState.unitialized()) {
     on<_StartAuthentication>(
       (event, emit) {
+        print("Aqavaaar");
         emit(const AuthenticationState.loading());
 
         if (!_authService.isSignedIn || _authService.currentUser == null) {
@@ -30,9 +32,10 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           emit(const AuthenticationState.loading());
 
           if (_authService.isSignedIn) {
-            return emit(
-              const AuthenticationState.error('You are already logged in'),
-            );
+            emit(const AuthenticationState.error('You are already logged in'));
+            return await Future.delayed(const Duration(seconds: 2)).then((_) {
+              AppRouter.router.refresh();
+            });
           }
 
           await Future.delayed(const Duration(seconds: 2));
@@ -54,7 +57,10 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           emit(const AuthenticationState.loading());
 
           if (_authService.isSignedIn) {
-            return emit(const AuthenticationState.error('You are already logged in'));
+            emit(const AuthenticationState.error('You are already logged in'));
+            return await Future.delayed(const Duration(seconds: 2)).then((_) {
+              AppRouter.router.refresh();
+            });
           }
 
           final User? user = await _authService.signUp(
@@ -99,8 +105,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
             email: event.email,
             token: event.token,
           );
-
-          print('invoke function');
         },
         onError: (error) => emit(AuthenticationState.error(error)),
       ),
@@ -112,7 +116,11 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           emit(const AuthenticationState.loading());
 
           if (!_authService.isSignedIn) {
-            return emit(const AuthenticationState.error('You`re already out'));
+            emit(const AuthenticationState.error('You`re already out!'));
+            return await Future.delayed(const Duration(seconds: 2)).then((_) {
+              emit(const AuthenticationState.unAuthenticated());
+              AppRouter.router.refresh();
+            });
           }
 
           await _authService.signOut();

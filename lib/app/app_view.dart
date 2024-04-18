@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
-import 'package:superfrog/data/blocs/common_bloc.dart';
 import 'package:superfrog/routes/app_routes.dart';
 import 'package:superfrog/utils/theme_provider.dart';
 
@@ -25,11 +24,11 @@ class _AppViewState extends State<AppView> {
       routerConfig: AppRouter.router,
       locale: context.locale,
       localizationsDelegates: context.localizationDelegates,
-      themeAnimationStyle: AnimationStyle.noAnimation,
+      //themeAnimationStyle: AnimationStyle.noAnimation,
       supportedLocales: context.supportedLocales,
       builder: (context, child) {
         return BlocListener<AuthenticationBloc, AuthenticationState>(
-          bloc: CommonBloc.authenticationBloc..add(const AuthenticationEvent.start()),
+          bloc: context.read<AuthenticationBloc>()..add(const AuthenticationEvent.start()),
           listener: (context, authState) => authState.whenOrNull(
             authenticated: (user) => AppRouter.router.refresh(),
             unAuthenticated: () => AppRouter.router.refresh(),

@@ -21,7 +21,7 @@ class ErrorPage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const MoonIcon(
+            const Icon(
               MoonIcons.generic_settings_32_light,
               size: 80.0,
             ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:multi_split_view/multi_split_view.dart';
+import 'package:superfrog/app/pages/news/news_page.dart';
+import 'package:superfrog/utils/theme_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -21,23 +23,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _drawerKey,
-      endDrawer: MoonDrawer(
-        child: _createNewGame(),
-      ),
-      body: PagePanelBuilder(
-        appbar: AppBar(
-          actions: [notificationButton(), const SizedBox(width: 16.0)],
-        ),
-        bodyPanel: const Padding(
-          padding: EdgeInsets.all(8.0),
-          child: Column(
-            children: [],
-          ),
-        ),
-        body: Container(),
-      ),
-    );
+        appBar: AppBar(),
+        body: MoonFilledButton(
+          onTap: () {
+            Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => NewsPage(),
+            ));
+          },
+          label: Text('Switch'),
+        ));
   }
 
   bool _showNotifications = false;
@@ -76,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                                 textColor: context.moonColors?.textSecondary,
                                 indicatorColor: context.moonColors?.textPrimary,
                               ),
-                              label: Text('Inbox'),
+                              label: const Text('Inbox'),
                             ),
                             MoonTab(
                               tabStyle: MoonTabStyle(
@@ -85,7 +79,7 @@ class _HomePageState extends State<HomePage> {
                                 textColor: context.moonColors?.textSecondary,
                                 indicatorColor: context.moonColors?.textPrimary,
                               ),
-                              label: Text('Archived'),
+                              label: const Text('Archived'),
                             ),
                           ],
                         ),
@@ -108,13 +102,13 @@ class _HomePageState extends State<HomePage> {
             Container(
               color: context.moonColors?.goku,
               height: 400,
-              margin: EdgeInsets.all(1),
+              margin: const EdgeInsets.all(1),
               width: double.maxFinite,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  MoonIcon(
+                  Icon(
                     MoonIcons.mail_box_32_light,
                     size: 32.0,
                     color: context.moonColors?.textSecondary,
@@ -144,7 +138,7 @@ class _HomePageState extends State<HomePage> {
       child: MoonButton.icon(
         onTap: () => setState(() => _showNotifications = true),
         backgroundColor: _showNotifications ? context.moonColors?.heles : null,
-        icon: const MoonIcon(MoonIcons.mail_box_24_regular),
+        icon: const Icon(MoonIcons.mail_box_24_regular),
         iconColor: context.moonColors?.trunks,
         hoverTextColor: context.moonColors?.textPrimary,
       ),
@@ -172,13 +166,13 @@ class _HomePageState extends State<HomePage> {
               onTap: () {},
               buttonSize: MoonButtonSize.sm,
               backgroundColor: context.moonColors?.gohan,
-              label: Text('Cancel'),
+              label: const Text('Cancel'),
             ),
             const SizedBox(width: 16.0),
             MoonFilledButton(
               onTap: () {},
               buttonSize: MoonButtonSize.sm,
-              label: Text('Save'),
+              label: const Text('Save'),
             ),
           ],
         ),
@@ -219,7 +213,7 @@ class _HomePageState extends State<HomePage> {
                 showBorder: true,
                 borderColor: context.moonColors?.beerus,
                 backgroundColor: context.moonColors?.goku,
-                leading: MoonIcon(
+                leading: Icon(
                   MoonIcons.notifications_alert_16_light,
                   color: context.moonColors?.trunks,
                 ),
