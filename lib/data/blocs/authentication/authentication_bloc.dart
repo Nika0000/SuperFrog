@@ -15,7 +15,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
   AuthenticationBloc() : super(const AuthenticationState.unitialized()) {
     on<_StartAuthentication>(
       (event, emit) {
-        print("Aqavaaar");
         emit(const AuthenticationState.loading());
 
         if (!_authService.isSignedIn || _authService.currentUser == null) {
@@ -48,6 +47,46 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           emit(AuthenticationState.authenticated(user));
         },
         onError: (error) => emit(AuthenticationState.error(error)),
+      ),
+    );
+
+    on<_SignInWithGoogle>(
+      (event, emit) => catchAsync(
+        () async {
+          emit(const AuthenticationState.loading());
+
+          if (_authService.isSignedIn) {
+            emit(const AuthenticationState.error('You are already logged in'));
+            return await Future.delayed(const Duration(seconds: 2)).then((_) {
+              AppRouter.router.refresh();
+            });
+          }
+
+          final User? user = await _authService.signInWithGoogle();
+
+          emit(AuthenticationState.authenticated(user));
+        },
+        onError: (error) => emit(AuthenticationState.error(error)),
+      ),
+    );
+
+    on<_SignInWithApple>(
+      (event, emit) => catchAsync(
+        () async {
+          emit(const AuthenticationState.loading());
+
+          if (_authService.isSignedIn) {
+            emit(const AuthenticationState.error('You are already logged in'));
+            return await Future.delayed(const Duration(seconds: 2)).then((_) {
+              AppRouter.router.refresh();
+            });
+          }
+
+          final User? user = await _authService.signInWithApple();
+
+          emit(AuthenticationState.authenticated(user));
+        },
+        onError: (error) => AuthenticationState.error(error),
       ),
     );
 

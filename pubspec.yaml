@@ -26,6 +26,8 @@ dependencies:
   hive_flutter: ^1.1.0
   hive_generator: ^2.0.1
   multi_split_view: ^2.4.0
+  google_sign_in: ^6.2.1
+  sign_in_with_apple: ^6.1.0
 
 dev_dependencies:
   flutter_test:

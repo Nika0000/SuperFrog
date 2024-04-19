@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:superfrog/app/pages/home_page.dart';
 import 'package:superfrog/app/pages/news/news_page.dart';
-import 'package:superfrog/data/blocs/common_bloc.dart';
 
 class MainPage extends StatefulWidget {
   final MainPageRoutes route;

@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:multi_split_view/multi_split_view.dart';
-import 'package:superfrog/app/pages/news/news_page.dart';
-import 'package:superfrog/utils/theme_provider.dart';
+import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -18,19 +17,19 @@ class _HomePageState extends State<HomePage> {
     super.initState();
   }
 
-  final GlobalKey<ScaffoldState> _drawerKey = GlobalKey(); // Create a key
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: MoonFilledButton(
-          onTap: () {
-            Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => NewsPage(),
-            ));
-          },
-          label: Text('Switch'),
+        body: Column(
+          children: [
+            MoonFilledButton(
+              onTap: () {
+                context.read<AuthenticationBloc>().add(const AuthenticationEvent.signOut());
+              },
+              label: const Text('Sign Out'),
+            ),
+          ],
         ));
   }
 

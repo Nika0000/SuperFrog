@@ -8,7 +8,6 @@ import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 import 'package:superfrog/data/blocs/common_bloc.dart';
 import 'package:superfrog/routes/app_routes.dart';
 import 'package:superfrog/utils/form_validation.dart';
-import 'package:superfrog/utils/theme_provider.dart';
 
 class SignInPage extends StatefulWidget {
   const SignInPage({super.key});
@@ -58,7 +57,7 @@ class _SignInPageState extends State<SignInPage> {
               MoonOutlinedButton(
                 borderColor: context.moonColors?.beerus,
                 onTap: () {
-                  context.read<ThemeProvider>().toggleTheme();
+                  context.read<AuthenticationBloc>().add(const AuthenticationEvent.signInWithGoogle());
                 },
                 leading: SvgPicture.asset(
                   'assets/images/logo_google.svg',

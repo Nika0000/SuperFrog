@@ -16,6 +16,10 @@ class AuthenticationEvent with _$AuthenticationEvent {
     required String password,
   }) = _SignInWithPassword;
 
+  const factory AuthenticationEvent.signInWithGoogle() = _SignInWithGoogle;
+
+  const factory AuthenticationEvent.signInWithApple() = _SignInWithApple;
+
   const factory AuthenticationEvent.signUpWithPassword({
     required String email,
     required String password,

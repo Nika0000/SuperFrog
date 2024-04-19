@@ -27,6 +27,19 @@
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
+	<key>CFBundleURLTypes</key>
+	<!-- Google Sign-in Section -->
+	<array>
+	  <dict>
+	    <key>CFBundleTypeRole</key>
+	    <string>Editor</string>
+	    <key>CFBundleURLSchemes</key>
+	    <array>
+	      <string>com.googleusercontent.apps.331197130107-c8ssjjgbgej3hfqc47cji1apl16u28f2</string>
+	    </array>
+	  </dict>
+	</array>
+	<!-- End of the Google Sign-in Section -->
 	<key>CFBundleLocalizations</key>
 	<array>
 		<string>en</string>

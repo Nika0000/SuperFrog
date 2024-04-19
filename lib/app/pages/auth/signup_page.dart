@@ -58,7 +58,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 showBorder: true,
                 backgroundColor: context.moonColors?.gohan,
                 borderColor: context.moonColors?.beerus,
-                onTap: () {},
+                onTap: () {
+                  context.read<AuthenticationBloc>().add(const AuthenticationEvent.signInWithGoogle());
+                },
                 leading: SvgPicture.asset(
                   'assets/images/logo_google.svg',
                   height: 24,
