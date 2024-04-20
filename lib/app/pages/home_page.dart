@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:multi_split_view/multi_split_view.dart';
+import 'package:superfrog/app/widgets/cloudflare_turntle.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 
 class HomePage extends StatefulWidget {
@@ -20,17 +21,20 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: Column(
-          children: [
-            MoonFilledButton(
+      appBar: AppBar(),
+      body: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const CloudFlareTurntiles(),
+          MoonFilledButton(
               onTap: () {
                 context.read<AuthenticationBloc>().add(const AuthenticationEvent.signOut());
               },
-              label: const Text('Sign Out'),
-            ),
-          ],
-        ));
+              label: const Text('Sign Out'))
+        ],
+      ),
+    );
   }
 
   bool _showNotifications = false;
