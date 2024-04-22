@@ -1,42 +1,50 @@
+// ignore_for_file: constant_identifier_names
+
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class CloudFlareTurntiles extends StatefulWidget {
-  const CloudFlareTurntiles({super.key});
+  final CloudflareTurnstileController? controller;
+  const CloudFlareTurntiles({this.controller, super.key});
 
   @override
   State<CloudFlareTurntiles> createState() => _CloudFlareTurntilesState();
 }
 
 class _CloudFlareTurntilesState extends State<CloudFlareTurntiles> {
-  InAppWebViewGroupOptions options = InAppWebViewGroupOptions(
-    crossPlatform: InAppWebViewOptions(
-      transparentBackground: true,
-      disableHorizontalScroll: true,
-      disableVerticalScroll: true,
-    ),
-    android: AndroidInAppWebViewOptions(useHybridComposition: true),
+  InAppWebViewSettings options = InAppWebViewSettings(
+    transparentBackground: true,
+    disableHorizontalScroll: true,
+    disableVerticalScroll: true,
+    useHybridComposition: true,
+    useShouldInterceptRequest: true,
   );
 
   @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 300,
-      height: 65,
+    return SizedBox.shrink(
       child: InAppWebView(
         initialData: InAppWebViewInitialData(
-          baseUrl: Uri.parse('http://localhost:8000/'),
+          baseUrl: WebUri('http://localhost:8080/'),
           data: _data(siteKey: '0x4AAAAAAAXtCJcLXiSpwwcT', theme: 'dark'),
         ),
-        initialOptions: options,
+        initialSettings: options,
         onWebViewCreated: (controller) {
           controller.addJavaScriptHandler(
             handlerName: 'TurntlesToken',
             callback: (args) {
-              print(args[0]);
+              if (widget.controller != null) {
+                widget.controller?.setToken = args.first;
+              }
             },
           );
         },
+        onConsoleMessage: (_, __) {},
       ),
     );
   }
@@ -60,12 +68,11 @@ String _data({
                sitekey: '${siteKey}',
                theme: '${theme}',
                callback: function(token) {
-                   window.flutter_inappwebview.callHandler('TurntlesToken', token);
+                  window.flutter_inappwebview.callHandler('TurntlesToken', token);
                },
            });
        };
-       
-       
+       console.log(window.location.href);
    </script>
    <style>
       * {
@@ -79,3 +86,22 @@ String _data({
    </body>
 </html>
 """;
+
+class CloudflareTurnstileController {
+  String? _token;
+
+  String? get token => _token;
+
+  set setToken(token) => _token = token;
+
+  Future<void> refresh() async {}
+
+  Future<String> getToken() async {
+    Future.delayed(const Duration(seconds: 16)).then(
+      (value) => throw Exception('Failed to get token.'),
+    );
+    //pool util new token release
+    await Future.doWhile(() => _token == null);
+    return _token!;
+  }
+}

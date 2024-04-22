@@ -125,7 +125,7 @@ class AuthService {
     await _supabase.auth.signOut();
     if (PlatformUtils.isMobile) {
       if (GoogleSignIn().currentUser != null) {
-        await GoogleSignIn().disconnect();
+        await GoogleSignIn().signOut();
       }
     }
   }
