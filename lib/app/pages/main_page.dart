@@ -1,9 +1,13 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:moon_design/moon_design.dart';
-import 'package:superfrog/app/pages/home_page.dart';
+import 'package:superfrog/app/pages/home/home_page.dart';
 import 'package:superfrog/app/pages/news/news_page.dart';
+import 'package:superfrog/app/pages/profile/notifications_page.dart';
+import 'package:superfrog/app/pages/profile/settings_page.dart';
+import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 
 class MainPage extends StatefulWidget {
   final MainPageRoutes route;
@@ -20,6 +24,7 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   late MainPageRoutes _currentPage;
+  String? profileUrl = null;
 
   @override
   void initState() {
@@ -29,12 +34,38 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
+    context.read<AuthenticationBloc>().state.whenOrNull(
+          authenticated: (user) => profileUrl = user?.userMetadata?['avatar_url'],
+        );
     return Scaffold(
+      appBar: AppBar(
+        leading: IconButton(
+          onPressed: () {},
+          icon: const Icon(MoonIcons.generic_burger_regular_24_regular),
+        ),
+        titleSpacing: 0,
+        title: Text(_currentPage.label),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => SettingsPage()));
+              },
+              child: CircleAvatar(
+                backgroundImage: profileUrl != null ? NetworkImage(profileUrl!) : null,
+                radius: 18,
+              ),
+            ),
+          ),
+        ],
+      ),
       body: _currentPage.page,
-      bottomNavigationBar: DecoratedBox(
+      bottomNavigationBar: Container(
         decoration: BoxDecoration(
+          color: context.moonColors?.goku,
           border: Border(
-            top: BorderSide(color: context.moonColors!.trunks),
+            top: BorderSide(color: context.moonColors!.beerus),
           ),
           //boxShadow: context.moonShadows?.sm,
         ),
@@ -63,10 +94,10 @@ class _MainPageState extends State<MainPage> {
 
 enum MainPageRoutes {
   HOME(Icon(MoonIcons.generic_home_24_regular), "Home", HomePage()),
-  PROFILE(Icon(MoonIcons.generic_news_24_regular), "News", HomePage()),
-  NEWPOST(Icon(MoonIcons.controls_plus_24_regular), "create", NewsPage()),
-  NEWS(Icon(MoonIcons.chat_chat_24_regular), "Chat", HomePage()),
-  SETTINGS(Icon(MoonIcons.notifications_bell_24_regular), "Inbox", HomePage());
+  NEWS(Icon(MoonIcons.generic_news_24_regular), "News", NewsPage()),
+  NEWPOST(Icon(MoonIcons.controls_plus_24_regular), "Create", NewsPage()),
+  CHAT(Icon(MoonIcons.chat_chat_24_regular), "Chat", HomePage()),
+  INBOX(Icon(MoonIcons.notifications_bell_24_regular), "Inbox", NotificationsPage());
 
   final Icon icon;
   final String label;
