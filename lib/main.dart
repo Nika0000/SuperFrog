@@ -12,6 +12,7 @@ Future<void> main() async {
   runApp(
     EasyLocalization(
       supportedLocales: LocalizationManager.supportedLocales,
+      useFallbackTranslations: true,
       path: LocalizationManager.localePath,
       fallbackLocale: Languages.en.locale,
       child: MultiBlocProvider(

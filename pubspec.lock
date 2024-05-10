@@ -153,6 +153,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.1.1"
+  cloudflare_turnstile:
+    dependency: "direct main"
+    description:
+      name: cloudflare_turnstile
+      sha256: "6f00f676b9ad5bbe36dfc23ae1c33e97ba7e9619a8047b72c02a540dc73349c1"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.2.1"
   code_builder:
     dependency: transitive
     description:
@@ -1267,5 +1275,5 @@ packages:
     source: hosted
     version: "2.0.0"
 sdks:
-  dart: ">=3.3.1 <4.0.0"
+  dart: ">=3.3.3 <4.0.0"
   flutter: ">=3.19.0"

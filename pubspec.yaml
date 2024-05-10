@@ -34,6 +34,7 @@ dependencies:
   mime_type: ^1.0.0
   universal_html: ^2.2.4
   path: ^1.9.0
+  cloudflare_turnstile: ^0.2.1
 
 dev_dependencies:
   flutter_test:

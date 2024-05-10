@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -45,12 +46,12 @@ class _SignUpPageState extends State<SignUpPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Get started',
+                'auth.sign_up.title'.tr(),
                 style: MoonTypography.typography.heading.text24,
               ),
               const SizedBox(height: 8.0),
               Text(
-                'Create a new account',
+                'auth.sign_up.subtitle'.tr(),
                 style: MoonTypography.typography.body.text14.copyWith(color: context.moonColors?.textSecondary),
               ),
               const SizedBox(height: 32.0),
@@ -67,13 +68,13 @@ class _SignUpPageState extends State<SignUpPage> {
                   width: 24,
                 ),
                 isFullWidth: true,
-                label: const Text('Continue with Google'),
+                label: Text('auth.google'.tr()),
               ),
               const SizedBox(height: 16.0),
-              const TextDivider(text: 'or'),
+              TextDivider(text: 'auth.or'.tr()),
               const SizedBox(height: 16.0),
               Text(
-                'Email',
+                'auth.email'.tr(),
                 style: MoonTypography.typography.heading.text14.copyWith(color: context.moonColors?.trunks),
               ),
               const SizedBox(height: 8.0),
@@ -81,7 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 onTap: () {},
                 controller: _emailController,
                 textInputSize: MoonTextInputSize.md,
-                hintText: 'you@example.com',
+                hintText: 'auth.email_example'.tr(),
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.emailAddress,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
@@ -90,7 +91,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               const SizedBox(height: 16.0),
               Text(
-                'Password',
+                'auth.password'.tr(),
                 style: MoonTypography.typography.heading.text14.copyWith(
                   color: context.moonColors?.trunks,
                 ),
@@ -100,7 +101,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 controller: _passwordController,
                 textInputSize: MoonTextInputSize.md,
                 obscureText: true,
-                hintText: 'password',
+                hintText: 'auth.password_example'.tr(),
                 obscuringCharacter: '●',
                 textInputAction: TextInputAction.done,
                 keyboardType: TextInputType.visiblePassword,
@@ -129,10 +130,10 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                       ),
                       const SizedBox(width: 8.0),
-                      const Text('Sign Up')
+                      Text('auth.sign_up.sign_up'.tr())
                     ],
                   ),
-                  orElse: () => const Text('Sign Up'),
+                  orElse: () => Text('auth.sign_up.sign_up'.tr()),
                 ),
               ),
               const SizedBox(height: 24.0),
@@ -140,14 +141,14 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Have an account?',
+                    'auth.sign_up.have_an_account'.tr(),
                     style: MoonTypography.typography.body.text14.copyWith(color: context.moonColors?.trunks),
                   ),
                   const SizedBox(width: 8.0),
                   GestureDetector(
                     onTap: () => context.goNamed(AppPages.SIGN_IN.name),
                     child: Text(
-                      'Sign In Now',
+                      'auth.sign_up.sign_in'.tr(),
                       style: MoonTypography.typography.heading.text14.copyWith(
                         decoration: TextDecoration.underline,
                       ),

@@ -1,3 +1,41 @@
 {
-    "name": "App Name"
+    "name": "Flutter Demo",
+    "auth": {
+        "sign_in": {
+            "title": "Welcome Back",
+            "subtitle": "Sign in to your account",
+            "sign_in": "Sign In",
+            "sign_up": "Sign Up Now",
+            "forgot_password": "Forgot Password?",
+            "dont_have_an_account": "Don`t have an account?"
+        },
+        "sign_up": {
+            "title": "Get Started",
+            "subtitle": "Create a new account",
+            "sign_up": "Sign Un",
+            "sign_in": "Sign In Now",
+            "have_an_account": "Have an account?"
+        },
+        "recovery_password": {
+            "title": "Reset Your Password",
+            "subtitle": "Type in your email and we`ll send you a link to reset your password.",
+            "send_reset_email": "Send Reset Email",
+            "already_have_an_acc": "Already have an account",
+            "sign_in": "Sign In"
+        },
+        "or": "or",
+        "google": "Continue with Google",
+        "magic_link": "Send me a Magic Link",
+        "email": "Email",
+        "email_example": "you@example.com",
+        "password": "Password",
+        "password_example": "password",
+        "errors": {
+            "email_required": "Email is required.",
+            "email_invalid_format": "Please enter valid email.",
+            "password_required": "Password is required.",
+            "password_invalid_lenght": "Password must be at least 6 character long.",
+            "password_invalid_format": "Password must contain at least one digit."
+        }
+    }
 }

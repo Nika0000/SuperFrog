@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -45,12 +46,12 @@ class _SignInPageState extends State<SignInPage> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'Welcome Back',
+                'auth.sign_in.title'.tr(),
                 style: MoonTypography.typography.heading.text24,
               ),
               const SizedBox(height: 8.0),
               Text(
-                'Sign in to your account',
+                'auth.sign_in.subtitle'.tr(),
                 style: MoonTypography.typography.body.text14.copyWith(color: context.moonColors?.textSecondary),
               ),
               const SizedBox(height: 32.0),
@@ -65,7 +66,7 @@ class _SignInPageState extends State<SignInPage> {
                   width: 24,
                 ),
                 isFullWidth: true,
-                label: const Text('Continue with Google'),
+                label: Text('auth.google'.tr()),
               ),
               const SizedBox(height: 16.0),
               MoonOutlinedButton(
@@ -73,20 +74,20 @@ class _SignInPageState extends State<SignInPage> {
                 onTap: () {},
                 leading: const Icon(MoonIcons.other_lightning_24_light),
                 isFullWidth: true,
-                label: const Text('Send me a Magic Link'),
+                label: Text('auth.magic_link'.tr()),
               ),
               const SizedBox(height: 16.0),
-              const TextDivider(text: 'or'),
+              TextDivider(text: 'auth.or'.tr()),
               const SizedBox(height: 16.0),
               Text(
-                'Email',
+                'auth.email'.tr(),
                 style: MoonTypography.typography.heading.text14.copyWith(color: context.moonColors?.trunks),
               ),
               const SizedBox(height: 8.0),
               MoonFormTextInput(
                 controller: _emailController,
                 textInputSize: MoonTextInputSize.md,
-                hintText: 'you@example.com',
+                hintText: 'auth.email_example'.tr(),
                 enabled: state.whenOrNull(loading: () => false),
                 textInputAction: TextInputAction.next,
                 keyboardType: TextInputType.emailAddress,
@@ -98,7 +99,7 @@ class _SignInPageState extends State<SignInPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text(
-                    'Password',
+                    'auth.password'.tr(),
                     style: MoonTypography.typography.heading.text14.copyWith(
                       color: context.moonColors?.trunks,
                     ),
@@ -106,7 +107,7 @@ class _SignInPageState extends State<SignInPage> {
                   GestureDetector(
                     onTap: () => context.pushNamed(AppPages.RECOVERY.name),
                     child: Text(
-                      'Forgot Password?',
+                      'auth.sign_in.forgot_password'.tr(),
                       style: MoonTypography.typography.heading.text14.copyWith(color: context.moonColors?.trunks),
                     ),
                   ),
@@ -117,7 +118,7 @@ class _SignInPageState extends State<SignInPage> {
                 controller: _passwordController,
                 textInputSize: MoonTextInputSize.md,
                 obscureText: true,
-                hintText: 'password',
+                hintText: 'auth.password_example'.tr(),
                 obscuringCharacter: '●',
                 textInputAction: TextInputAction.done,
                 keyboardType: TextInputType.visiblePassword,
@@ -146,10 +147,10 @@ class _SignInPageState extends State<SignInPage> {
                         ),
                       ),
                       const SizedBox(width: 8.0),
-                      const Text('Sign In')
+                      Text('auth.sign_in.sign_in'.tr())
                     ],
                   ),
-                  orElse: () => const Text('Sign In'),
+                  orElse: () => Text('auth.sign_in.sign_in'.tr()),
                 ),
               ),
               const SizedBox(height: 24.0),
@@ -157,7 +158,7 @@ class _SignInPageState extends State<SignInPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Don`t have an account?',
+                    'auth.sign_in.dont_have_an_account'.tr(),
                     style: MoonTypography.typography.body.text14.copyWith(
                       color: context.moonColors?.trunks,
                     ),
@@ -166,7 +167,7 @@ class _SignInPageState extends State<SignInPage> {
                   GestureDetector(
                     onTap: () => context.goNamed(AppPages.SIGN_UP.name),
                     child: Text(
-                      'Sign Up Now',
+                      'auth.sign_in.sign_up'.tr(),
                       style: MoonTypography.typography.heading.text14.copyWith(
                         decoration: TextDecoration.underline,
                       ),
