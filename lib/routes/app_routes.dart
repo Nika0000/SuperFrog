@@ -11,8 +11,14 @@ import 'package:superfrog/app/pages/main_page.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 
 enum AppPages {
+  //GENERIC
   HOME(path: '/home', name: 'home', pathFull: '/home'),
+  STORAGE(path: 'storage', name: 'storage', pathFull: '/home/storage'),
+  SETTINGS(path: 'settings', name: 'settings', pathFull: '/home/settings'),
+  WEBSOCKET(path: 'ws', name: 'ws', pathFull: '/home/ws'),
+  //USER
   PROFILE(path: '/profile', name: 'profile'),
+  //AUTH
   AUTH(path: '/auth', name: 'auth'),
   SIGN_IN(path: 'signin', name: 'signin', pathFull: '/auth/signin'),
   SIGN_UP(path: 'signup', name: 'signup', pathFull: '/auth/signup'),
@@ -56,6 +62,23 @@ class AppRouter {
 
           return authState.whenOrNull(unAuthenticated: () => AppPages.SIGN_IN.pathFull);
         },
+        routes: [
+          GoRoute(
+            name: AppPages.STORAGE.name,
+            path: AppPages.STORAGE.path,
+            builder: (_, __) => const MainPage(MainPageRoutes.STORAGE),
+          ),
+          GoRoute(
+            name: AppPages.SETTINGS.name,
+            path: AppPages.SETTINGS.path,
+            builder: (_, __) => const MainPage(MainPageRoutes.SETTINGS),
+          ),
+          GoRoute(
+            name: AppPages.WEBSOCKET.name,
+            path: AppPages.WEBSOCKET.path,
+            builder: (_, __) => const MainPage(MainPageRoutes.WEBSOCKET),
+          ),
+        ],
       ),
       GoRoute(
         path: AppPages.AUTH.path,

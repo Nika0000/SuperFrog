@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class NewsPage extends StatelessWidget {
-  const NewsPage({super.key});
+class WebSocketPage extends StatelessWidget {
+  const WebSocketPage({super.key});
 
   @override
   Widget build(BuildContext context) {

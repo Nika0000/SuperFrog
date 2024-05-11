@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:universal_html/html.dart' as html;
@@ -13,12 +14,15 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class StorageServiceBase {
   final SupabaseStorageClient _storageClient = Supabase.instance.client.storage;
+  final String _bucket = const String.fromEnvironment('SUPABASE_BUCKET_NAME');
 
   Future<XFile> downloadFile(String filePath);
   Future<String> uploadFile(XFile file, {String? path});
-  Future<void> deleteFile(List<String> filePath);
+  Future<List<FileObject>> deleteFile(List<String> filePath);
 
-  Future<List<FileObject>> queryFiles({required String path, required SearchOptions searchOptions});
+  Future<void> createDirectory(String path);
+
+  Future<List<FileObject>> queryFiles({required String path, SearchOptions searchOptions = const SearchOptions()});
   Future<void> moveFile(String fromPath, String toPath);
   Future<void> copyFile(String fromPath, String toPath);
 
@@ -29,23 +33,23 @@ abstract class StorageServiceBase {
 class StorageService extends StorageServiceBase {
   @override
   Future<void> copyFile(String fromPath, String toPath) async {
-    await _storageClient.from('colo').copy(fromPath, toPath);
+    await _storageClient.from(_bucket).copy(fromPath, toPath);
   }
 
   @override
-  Future<void> deleteFile(List<String> filePath) async {
+  Future<List<FileObject>> deleteFile(List<String> filePath) async {
     if (filePath.isEmpty) {
       throw 'There is nothing to remove.';
     }
 
-    await _storageClient.from('colo').remove(filePath.toSet().toList());
+    return await _storageClient.from(_bucket).remove(filePath.toSet().toList());
   }
 
   @override
   Future<XFile> downloadFile(String filePath) async {
     late XFile uploadFile;
 
-    Stream<Uint8List> dataStreams = _storageClient.from('colo').download(filePath).asStream();
+    Stream<Uint8List> dataStreams = _storageClient.from(_bucket).download(filePath).asStream();
 
     await for (Uint8List chunk in dataStreams) {
       final mimeType = mime(filePath);
@@ -64,22 +68,26 @@ class StorageService extends StorageServiceBase {
         uploadFile = XFile(tempFile.path, mimeType: mimeType);
       }
     }
+
     return uploadFile;
   }
 
   @override
-  Future<List<FileObject>> queryFiles({required String path, required SearchOptions searchOptions}) async {
-    return await _storageClient.from('colo').list(path: path, searchOptions: searchOptions);
+  Future<List<FileObject>> queryFiles({
+    String? path,
+    SearchOptions searchOptions = const SearchOptions(),
+  }) async {
+    return await _storageClient.from(_bucket).list(path: path, searchOptions: searchOptions);
   }
 
   @override
   Future<void> moveFile(String fromPath, String toPath) async {
-    await _storageClient.from('colo').move(fromPath, toPath);
+    await _storageClient.from(_bucket).move(fromPath, toPath);
   }
 
   @override
   Future<String> uploadFile(XFile file, {String? path}) async {
-    return await _storageClient.from('colo').uploadBinary(
+    return await _storageClient.from(_bucket).uploadBinary(
           '$path/${file.name}',
           await file.readAsBytes(),
           fileOptions: const FileOptions(upsert: true),
@@ -109,5 +117,10 @@ class StorageService extends StorageServiceBase {
         throw 'File not exits';
       }
     }
+  }
+
+  @override
+  Future<void> createDirectory(String path) async {
+    await _storageClient.from(_bucket).uploadBinary(p.join(path, '.emptyFolderPlaceholder'), Uint8List(0));
   }
 }
