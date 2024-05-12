@@ -51,7 +51,9 @@ class HomePage extends StatelessWidget {
                       const SizedBox(height: 32.0),
                       MoonFilledButton(
                         isFullWidth: true,
-                        onTap: () {},
+                        onTap: () {
+                          context.read<AuthenticationBloc>().add(const AuthenticationEvent.signOut());
+                        },
                         label: const Text('Sign Out'),
                       ),
                       const SizedBox(height: 8.0),

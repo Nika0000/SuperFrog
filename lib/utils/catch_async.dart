@@ -12,15 +12,16 @@ Future<void> catchAsync(
     await function();
   } catch (error) {
     if (error is PlatformException) {
-      debugPrint(
-        '[PlatformException] -\ncode: ${error.code}\n message: ${error.message}\nDetails: ${error.details}',
-      );
+      debugPrint('[PlatformException] - message: ${error.message}\nDetails: ${error.details}');
       onError(error.message ?? '');
     } else if (error is HttpException) {
       debugPrint('[HttpException] - message: ${error.message}\nUrl: ${error.uri}');
       onError(error.message);
     } else if (error is AuthException) {
       debugPrint('[AuthException] - message: ${error.message}');
+      onError(error.message);
+    } else if (error is StorageException) {
+      debugPrint('[StorageException] - message: ${error.message}');
       onError(error.message);
     } else {
       debugPrint(error.toString());

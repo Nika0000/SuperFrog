@@ -1,14 +1,17 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:superfrog/app/pages/home/home_page.dart';
 import 'package:superfrog/app/pages/settings/settings_page.dart';
+import 'package:superfrog/app/pages/splash_page.dart';
 import 'package:superfrog/app/pages/websocket/socket_page.dart';
 import 'package:superfrog/app/pages/profile/notifications_page.dart';
 import 'package:superfrog/app/pages/storage/storage_page.dart';
 import 'package:superfrog/app/widgets/profile_button.dart';
+import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 import 'package:superfrog/utils/extensions.dart';
 
 class MainPage extends StatefulWidget {
@@ -99,108 +102,113 @@ class _MainPageState extends State<MainPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: context.isMobile && widget.showAppbar ? adaptiveAppBar(context) : null,
-      body: context.responsiveWhen(
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: kToolbarHeight,
-                    child: Center(
-                      child: SvgPicture.asset(
-                        'assets/images/logo_small.svg',
-                        width: 24.0,
-                        height: 24.0,
+    return BlocBuilder<AuthenticationBloc, AuthenticationState>(builder: (context, state) {
+      return state.maybeWhen(
+        authenticated: (_) => Scaffold(
+          appBar: context.isMobile && widget.showAppbar ? adaptiveAppBar(context) : null,
+          body: context.responsiveWhen(
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: kToolbarHeight,
+                        child: Center(
+                          child: SvgPicture.asset(
+                            'assets/images/logo_small.svg',
+                            width: 24.0,
+                            height: 24.0,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8.0),
+                      SingleChildScrollView(
+                        child: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: List.generate(
+                            MainPageRoutes.values.length * 2 - 1,
+                            (index) {
+                              if (index.isEven) {
+                                bool isSelected = _currentPage == MainPageRoutes.values[index ~/ 2];
+                                return MoonButton.icon(
+                                  icon: MainPageRoutes.values[index ~/ 2].icon,
+                                  iconColor:
+                                      isSelected ? context.moonColors?.textPrimary : context.moonColors?.textSecondary,
+                                  backgroundColor: isSelected ? context.moonColors?.heles : Colors.transparent,
+                                  onTap: () {
+                                    setState(() => _currentPage = MainPageRoutes.values[index ~/ 2]);
+                                  },
+                                );
+                              } else {
+                                return const SizedBox(height: 8.0);
+                              }
+                            },
+                          ),
+                        ),
+                      ),
+                      const Expanded(child: SizedBox(height: 32.0)),
+                      MoonButton.icon(
+                        icon: const Icon(MoonIcons.generic_settings_24_regular),
+                        iconColor: context.moonColors?.textSecondary,
+                        //     iconColor: isSelected ? context.moonColors?.textPrimary : context.moonColors?.textSecondary,
+                        //    backgroundColor: isSelected ? context.moonColors?.gohan : Colors.transparent,
+                        onTap: () {},
+                      ),
+                      const SizedBox(height: 8.0),
+                      const ProfileButton(),
+                      const SizedBox(height: 16.0),
+                    ],
+                  ),
+                ),
+                const VerticalDivider(
+                  width: 1,
+                ),
+                Expanded(
+                  child: Scaffold(
+                    appBar: adaptiveAppBar(context),
+                    body: _currentPage.page,
+                  ),
+                ),
+              ],
+            ),
+            sm: _currentPage.page,
+          ),
+          bottomNavigationBar: context.isMobile
+              ? Container(
+                  decoration: BoxDecoration(
+                    color: context.moonColors?.goku,
+                    border: Border(
+                      top: BorderSide(color: context.moonColors!.beerus),
+                    ),
+                    //boxShadow: context.moonShadows?.sm,
+                  ),
+                  child: Theme(
+                    data: Theme.of(context).copyWith(splashFactory: NoSplash.splashFactory),
+                    child: BottomNavigationBar(
+                      currentIndex: _currentPage.index,
+                      showSelectedLabels: true,
+                      showUnselectedLabels: true,
+                      type: BottomNavigationBarType.fixed,
+                      onTap: (page) => setState(() => _currentPage = MainPageRoutes.values[page]),
+                      backgroundColor: context.moonColors?.goku,
+                      items: List.generate(
+                        MainPageRoutes.values.length,
+                        (index) => BottomNavigationBarItem(
+                          icon: MainPageRoutes.values[index].icon,
+                          label: MainPageRoutes.values[index].label,
+                        ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: 8.0),
-                  SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: List.generate(
-                        MainPageRoutes.values.length * 2 - 1,
-                        (index) {
-                          if (index.isEven) {
-                            bool isSelected = _currentPage == MainPageRoutes.values[index ~/ 2];
-                            return MoonButton.icon(
-                              icon: MainPageRoutes.values[index ~/ 2].icon,
-                              iconColor:
-                                  isSelected ? context.moonColors?.textPrimary : context.moonColors?.textSecondary,
-                              backgroundColor: isSelected ? context.moonColors?.heles : Colors.transparent,
-                              onTap: () {
-                                setState(() => _currentPage = MainPageRoutes.values[index ~/ 2]);
-                              },
-                            );
-                          } else {
-                            return const SizedBox(height: 8.0);
-                          }
-                        },
-                      ),
-                    ),
-                  ),
-                  const Expanded(child: SizedBox(height: 32.0)),
-                  MoonButton.icon(
-                    icon: const Icon(MoonIcons.generic_settings_24_regular),
-                    iconColor: context.moonColors?.textSecondary,
-                    //     iconColor: isSelected ? context.moonColors?.textPrimary : context.moonColors?.textSecondary,
-                    //    backgroundColor: isSelected ? context.moonColors?.gohan : Colors.transparent,
-                    onTap: () {},
-                  ),
-                  const SizedBox(height: 8.0),
-                  const ProfileButton(),
-                  const SizedBox(height: 16.0),
-                ],
-              ),
-            ),
-            const VerticalDivider(
-              width: 1,
-            ),
-            Expanded(
-              child: Scaffold(
-                appBar: adaptiveAppBar(context),
-                body: _currentPage.page,
-              ),
-            ),
-          ],
+                )
+              : null,
         ),
-        sm: _currentPage.page,
-      ),
-      bottomNavigationBar: context.isMobile
-          ? Container(
-              decoration: BoxDecoration(
-                color: context.moonColors?.goku,
-                border: Border(
-                  top: BorderSide(color: context.moonColors!.beerus),
-                ),
-                //boxShadow: context.moonShadows?.sm,
-              ),
-              child: Theme(
-                data: Theme.of(context).copyWith(splashFactory: NoSplash.splashFactory),
-                child: BottomNavigationBar(
-                  currentIndex: _currentPage.index,
-                  showSelectedLabels: true,
-                  showUnselectedLabels: true,
-                  type: BottomNavigationBarType.fixed,
-                  onTap: (page) => setState(() => _currentPage = MainPageRoutes.values[page]),
-                  backgroundColor: context.moonColors?.goku,
-                  items: List.generate(
-                    MainPageRoutes.values.length,
-                    (index) => BottomNavigationBarItem(
-                      icon: MainPageRoutes.values[index].icon,
-                      label: MainPageRoutes.values[index].label,
-                    ),
-                  ),
-                ),
-              ),
-            )
-          : null,
-    );
+        orElse: () => Scaffold(body: const SplashPage()),
+      );
+    });
   }
 }
 

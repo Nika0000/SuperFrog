@@ -37,6 +37,8 @@ class _SplashPageState extends State<SplashPage> {
       });
     });
 
+    _showAlert = false;
+
     super.initState();
   }
 

@@ -77,6 +77,10 @@ class StorageService extends StorageServiceBase {
     String? path,
     SearchOptions searchOptions = const SearchOptions(),
   }) async {
+    if (path != null) {
+      p.normalize(path);
+    }
+
     return await _storageClient.from(_bucket).list(path: path, searchOptions: searchOptions);
   }
 

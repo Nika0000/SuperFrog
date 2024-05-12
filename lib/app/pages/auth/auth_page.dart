@@ -54,12 +54,15 @@ class _AuthPageState extends State<AuthPage> {
           automaticallyImplyLeading: false,
           backgroundColor: context.moonColors?.gohan,
           //shape: const Border(),
-          title: SvgPicture.asset(
-            context.read<ThemeProvider>().state == ThemeMode.dark
-                ? 'assets/images/logo_light.svg'
-                : 'assets/images/logo_dark.svg',
-            height: 24.0,
-          ),
+          title: Theme.of(context).brightness == Brightness.light
+              ? SvgPicture.asset(
+                  'assets/images/logo_dark.svg',
+                  height: 24.0,
+                )
+              : SvgPicture.asset(
+                  'assets/images/logo_light.svg',
+                  height: 24.0,
+                ),
         ),
         body: Align(
           alignment: context.responsiveWhen(Alignment.center, sm: Alignment.topCenter),

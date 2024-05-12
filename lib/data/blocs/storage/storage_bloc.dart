@@ -2,6 +2,7 @@ import 'package:cross_file/cross_file.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:superfrog/data/model/file_metadata.dart';
 import 'package:superfrog/data/services/storage_service.dart';
 import 'package:superfrog/utils/catch_async.dart';
 
@@ -22,7 +23,7 @@ class StorageBloc extends Bloc<StorageEvent, StorageState> {
 
           res.removeWhere((file) => file.name == '.emptyFolderPlaceholder');
 
-          emit(StorageState.loaded(res, event.path ?? "/"));
+          emit(StorageState.loaded(res, event.path ?? ""));
         },
         onError: (error) => emit(StorageState.error(error)),
       ),
@@ -45,16 +46,17 @@ class StorageBloc extends Bloc<StorageEvent, StorageState> {
           emit(const StorageState.loading());
           List<String> filesToDelete = [];
 
-          for (FileObject file in event.files) {
-            if (file.metadata != null) {
-              filesToDelete.add(file.name);
+          for (FileMetadatas file in event.files) {
+            final dir = file.directory.isEmpty ? file.directory : "${file.directory}/";
+            if (!file.isDirectory) {
+              filesToDelete.add("$dir${file.fileName}");
             } else {
-              filesToDelete.add("${file.name}/.emptyFolderPlaceholder");
+              filesToDelete.add("$dir${file.fileName}/.emptyFolderPlaceholder");
             }
           }
 
           await _storageService.deleteFile(filesToDelete);
-          add(const StorageEvent.goDirectory(""));
+          add(StorageEvent.goDirectory(event.files.last.directory));
         },
         onError: (error) => emit(StorageState.error(error)),
       ),
@@ -69,6 +71,7 @@ class StorageBloc extends Bloc<StorageEvent, StorageState> {
           await _storageService.uploadFile(event.file, path: event.path);
 
           emit(StorageState.fileUploaded(fileId));
+          emit(const StorageState.unitialized());
         },
         onError: (error) => emit(StorageState.error(error)),
       ),
