@@ -116,8 +116,13 @@ class AuthService {
     );
   }
 
-  Future<User?> verifyOTP({required String email, required String token}) async {
-    final res = await _supabase.auth.verifyOTP(email: email, token: token, type: OtpType.recovery);
+  Future<User?> verifyToken({required String token}) async {
+    final res = await _supabase.auth.verifyOTP(email: '', token: "", tokenHash: token, type: OtpType.recovery);
+    return res.user;
+  }
+
+  Future<User?> updatePassword(String password) async {
+    UserResponse? res = await _supabase.auth.updateUser(UserAttributes(password: password));
     return res.user;
   }
 
@@ -125,7 +130,7 @@ class AuthService {
     await _supabase.auth.signOut();
     if (PlatformUtils.isMobile) {
       if (GoogleSignIn().currentUser != null) {
-        await GoogleSignIn().signOut();
+        await GoogleSignIn().disconnect();
       }
     }
   }

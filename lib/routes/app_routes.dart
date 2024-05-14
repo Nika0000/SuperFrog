@@ -108,9 +108,16 @@ class AppRouter {
             builder: (_, __) => const AuthPage(AuthPageRoutes.UPDATE_PASSWORD),
           ),
           GoRoute(
-            path: 'oauth/callback',
-            builder: (_, state) => OAuthCallBack(url: state.uri),
-          )
+            path: 'callback/verify',
+            builder: (context, state) {
+              String? token = state.uri.queryParameters['token'];
+              String? type = state.uri.queryParameters['type'];
+              return OAuthCallBack(
+                token: token,
+                type: type,
+              );
+            },
+          ),
         ],
       ),
     ],

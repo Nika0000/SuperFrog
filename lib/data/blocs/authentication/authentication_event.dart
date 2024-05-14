@@ -29,10 +29,10 @@ class AuthenticationEvent with _$AuthenticationEvent {
     required String email,
   }) = _ResetPassword;
 
-  const factory AuthenticationEvent.verifyRecoveryOTP({required String email, required String token}) =
-      _VerifyRecoveryOTP;
+  const factory AuthenticationEvent.updatePassword({
+    String? token,
+    required String password,
+  }) = _UpdatePassword;
 
   const factory AuthenticationEvent.signOut() = _SignOut;
-
-  const factory AuthenticationEvent.verifySession(Uri url) = _VerifySession;
 }

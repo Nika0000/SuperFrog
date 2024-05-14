@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:superfrog/config/preference_config.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 class AppConfig {
   static bool _initialized = false;
@@ -24,6 +25,10 @@ class AppConfig {
     if (!_initialized) {
       WidgetsFlutterBinding.ensureInitialized();
       EasyLocalization.logger.enableBuildModes = [];
+
+      if (kIsWeb) {
+        setPathUrlStrategy();
+      }
 
       await Future.wait(
         [

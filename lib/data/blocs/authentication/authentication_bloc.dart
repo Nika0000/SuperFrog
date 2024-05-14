@@ -4,6 +4,7 @@ import 'package:superfrog/data/services/auth_service.dart';
 import 'package:superfrog/routes/app_routes.dart';
 import 'package:superfrog/utils/catch_async.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:superfrog/utils/extensions.dart';
 
 part 'authentication_state.dart';
 part 'authentication_event.dart';
@@ -135,20 +136,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       ),
     );
 
-    on<_VerifyRecoveryOTP>(
-      (event, emit) => catchAsync(
-        () async {
-          emit(const AuthenticationState.loading());
-
-          await _authService.verifyOTP(
-            email: event.email,
-            token: event.token,
-          );
-        },
-        onError: (error) => emit(AuthenticationState.error(error)),
-      ),
-    );
-
     on<_SignOut>(
       (event, emit) => catchAsync(
         () async {
@@ -172,18 +159,26 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       ),
     );
 
-    on<_VerifySession>(
+    on<_UpdatePassword>(
       (event, emit) => catchAsync(
         () async {
           emit(const AuthenticationState.loading());
 
-          if (_authService.isSignedIn) {
-            return emit(const AuthenticationState.error('You are already logged in'));
+          if (!_authService.isSignedIn) {
+            if (event.token.isNullOrEmpty) {
+              return emit(const AuthenticationState.error("Token is not valid or expired."));
+            }
+
+            await _authService.verifyToken(token: event.token!);
           }
 
-          final User? user = await _authService.verifySession(event.url);
+          User? newUser = await _authService.updatePassword(event.password);
 
-          emit(AuthenticationState.authenticated(user));
+          emit(const AuthenticationState.message("Succesfuly changed password page will redirect in few secounds"));
+          await Future.delayed(const Duration(seconds: 5)).then((_) {
+            emit(AuthenticationState.authenticated(newUser));
+            AppRouter.router.refresh();
+          });
         },
         onError: (error) => emit(AuthenticationState.error(error)),
       ),
