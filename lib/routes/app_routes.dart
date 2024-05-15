@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:superfrog/app/pages/auth/auth_page.dart';
+import 'package:superfrog/app/pages/auth/callback_page.dart';
 import 'package:superfrog/app/pages/error_page.dart';
 import 'package:superfrog/app/pages/main_page.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
@@ -22,8 +23,7 @@ enum AppPages {
   AUTH(path: '/auth', name: 'auth'),
   SIGN_IN(path: 'signin', name: 'signin', pathFull: '/auth/signin'),
   SIGN_UP(path: 'signup', name: 'signup', pathFull: '/auth/signup'),
-  RECOVERY(path: 'recovery', name: 'recovery', pathFull: '/auth/recovery'),
-  UPDATE_PASSWORD(path: 'update-password', name: 'update-password', pathFull: '/auth/update-password');
+  RECOVERY(path: 'recovery', name: 'recovery', pathFull: '/auth/recovery');
 
   final String path;
   final String name;
@@ -103,16 +103,11 @@ class AppRouter {
             builder: (_, __) => const AuthPage(AuthPageRoutes.RECOVERY),
           ),
           GoRoute(
-            name: AppPages.UPDATE_PASSWORD.name,
-            path: AppPages.UPDATE_PASSWORD.path,
-            builder: (_, __) => const AuthPage(AuthPageRoutes.UPDATE_PASSWORD),
-          ),
-          GoRoute(
             path: 'callback/verify',
             builder: (context, state) {
               String? token = state.uri.queryParameters['token'];
               String? type = state.uri.queryParameters['type'];
-              return OAuthCallBack(
+              return AuthCallBackPage(
                 token: token,
                 type: type,
               );

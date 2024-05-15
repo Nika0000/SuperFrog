@@ -104,19 +104,23 @@ class AuthService {
     throw UnimplementedError();
   }
 
+  Future<void> signInWithOTP(String? email) {
+    return _supabase.auth.signInWithOtp(email: email);
+  }
+
   Future<User?> verifySession(Uri url) async {
     AuthSessionUrlResponse res = await _supabase.auth.getSessionFromUrl(url);
     return res.session.user;
   }
 
-  Future<void> resetPassword({required String email}) async {
-    return await _supabase.auth.resetPasswordForEmail(
+  Future<void> resetPassword({required String email}) {
+    return _supabase.auth.resetPasswordForEmail(
       email,
       redirectTo: kIsWeb ? null : 'com.example.app/auth/callback',
     );
   }
 
-  Future<User?> verifyToken({required String token}) async {
+  Future<User?> verifyToken({required String token, OtpType type = OtpType.recovery}) async {
     final res = await _supabase.auth.verifyOTP(email: '', token: "", tokenHash: token, type: OtpType.recovery);
     return res.user;
   }

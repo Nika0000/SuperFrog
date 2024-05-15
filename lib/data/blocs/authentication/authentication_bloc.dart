@@ -32,8 +32,9 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           emit(const AuthenticationState.loading());
 
           if (_authService.isSignedIn) {
-            emit(const AuthenticationState.error('You are already logged in'));
+            emit(const AuthenticationState.message('You are already logged in'));
             return await Future.delayed(const Duration(seconds: 2)).then((_) {
+              emit(AuthenticationState.authenticated(_authService.currentUser));
               AppRouter.router.refresh();
             });
           }
@@ -57,8 +58,9 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           emit(const AuthenticationState.loading());
 
           if (_authService.isSignedIn) {
-            emit(const AuthenticationState.error('You are already logged in'));
+            emit(const AuthenticationState.message('You are already logged in'));
             return await Future.delayed(const Duration(seconds: 2)).then((_) {
+              emit(AuthenticationState.authenticated(_authService.currentUser));
               AppRouter.router.refresh();
             });
           }
@@ -77,8 +79,9 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
           emit(const AuthenticationState.loading());
 
           if (_authService.isSignedIn) {
-            emit(const AuthenticationState.error('You are already logged in'));
+            emit(const AuthenticationState.message('You are already logged in'));
             return await Future.delayed(const Duration(seconds: 2)).then((_) {
+              emit(AuthenticationState.authenticated(_authService.currentUser));
               AppRouter.router.refresh();
             });
           }
@@ -91,14 +94,48 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
       ),
     );
 
+    on<_SignInWithMagicLink>(
+      (event, emit) => catchAsync(
+        () async {
+          emit(const AuthenticationState.loading());
+          if (_authService.isSignedIn) {
+            emit(const AuthenticationState.message('You are already logged in'));
+            return await Future.delayed(const Duration(seconds: 2)).then((_) {
+              emit(AuthenticationState.authenticated(_authService.currentUser));
+              AppRouter.router.refresh();
+            });
+          }
+
+          if (event.token.isNullOrEmpty) {
+            await _authService.signInWithOTP(event.email);
+
+            emit(const AuthenticationState.message(
+              "If you registered using your email and password, you will receive a magic link.",
+            ));
+            return emit(const AuthenticationState.unAuthenticated());
+          }
+
+          User? newUser = await _authService.verifyToken(token: event.token!, type: OtpType.magiclink);
+
+          emit(const AuthenticationState.message("Succesfuly authenticate, page will redirect in few secounds"));
+          await Future.delayed(const Duration(seconds: 5)).then((_) {
+            emit(AuthenticationState.authenticated(newUser));
+            AppRouter.router.refresh();
+          });
+        },
+        onError: (error) => emit(AuthenticationState.error(error)),
+      ),
+    );
+
     on<_SignUpWithPassword>(
       (event, emit) => catchAsync(
         () async {
           emit(const AuthenticationState.loading());
 
           if (_authService.isSignedIn) {
-            emit(const AuthenticationState.error('You are already logged in'));
-            return await Future.delayed(const Duration(seconds: 2)).then((_) {
+            emit(const AuthenticationState.message('You are already logged in'));
+            return Future.delayed(const Duration(seconds: 2)).then((_) {
+              emit(AuthenticationState.authenticated(_authService.currentUser));
               AppRouter.router.refresh();
             });
           }

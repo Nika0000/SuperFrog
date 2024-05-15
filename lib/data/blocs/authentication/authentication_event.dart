@@ -20,6 +20,8 @@ class AuthenticationEvent with _$AuthenticationEvent {
 
   const factory AuthenticationEvent.signInWithApple() = _SignInWithApple;
 
+  const factory AuthenticationEvent.signInWithMagicLink({String? email, String? token}) = _SignInWithMagicLink;
+
   const factory AuthenticationEvent.signUpWithPassword({
     required String email,
     required String password,
