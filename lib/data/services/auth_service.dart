@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:superfrog/utils/captcha.dart';
 import 'package:superfrog/utils/platform.dart';
 
 class AuthService {
@@ -17,6 +18,7 @@ class AuthService {
     final AuthResponse res = await _supabase.auth.signInWithPassword(
       email: email,
       password: password,
+      captchaToken: await Captcha.getToken(),
     );
     return res.user;
   }
@@ -25,6 +27,7 @@ class AuthService {
     final AuthResponse res = await _supabase.auth.signUp(
       email: email,
       password: password,
+      captchaToken: await Captcha.getToken(),
     );
     return res.user;
   }
@@ -104,8 +107,8 @@ class AuthService {
     throw UnimplementedError();
   }
 
-  Future<void> signInWithOTP(String? email) {
-    return _supabase.auth.signInWithOtp(email: email);
+  Future<void> signInWithOTP(String? email) async {
+    return _supabase.auth.signInWithOtp(email: email, captchaToken: await Captcha.getToken());
   }
 
   Future<User?> verifySession(Uri url) async {
@@ -113,15 +116,22 @@ class AuthService {
     return res.session.user;
   }
 
-  Future<void> resetPassword({required String email}) {
+  Future<void> resetPassword({required String email}) async {
     return _supabase.auth.resetPasswordForEmail(
       email,
       redirectTo: kIsWeb ? null : 'com.example.app/auth/callback',
+      captchaToken: await Captcha.getToken(),
     );
   }
 
   Future<User?> verifyToken({required String token, OtpType type = OtpType.recovery}) async {
-    final res = await _supabase.auth.verifyOTP(email: '', token: "", tokenHash: token, type: OtpType.recovery);
+    final res = await _supabase.auth.verifyOTP(
+      email: '',
+      token: "",
+      tokenHash: token,
+      type: OtpType.recovery,
+      captchaToken: await Captcha.getToken(),
+    );
     return res.user;
   }
 

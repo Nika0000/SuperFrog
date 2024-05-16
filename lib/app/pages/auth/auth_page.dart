@@ -1,19 +1,15 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
+import 'package:get_it/get_it.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:superfrog/app/pages/auth/recovery_page.dart';
 import 'package:superfrog/app/pages/auth/signin_page.dart';
 import 'package:superfrog/app/pages/auth/signup_page.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
-import 'package:superfrog/data/blocs/common_bloc.dart';
-import 'package:superfrog/routes/app_routes.dart';
 import 'package:superfrog/utils/extensions.dart';
-import 'package:superfrog/utils/form_validation.dart';
 
 class AuthPage extends StatefulWidget {
   final AuthPageRoutes route;
@@ -27,7 +23,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
-      bloc: CommonBloc.authenticationBloc,
+      bloc: GetIt.I.get<AuthenticationBloc>(),
       listener: (context, state) {
         state.whenOrNull(
           error: (error) {

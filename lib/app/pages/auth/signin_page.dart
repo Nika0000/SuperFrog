@@ -2,11 +2,11 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:superfrog/app/widgets/text_divider.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
-import 'package:superfrog/data/blocs/common_bloc.dart';
 import 'package:superfrog/routes/app_routes.dart';
 import 'package:superfrog/utils/form_validation.dart';
 
@@ -38,7 +38,7 @@ class _SignInPageState extends State<SignInPage> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      bloc: CommonBloc.authenticationBloc,
+      bloc: GetIt.I.get<AuthenticationBloc>(),
       builder: (context, state) {
         return Form(
           key: _formKey,

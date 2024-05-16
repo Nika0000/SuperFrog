@@ -39,8 +39,6 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
             });
           }
 
-          await Future.delayed(const Duration(seconds: 2));
-
           final User? user = await _authService.signIn(
             email: event.email,
             password: event.password,

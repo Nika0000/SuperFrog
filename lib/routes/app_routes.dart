@@ -3,8 +3,10 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moon_design/moon_design.dart';
+import 'package:superfrog/app/app_view.dart';
 import 'package:superfrog/app/pages/auth/auth_page.dart';
 import 'package:superfrog/app/pages/auth/callback_page.dart';
 import 'package:superfrog/app/pages/error_page.dart';
@@ -39,6 +41,7 @@ class AppRouter {
   const AppRouter._();
 
   static GoRouter router = GoRouter(
+    navigatorKey: GetIt.I<ScaffoldMessengerKeySingleton>().key,
     debugLogDiagnostics: kDebugMode,
     initialLocation: AppPages.HOME.path,
     errorBuilder: (BuildContext context, __) => ErrorPage(

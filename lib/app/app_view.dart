@@ -39,3 +39,7 @@ class _AppViewState extends State<AppView> {
     );
   }
 }
+
+class ScaffoldMessengerKeySingleton {
+  final GlobalKey<NavigatorState> key = GlobalKey<NavigatorState>();
+}

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:superfrog/app/pages/error_page.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
-import 'package:superfrog/data/blocs/common_bloc.dart';
 import 'package:superfrog/routes/app_routes.dart';
 import 'package:superfrog/utils/extensions.dart';
 import 'package:superfrog/utils/form_validation.dart';
@@ -30,7 +29,7 @@ class _AuthCallBackPageState extends State<AuthCallBackPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocListener<AuthenticationBloc, AuthenticationState>(
-        bloc: CommonBloc.authenticationBloc,
+        bloc: GetIt.I.get<AuthenticationBloc>(),
         listener: (context, state) {
           state.whenOrNull(
             error: (error) {
@@ -81,7 +80,7 @@ class _MagicLinkState extends State<_MagicLink> {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      bloc: CommonBloc.authenticationBloc,
+      bloc: GetIt.I.get<AuthenticationBloc>(),
       builder: (context, state) {
         return Center(
           child: state.maybeWhen(
@@ -180,7 +179,7 @@ class _UpdatePasswordState extends State<_UpdatePassword> {
     }
 
     return BlocBuilder<AuthenticationBloc, AuthenticationState>(
-      bloc: CommonBloc.authenticationBloc,
+      bloc: GetIt.I.get<AuthenticationBloc>(),
       builder: (context, state) {
         return Form(
           key: _formKey,
