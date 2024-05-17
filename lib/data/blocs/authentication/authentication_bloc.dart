@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:superfrog/data/services/auth_service.dart';
 import 'package:superfrog/routes/app_routes.dart';
 import 'package:superfrog/utils/catch_async.dart';
@@ -11,7 +12,7 @@ part 'authentication_event.dart';
 part 'authentication_bloc.freezed.dart';
 
 class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> {
-  final AuthService _authService = AuthService();
+  final AuthService _authService = GetIt.I.get<AuthService>();
 
   AuthenticationBloc() : super(const AuthenticationState.unitialized()) {
     on<_StartAuthentication>(

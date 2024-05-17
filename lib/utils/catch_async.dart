@@ -14,6 +14,9 @@ Future<void> catchAsync(
     if (error is PlatformException) {
       debugPrint('[PlatformException] - message: ${error.message}\nDetails: ${error.details}');
       onError(error.message ?? '');
+    } else if (error is SocketException) {
+      debugPrint('[SocketException] - massage: ${error.message}');
+      onError('No notwork connection');
     } else if (error is HttpException) {
       debugPrint('[HttpException] - message: ${error.message}\nUrl: ${error.uri}');
       onError(error.message);

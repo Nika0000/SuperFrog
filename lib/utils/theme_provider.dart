@@ -65,7 +65,7 @@ class ThemeProvider extends Cubit<ThemeMode> {
     builders: kIsWeb
         ? {
             // No animations for every OS if the app running on the web
-            for (final platform in TargetPlatform.values) platform: NoTransitionsBuilder(),
+            for (final platform in TargetPlatform.values) platform: const NoTransitionsBuilder(),
           }
         : const {
             // handel other platforms you are targeting

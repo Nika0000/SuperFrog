@@ -6,6 +6,8 @@ import 'package:hive_flutter/hive_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:superfrog/config/preference_config.dart';
 import 'package:superfrog/data/blocs/common_bloc.dart';
+import 'package:superfrog/data/services/common_service.dart';
+import 'package:superfrog/utils/navigation_key.dart';
 import 'package:url_strategy/url_strategy.dart';
 
 class AppConfig {
@@ -26,9 +28,6 @@ class AppConfig {
     if (!_initialized) {
       WidgetsFlutterBinding.ensureInitialized();
       EasyLocalization.logger.enableBuildModes = [];
-
-      //register blocs
-      CommonBloc.register();
 
       if (kIsWeb) {
         setPathUrlStrategy();
@@ -53,7 +52,15 @@ class AppConfig {
             debug: kDebugMode,
           ),
         ],
-      ).whenComplete(() => _initialized = true);
+      );
+
+      //GetIt
+      CommonBloc.register();
+      CommonService.register();
+
+      NavigationKeySingleton.register();
+
+      _initialized = true;
     }
   }
 }

@@ -270,12 +270,15 @@ class _UpdatePasswordState extends State<_UpdatePassword> {
                           style: MoonTypography.typography.body.text14.copyWith(color: context.moonColors?.trunks),
                         ),
                         const SizedBox(width: 8.0),
-                        GestureDetector(
-                          onTap: () => context.replaceNamed(AppPages.SIGN_IN.name),
-                          child: Text(
-                            'Sign In Now',
-                            style: MoonTypography.typography.heading.text14.copyWith(
-                              decoration: TextDecoration.underline,
+                        MouseRegion(
+                          cursor: SystemMouseCursors.click,
+                          child: GestureDetector(
+                            onTap: () => context.replaceNamed(AppPages.SIGN_IN.name),
+                            child: Text(
+                              'Sign In Now',
+                              style: MoonTypography.typography.heading.text14.copyWith(
+                                decoration: TextDecoration.underline,
+                              ),
                             ),
                           ),
                         ),

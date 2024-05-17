@@ -1,6 +1,7 @@
 import 'package:cross_file/cross_file.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:superfrog/data/model/file_metadata.dart';
 import 'package:superfrog/data/services/storage_service.dart';
@@ -11,7 +12,7 @@ part 'storage_event.dart';
 part 'storage_bloc.freezed.dart';
 
 class StorageBloc extends Bloc<StorageEvent, StorageState> {
-  final StorageService _storageService = StorageService();
+  final StorageService _storageService = GetIt.I.get<StorageService>();
 
   StorageBloc() : super(const StorageState.unitialized()) {
     on<_GoDirectory>(

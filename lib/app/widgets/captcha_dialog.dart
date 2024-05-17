@@ -65,6 +65,10 @@ class _CaptchaDialogState extends State<CaptchaDialog> {
               CloudFlareTurnstile(
                 siteKey: const String.fromEnvironment("TURNSTILE_SITE_KEY"),
                 options: TurnstileOptions(mode: TurnstileMode.invisible),
+                onError: (error) {
+                  print('error $error');
+                  context.pop();
+                },
                 onTokenRecived: (token) async {
                   context.pop(token);
                   setState(() {
