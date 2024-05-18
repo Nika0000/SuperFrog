@@ -1,16 +1,35 @@
-# superfrog
+# PROJECT_NAME
 
-A new Flutter project.
+[![Made with Supabase](https://supabase.com/badge-made-with-supabase-dark.svg)](https://supabase.com)
 
-## Getting Started
+This project aims to build a scalable and powerful architecture for production-ready Flutter applications. The architecture will be designed to handle various aspects of app development, including UI/UX, state managment, data fetching, and more. By folowing best practices and utilizing efficient design patterns, the goal is to create a robust foundation that can easily adapt to changing requirements and scale with the growth of the application.
 
-This project is a starting point for a Flutter application.
+# Features
 
-A few resources to get you started if this is your first Flutter project:
+* __Clean Architecture:__ Follows the principles of clean architecture to separate concerns and make the codebase easy to understand and maintain.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+* __Modular Design:__ Promotes modular design pattern such as BLoC (Bussiness Logic Component) for batter code organization and reusability.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+* __Scalability:__ The architecture is designed to scale effortlessly as the application grows in complexity and features.
+
+* __Internationalization:__ Supports multiple languages and locales to create a globally accessible application.
+
+* __Accessibility:__ Ensures that the application is accessible to users with disablities by following accessibility best practices.
+
+# Documentation
+- [Get Started](./docs/get-started.md)
+- [Project Structure](./docs/project-structure.md)
+- [State Management](./docs/stat-emanagement.md)
+- [Widgets and Themes](./docs/widget-and-themes.md)
+- [Supabase](./docs/supabase.md)
+- [Localization](./docs/localization.md)
+- [Security](./docs/security.md)
+- [Build and deploy](./docs/build-and-deploy.md)
+
+
+# Contribution
+Contributions are welcome! If you have any ideas, suggestions, or improvements for the architecture, feel free to open an issue or submit a pull request. Please ensure that your contributions align with the project's goals and guidelines.
+
+# License
+This project is licensed under the [MIT License](./LICENSE). Feel free to use, modify, and distribute the code for your own projects.
+
