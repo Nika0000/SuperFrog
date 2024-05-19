@@ -23,14 +23,14 @@ class HomePage extends StatelessWidget {
                       MoonMenuItem(
                         backgroundColor: context.moonColors?.gohan,
                         label: const Text('UserID'),
-                        trailing: SelectableText(user?.id ?? ""),
+                        trailing: SelectableText(user?.id ?? ''),
                         onTap: () {},
                       ),
                       const SizedBox(height: 8.0),
                       MoonMenuItem(
                         backgroundColor: context.moonColors?.gohan,
                         label: const Text('Email'),
-                        trailing: SelectableText(user?.email ?? ""),
+                        trailing: SelectableText(user?.email ?? ''),
                         onTap: () {},
                       ),
                       const SizedBox(height: 8.0),

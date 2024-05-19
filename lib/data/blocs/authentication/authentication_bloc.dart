@@ -109,14 +109,14 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
             await _authService.signInWithOTP(event.email);
 
             emit(const AuthenticationState.message(
-              "If you registered using your email and password, you will receive a magic link.",
+              'If you registered using your email and password, you will receive a magic link.',
             ));
             return emit(const AuthenticationState.unAuthenticated());
           }
 
           User? newUser = await _authService.verifyToken(token: event.token!, type: OtpType.magiclink);
 
-          emit(const AuthenticationState.message("Succesfuly authenticate, page will redirect in few secounds"));
+          emit(const AuthenticationState.message('Succesfuly authenticate, page will redirect in few secounds'));
           await Future.delayed(const Duration(seconds: 5)).then((_) {
             emit(AuthenticationState.authenticated(newUser));
             AppRouter.router.refresh();
@@ -202,7 +202,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
           if (!_authService.isSignedIn) {
             if (event.token.isNullOrEmpty) {
-              return emit(const AuthenticationState.error("Token is not valid or expired."));
+              return emit(const AuthenticationState.error('Token is not valid or expired.'));
             }
 
             await _authService.verifyToken(token: event.token!);
@@ -210,7 +210,7 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
           User? newUser = await _authService.updatePassword(event.password);
 
-          emit(const AuthenticationState.message("Succesfuly changed password page will redirect in few secounds"));
+          emit(const AuthenticationState.message('Succesfuly changed password page will redirect in few secounds'));
           await Future.delayed(const Duration(seconds: 5)).then((_) {
             emit(AuthenticationState.authenticated(newUser));
             AppRouter.router.refresh();

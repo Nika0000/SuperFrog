@@ -103,12 +103,12 @@ class _MagicLinkState extends State<_MagicLink> {
                 ),
                 const SizedBox(height: 16.0),
                 Text(
-                  "Verifing Failed",
+                  'Verifing Failed',
                   style: MoonTypography.typography.body.text16,
                 ),
                 const SizedBox(height: 8.0),
                 Text(
-                  "Please do not refresh or closing this page while\nwe authenticate your session.",
+                  'Please do not refresh or closing this page while\nwe authenticate your session.',
                   textAlign: TextAlign.center,
                   style: MoonTypography.typography.body.text12.copyWith(
                     color: context.moonColors?.textSecondary,
@@ -128,12 +128,12 @@ class _MagicLinkState extends State<_MagicLink> {
                 ),
                 const SizedBox(height: 16.0),
                 Text(
-                  "Verifing session",
+                  'Verifing session',
                   style: MoonTypography.typography.body.text16,
                 ),
                 const SizedBox(height: 8.0),
                 Text(
-                  "Please do not refresh or closing this page while\nwe authenticate your session.",
+                  'Please do not refresh or closing this page while\nwe authenticate your session.',
                   textAlign: TextAlign.center,
                   style: MoonTypography.typography.body.text12.copyWith(
                     color: context.moonColors?.textSecondary,
@@ -166,7 +166,7 @@ class _UpdatePasswordState extends State<_UpdatePassword> {
 
   @override
   Widget build(BuildContext context) {
-    void _submitForm() {
+    void submitForm() {
       FocusScope.of(context).unfocus();
       if (_formKey.currentState!.validate()) {
         context.read<AuthenticationBloc>().add(
@@ -202,7 +202,7 @@ class _UpdatePasswordState extends State<_UpdatePassword> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      "Change Password",
+                      'Change Password',
                       style: MoonTypography.typography.heading.text24,
                     ),
                     const SizedBox(height: 16.0),
@@ -232,15 +232,15 @@ class _UpdatePasswordState extends State<_UpdatePassword> {
                       textInputAction: TextInputAction.next,
                       keyboardType: TextInputType.emailAddress,
                       autovalidateMode: AutovalidateMode.onUserInteraction,
-                      validator: (cPassword) => cPassword != _passwordController.text ? "Password is not same" : null,
-                      onSubmitted: (_) => _submitForm(),
+                      validator: (cPassword) => cPassword != _passwordController.text ? 'Password is not same' : null,
+                      onSubmitted: (_) => submitForm(),
                     ),
                     const SizedBox(height: 48.0),
                     MoonFilledButton(
                       isFullWidth: true,
                       onTap: state.maybeWhen(
                         loading: () => null,
-                        orElse: () => _submitForm,
+                        orElse: () => submitForm,
                       ),
                       label: state.maybeWhen(
                         loading: () => Row(

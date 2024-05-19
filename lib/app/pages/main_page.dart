@@ -206,18 +206,18 @@ class _MainPageState extends State<MainPage> {
                 )
               : null,
         ),
-        orElse: () => Scaffold(body: const SplashPage()),
+        orElse: () => const Scaffold(body: SplashPage()),
       );
     });
   }
 }
 
 enum MainPageRoutes {
-  HOME(Icon(MoonIcons.generic_home_24_light), "Home", HomePage()),
-  STORAGE(Icon(MoonIcons.files_text_24_light), "Storage", StoragePage()),
-  SETTINGS(Icon(MoonIcons.software_settings_24_light), "Settings", SettingsPage()),
-  WEBSOCKET(Icon(MoonIcons.arrows_transfer_24_light), "Socket", WebSocketPage()),
-  INBOX(Icon(MoonIcons.notifications_bell_24_light), "Inbox", NotificationsPage());
+  HOME(Icon(MoonIcons.generic_home_24_light), 'Home', HomePage()),
+  STORAGE(Icon(MoonIcons.files_text_24_light), 'Storage', StoragePage()),
+  SETTINGS(Icon(MoonIcons.software_settings_24_light), 'Settings', SettingsPage()),
+  WEBSOCKET(Icon(MoonIcons.arrows_transfer_24_light), 'Socket', WebSocketPage()),
+  INBOX(Icon(MoonIcons.notifications_bell_24_light), 'Inbox', NotificationsPage());
 
   final Icon icon;
   final String label;

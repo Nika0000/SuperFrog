@@ -42,7 +42,7 @@ class AuthService {
       final googleUser = await googleSignIn.signIn();
 
       if (googleUser == null) {
-        throw const AuthException("Authentication canceled");
+        throw const AuthException('Authentication canceled');
       }
 
       final googleAuth = await googleUser.authentication;
@@ -70,7 +70,7 @@ class AuthService {
         authScreenLaunchMode: LaunchMode.externalApplication,
       );
       await Future.delayed(const Duration(seconds: 600)).then(
-        (value) => throw const AuthException("Authentication timeout."),
+        (value) => throw const AuthException('Authentication timeout.'),
       );
     }
   }
@@ -127,7 +127,7 @@ class AuthService {
   Future<User?> verifyToken({required String token, OtpType type = OtpType.recovery}) async {
     final res = await _supabase.auth.verifyOTP(
       email: '',
-      token: "",
+      token: '',
       tokenHash: token,
       type: OtpType.recovery,
       captchaToken: await Captcha.getToken(),

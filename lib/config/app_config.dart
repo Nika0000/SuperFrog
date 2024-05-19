@@ -2,8 +2,10 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:superfrog/app/widgets/systemerror_widget.dart';
 import 'package:superfrog/config/preference_config.dart';
 import 'package:superfrog/data/blocs/common_bloc.dart';
 import 'package:superfrog/data/services/common_service.dart';
@@ -28,6 +30,8 @@ class AppConfig {
     if (!_initialized) {
       WidgetsFlutterBinding.ensureInitialized();
       EasyLocalization.logger.enableBuildModes = [];
+
+      ErrorWidget.builder = (FlutterErrorDetails errorDetails) => systemErrorWidget(errorDetails);
 
       if (kIsWeb) {
         setPathUrlStrategy();

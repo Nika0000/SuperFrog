@@ -1,5 +1,4 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -108,7 +107,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       onTap: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => NotificationsPage(),
+                            builder: (context) => const NotificationsPage(),
                           ),
                         );
                       },
@@ -237,7 +236,7 @@ class PrivacyAndSafetyPage extends StatelessWidget {
         automaticallyImplyLeading: false,
         title: const Text('Privacy and Safety'),
       ),
-      body: Center(
+      body: const Center(
         child: Text('Privacy & Safery Page'),
       ),
     );

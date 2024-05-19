@@ -10,7 +10,7 @@ class FormValidation {
     if (email.isNullOrEmpty) {
       return 'auth.errors.email_required'.tr();
     } else if (!regExp.hasMatch(email!)) {
-      return "auth.errors.email_invalid_format".tr();
+      return 'auth.errors.email_invalid_format'.tr();
     }
     return null;
   }

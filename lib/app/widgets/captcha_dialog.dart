@@ -63,12 +63,9 @@ class _CaptchaDialogState extends State<CaptchaDialog> {
                 style: MoonTypography.typography.body.text12.copyWith(color: context.moonColors?.textSecondary),
               ),
               CloudFlareTurnstile(
-                siteKey: const String.fromEnvironment("TURNSTILE_SITE_KEY"),
+                siteKey: const String.fromEnvironment('TURNSTILE_SITE_KEY'),
                 options: TurnstileOptions(mode: TurnstileMode.invisible),
-                onError: (error) {
-                  print('error $error');
-                  context.pop();
-                },
+                onError: (error) => context.pop(),
                 onTokenRecived: (token) async {
                   context.pop(token);
                   setState(() {

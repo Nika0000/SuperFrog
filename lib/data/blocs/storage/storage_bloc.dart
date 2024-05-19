@@ -24,7 +24,7 @@ class StorageBloc extends Bloc<StorageEvent, StorageState> {
 
           res.removeWhere((file) => file.name == '.emptyFolderPlaceholder');
 
-          emit(StorageState.loaded(res, event.path ?? ""));
+          emit(StorageState.loaded(res, event.path ?? ''));
         },
         onError: (error) => emit(StorageState.error(error)),
       ),
@@ -48,11 +48,11 @@ class StorageBloc extends Bloc<StorageEvent, StorageState> {
           List<String> filesToDelete = [];
 
           for (FileMetadatas file in event.files) {
-            final dir = file.directory.isEmpty ? file.directory : "${file.directory}/";
+            final dir = file.directory.isEmpty ? file.directory : '${file.directory}/';
             if (!file.isDirectory) {
-              filesToDelete.add("$dir${file.fileName}");
+              filesToDelete.add('$dir${file.fileName}');
             } else {
-              filesToDelete.add("$dir${file.fileName}/.emptyFolderPlaceholder");
+              filesToDelete.add('$dir${file.fileName}/.emptyFolderPlaceholder');
             }
           }
 

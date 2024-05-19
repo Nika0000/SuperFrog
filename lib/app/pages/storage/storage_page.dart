@@ -1,7 +1,6 @@
 import 'package:cross_file/cross_file.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mime_type/mime_type.dart';
@@ -22,7 +21,7 @@ class StoragePage extends StatefulWidget {
 }
 
 class _StoragePageState extends State<StoragePage> {
-  String currentDir = "";
+  String currentDir = '';
 
   Future<void> createFolder() async {
     showMoonModal<String>(
@@ -81,7 +80,7 @@ class _StoragePageState extends State<StoragePage> {
   void navigateBack() {
     if (currentDir.isNotEmpty) {
       List<String> dirs = p.split(currentDir);
-      String newPath = p.join(dirs.length <= 1 ? "" : dirs.reversed.toList().removeLast());
+      String newPath = p.join(dirs.length <= 1 ? '' : dirs.reversed.toList().removeLast());
       setState(() {
         currentDir = newPath;
       });
@@ -98,7 +97,6 @@ class _StoragePageState extends State<StoragePage> {
     setState(
       () {
         currentDir = newDir;
-        print("currentDir: $currentDir\n");
       },
     );
   }
@@ -124,9 +122,9 @@ class _StoragePageState extends State<StoragePage> {
                             child: BlocBuilder<StorageBloc, StorageState>(buildWhen: (previous, current) {
                               return current.whenOrNull(loaded: (_, dir) => dir) != null;
                             }, builder: (context, state) {
-                              List<String> dirs = p.split(state.whenOrNull(loaded: (_, dir) => dir) ?? "");
+                              List<String> dirs = p.split(state.whenOrNull(loaded: (_, dir) => dir) ?? '');
                               return MoonBreadcrumb(
-                                divider: const Text("/"),
+                                divider: const Text('/'),
                                 items: List.generate(
                                   dirs.length,
                                   (index) => MoonBreadcrumbItem(
@@ -321,9 +319,9 @@ class _StoragePageState extends State<StoragePage> {
                       ),
                     ),
                     label: state.maybeWhen(
-                      fileUploading: (fileobj) => Text("Uploading ${fileobj.fileName}"),
+                      fileUploading: (fileobj) => Text('Uploading ${fileobj.fileName}'),
                       fileUploaded: (fileobj) => Text('File ${fileobj.fileName} uploaded'),
-                      orElse: () => const Text("Uploading"),
+                      orElse: () => const Text('Uploading'),
                     ),
                   ),
                 );
@@ -466,7 +464,7 @@ class _FileWidgetState extends State<FileWidget> {
 
   @override
   Widget build(BuildContext context) {
-    currentDir = context.read<StorageBloc>().state.whenOrNull(loaded: (_, dir) => dir) ?? "";
+    currentDir = context.read<StorageBloc>().state.whenOrNull(loaded: (_, dir) => dir) ?? '';
     return Material(
       color: context.moonColors?.gohan,
       borderRadius: MoonSquircleBorderRadius(cornerRadius: 4.0),
