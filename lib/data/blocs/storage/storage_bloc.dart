@@ -47,7 +47,7 @@ class StorageBloc extends Bloc<StorageEvent, StorageState> {
           emit(const StorageState.loading());
           List<String> filesToDelete = [];
 
-          for (FileMetadatas file in event.files) {
+          for (FileMetadata file in event.files) {
             final dir = file.directory.isEmpty ? file.directory : '${file.directory}/';
             if (!file.isDirectory) {
               filesToDelete.add('$dir${file.fileName}');
@@ -66,13 +66,9 @@ class StorageBloc extends Bloc<StorageEvent, StorageState> {
     on<_UploadFile>(
       (event, emit) => catchAsync(
         () async {
-          final fileId = DateTime.now().microsecond.toString();
-          emit(StorageState.fileUploading(fileId));
-
+          emit(const StorageState.loading());
           await _storageService.uploadFile(event.file, path: event.path);
-
-          emit(StorageState.fileUploaded(fileId));
-          emit(const StorageState.unitialized());
+          add(StorageEvent.goDirectory(event.path));
         },
         onError: (error) => emit(StorageState.error(error)),
       ),

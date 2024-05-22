@@ -57,12 +57,6 @@ class HomePage extends StatelessWidget {
                         label: const Text('Sign Out'),
                       ),
                       const SizedBox(height: 8.0),
-                      MoonFilledButton(
-                        backgroundColor: context.moonColors?.chichi,
-                        isFullWidth: true,
-                        onTap: () {},
-                        label: const Text('Delete Account'),
-                      ),
                     ],
                   ),
                 ),

@@ -8,7 +8,6 @@ import 'package:superfrog/app/pages/home/home_page.dart';
 import 'package:superfrog/app/pages/settings/settings_page.dart';
 import 'package:superfrog/app/pages/splash_page.dart';
 import 'package:superfrog/app/pages/websocket/socket_page.dart';
-import 'package:superfrog/app/pages/profile/notifications_page.dart';
 import 'package:superfrog/app/pages/storage/storage_page.dart';
 import 'package:superfrog/app/widgets/profile_button.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
@@ -155,7 +154,7 @@ class _MainPageState extends State<MainPage> {
                         iconColor: context.moonColors?.textSecondary,
                         //     iconColor: isSelected ? context.moonColors?.textPrimary : context.moonColors?.textSecondary,
                         //    backgroundColor: isSelected ? context.moonColors?.gohan : Colors.transparent,
-                        onTap: () {},
+                        onTap: () => setState(() => _currentPage = MainPageRoutes.SETTINGS),
                       ),
                       const SizedBox(height: 8.0),
                       const ProfileButton(),
@@ -216,8 +215,7 @@ enum MainPageRoutes {
   HOME(Icon(MoonIcons.generic_home_24_light), 'Home', HomePage()),
   STORAGE(Icon(MoonIcons.files_text_24_light), 'Storage', StoragePage()),
   SETTINGS(Icon(MoonIcons.software_settings_24_light), 'Settings', SettingsPage()),
-  WEBSOCKET(Icon(MoonIcons.arrows_transfer_24_light), 'Socket', WebSocketPage()),
-  INBOX(Icon(MoonIcons.notifications_bell_24_light), 'Inbox', NotificationsPage());
+  WEBSOCKET(Icon(MoonIcons.arrows_transfer_24_light), 'Socket', WebSocketPage());
 
   final Icon icon;
   final String label;

@@ -37,8 +37,6 @@ class _SplashPageState extends State<SplashPage> {
       });
     });
 
-    _showAlert = false;
-
     super.initState();
   }
 
@@ -74,27 +72,28 @@ class _SplashPageState extends State<SplashPage> {
               child: Column(
                 mainAxisSize: MainAxisSize.min,
                 children: [
-                  MoonAlert(
-                    show: _showAlert,
-                    showBorder: true,
-                    borderColor: context.moonColors?.beerus,
-                    color: context.moonColors?.trunks,
-                    backgroundColor: context.moonColors?.gohan,
-                    leading: const Icon(MoonIcons.generic_alarm_24_light),
-                    label: const Text(
-                      'Loading is taking longer then normal. Plsease be patient and ensure that you have a strong & stabile internet connection.',
-                    ),
-                    trailing: MoonButton.icon(
-                      buttonSize: MoonButtonSize.xs,
-                      onTap: () => setState(() {
-                        _showAlert = false;
-                      }),
-                      icon: Icon(
-                        MoonIcons.controls_close_24_light,
-                        color: context.moonColors?.trunks,
+                  if (_showAlert)
+                    MoonAlert(
+                      show: _showAlert,
+                      showBorder: true,
+                      borderColor: context.moonColors?.beerus,
+                      color: context.moonColors?.trunks,
+                      backgroundColor: context.moonColors?.gohan,
+                      leading: const Icon(MoonIcons.generic_alarm_24_light),
+                      label: const Text(
+                        'Loading is taking longer then normal. Plsease be patient and ensure that you have a strong & stabile internet connection.',
+                      ),
+                      trailing: MoonButton.icon(
+                        buttonSize: MoonButtonSize.xs,
+                        onTap: () => setState(() {
+                          _showAlert = false;
+                        }),
+                        icon: Icon(
+                          MoonIcons.controls_close_24_light,
+                          color: context.moonColors?.trunks,
+                        ),
                       ),
                     ),
-                  ),
                 ],
               ),
             ),

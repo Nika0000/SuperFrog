@@ -92,6 +92,7 @@ class _SignInPageState extends State<_SignInPage> {
   final TextEditingController _passwordController = TextEditingController();
 
   bool _cMagicLink = false;
+  bool _obscurePassword = true;
 
   void _submitForm() {
     FocusScope.of(context).unfocus();
@@ -134,42 +135,30 @@ class _SignInPageState extends State<_SignInPage> {
               ),
               const SizedBox(height: 32.0),
               MoonOutlinedButton(
+                isFullWidth: true,
                 borderColor: context.moonColors?.beerus,
-                onTap: () {
-                  context.read<AuthenticationBloc>().add(const AuthenticationEvent.signInWithGoogle());
-                },
                 leading: SvgPicture.asset(
                   'assets/images/logo_google.svg',
                   height: 24,
                   width: 24,
                 ),
-                isFullWidth: true,
                 label: Text('auth.google'.tr()),
+                onTap: () {
+                  context.read<AuthenticationBloc>().add(const AuthenticationEvent.signInWithGoogle());
+                },
               ),
               const SizedBox(height: 16.0),
-              !_cMagicLink
-                  ? MoonOutlinedButton(
-                      borderColor: context.moonColors?.beerus,
-                      onTap: () {
-                        setState(() {
-                          _cMagicLink = true;
-                        });
-                      },
-                      leading: const Icon(MoonIcons.other_lightning_24_light),
-                      isFullWidth: true,
-                      label: Text('auth.magic_link'.tr()),
-                    )
-                  : MoonOutlinedButton(
-                      borderColor: context.moonColors?.beerus,
-                      onTap: () {
-                        setState(() {
-                          _cMagicLink = false;
-                        });
-                      },
-                      leading: const Icon(MoonIcons.security_password_24_light),
-                      isFullWidth: true,
-                      label: const Text('Continue with Password'),
-                    ),
+              MoonOutlinedButton(
+                borderColor: context.moonColors?.beerus,
+                leading: Icon(_cMagicLink ? MoonIcons.security_password_24_light : MoonIcons.other_lightning_24_light),
+                isFullWidth: true,
+                label: Text(_cMagicLink ? 'Continue with Password' : 'auth.magic_link'.tr()),
+                onTap: () {
+                  setState(() {
+                    _cMagicLink = !_cMagicLink;
+                  });
+                },
+              ),
               const SizedBox(height: 16.0),
               TextDivider(text: 'auth.or'.tr()),
               const SizedBox(height: 16.0),
@@ -187,7 +176,7 @@ class _SignInPageState extends State<_SignInPage> {
                 keyboardType: TextInputType.emailAddress,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
                 validator: (email) => FormValidation.email(email),
-                onSubmitted: (_) => _submitForm(),
+                onSubmitted: (_) => _cMagicLink ? _submitForm() : null,
               ),
               if (!_cMagicLink)
                 Column(
@@ -219,9 +208,26 @@ class _SignInPageState extends State<_SignInPage> {
                     MoonFormTextInput(
                       controller: _passwordController,
                       textInputSize: MoonTextInputSize.md,
-                      obscureText: true,
+                      obscureText: _obscurePassword,
+                      trailing: MouseRegion(
+                        cursor: SystemMouseCursors.click,
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              _obscurePassword = !_obscurePassword;
+                            });
+                          },
+                          child: Icon(
+                            _obscurePassword
+                                ? MoonIcons.controls_eye_16_light
+                                : MoonIcons.controls_eye_crossed_16_light,
+                            color: context.moonColors?.iconSecondary,
+                          ),
+                        ),
+                      ),
                       hintText: 'auth.password_example'.tr(),
                       obscuringCharacter: '●',
+                      maxLength: 128,
                       textInputAction: TextInputAction.done,
                       keyboardType: TextInputType.visiblePassword,
                       autovalidateMode: AutovalidateMode.onUserInteraction,

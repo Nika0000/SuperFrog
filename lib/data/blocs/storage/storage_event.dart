@@ -11,7 +11,7 @@ part of 'storage_bloc.dart';
 class StorageEvent with _$StorageEvent {
   const factory StorageEvent.goDirectory(String? path) = _GoDirectory;
   const factory StorageEvent.createDirectory({String? path, required String name}) = _CreateDirectory;
-  const factory StorageEvent.deleteFileOrFolder(List<FileMetadatas> files) = _DeleteFileOrFolder;
+  const factory StorageEvent.deleteFileOrFolder(List<FileMetadata> files) = _DeleteFileOrFolder;
 
   const factory StorageEvent.uploadFile(XFile file, {required String path}) = _UploadFile;
 }

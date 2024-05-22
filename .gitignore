@@ -38,6 +38,7 @@ env.dev.json
 *.freezed.dart
 
 /server/
+.ssh
 
 
 # Symbolication related

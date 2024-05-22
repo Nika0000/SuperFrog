@@ -36,8 +36,6 @@
                 "localhost",
                 "--web-port",
                 "8080",
-                "--web-renderer",
-                "html",
                 "--dart-define-from-file",
                 "env.prod.json"
             ]
@@ -50,7 +48,7 @@
                 "-d",
                 "web-server",
                 "--web-hostname",
-                "192.168.197.214",
+                "192.168.239.214",
                 "--web-port",
                 "8080",
                 "--web-renderer",

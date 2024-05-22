@@ -12,8 +12,4 @@ class StorageState with _$StorageState {
   const factory StorageState.loading() = _Loading;
   const factory StorageState.loaded(List<FileObject> files, String directory) = _StorageLoadeds;
   const factory StorageState.error(String error) = _StorageError;
-
-  const factory StorageState.fileUploading(String fileID) = _FileUploading;
-  const factory StorageState.fileUploaded(String fileID) = _FileUploaded;
-  const factory StorageState.fileUploadingError(String error) = _FileUploadingError;
 }
