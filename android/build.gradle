@@ -1,6 +1,6 @@
 
 buildscript {
-    ext.kotlin_version = '1.7.10'
+    ext.kotlin_version = '1.8.0'
     repositories {
         google()
         mavenCentral()
@@ -11,6 +11,10 @@ buildscript {
     }
 }
 
+plugins {
+    id "com.google.gms.google-services" version "4.4.2" apply false
+}
+
 allprojects {
     repositories {
         google()
@@ -18,14 +22,18 @@ allprojects {
     }
 }
 
-rootProject.buildDir = '../build'
+rootProject.layout.buildDirectory = file('../build')
 subprojects {
-    project.buildDir = "${rootProject.buildDir}/${project.name}"
-}
-subprojects {
+    def directory = "${rootProject.layout.buildDirectory.get().asFile}/${project.name}"
+    project.layout.buildDirectory = file(directory)
     project.evaluationDependsOn(':app')
 }
 
+// tasks.withType(JavaCompile).configureEach {
+//    options.compilerArgs += ['-Xlint:deprecation', '-Xlint:unchecked']
+// }
+
 tasks.register("clean", Delete) {
-    delete rootProject.buildDir
+    delete rootProject.layout.buildDirectory
 }
+

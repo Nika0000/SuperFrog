@@ -4,27 +4,230 @@
 
 This project aims to build a scalable and powerful architecture for production-ready Flutter applications. The architecture will be designed to handle various aspects of app development, including UI/UX, state managment, data fetching, and more. By folowing best practices and utilizing efficient design patterns, the goal is to create a robust foundation that can easily adapt to changing requirements and scale with the growth of the application.
 
-# Features
 
-* __Clean Architecture:__ Follows the principles of clean architecture to separate concerns and make the codebase easy to understand and maintain.
 
-* __Modular Design:__ Promotes modular design pattern such as BLoC (Bussiness Logic Component) for batter code organization and reusability.
+# Get Started
 
-* __Scalability:__ The architecture is designed to scale effortlessly as the application grows in complexity and features.
+```sh
+# Clone repo
+git clone https://github.com/Nika0000/SuperFrog.git
+cd SuperFrog
 
-* __Internationalization:__ Supports multiple languages and locales to create a globally accessible application.
+# Install all the required dependencies
+flutter pub get
 
-* __Accessibility:__ Ensures that the application is accessible to users with disablities by following accessibility best practices.
+# Generate model, route, localization
+flutter pub run build_runner build
+```
+Before running the application, you need to set up the environment configuration files.
 
-# Documentation
-- [Get Started](./docs/get-started.md)
-- [Project Structure](./docs/project-structure.md)
-- [State Management](./docs/stat-emanagement.md)
-- [Widgets and Themes](./docs/widget-and-themes.md)
-- [Supabase](./docs/supabase.md)
-- [Localization](./docs/localization.md)
-- [Security](./docs/security.md)
-- [Build and deploy](./docs/build-and-deploy.md)
+Create `env.prod.json` for production and `env.dev.json` for development in the root directory of the project and add the following configuration:
+
+```json
+{
+    "SUPABASE_URL": "your-supabase-url",
+    "SUPABASE_ANON_KEY": "your-annon-key",
+    "SUPABASE_BUCKET_NAME": "your-bucket-name",
+    "GOOGLE_WEB_CLIENT_ID": "google-oauth-web",
+    "GOOGLE_IOS_CLIENT_ID": "google-oauth-ios",
+    "APPLE_CLIENT_ID": "apple-client-id",
+    "TURNSTILE_SITE_KEY": "cloudflare-turnstile-site-key"
+}
+```
+
+# Running
+
+### Android / IOS / Web
+```sh
+# Debug
+flutter run --debug --dart-define-from-file env.dev.json
+
+# Release
+flutter run --release --dart-define-from-file env.prod.json
+```
+
+# Building for Production
+
+## Android
+To build a signed release APK, you need to [sign your application](https://docs.flutter.dev/deployment/android#sign-the-app). Follow thoes steps:
+
+1. Generate a Keystore:
+
+    If you don`t have a keystore, generate one by running the following command in your terminal:
+    ```sh
+    keytool -genkey -v -keystore <your-key-name>.jks -keyalg RSA \
+            -keysize 2048 -validity 10000 -alias <your-key-alias>
+    ```
+
+2. Reference the Keystore:
+    
+    Create a file named `key.propertis` in the `android` directory and add the following:
+  
+    ```text
+    storePassword=<your-store-password>
+    keyPassword=<your-key-password>
+    keyAlias=<your-key-alias>
+    storeFile=<path-to-your-keystore>
+    ```
+
+3. Build the Release APK:
+
+    ```sh
+    flutter build apk --release --dart-define-from-file env.prod.json
+    ```
+
+## iOS
+### Prepare for iOS Release
+To build and [distribute your iOS app](https://docs.flutter.dev/deployment/ios#review-xcode-project-settings), follow thoes steps:
+
+1. Update Project Settings:
+    
+    Open the `ios` folder of your Flutter project in Xcode:
+    ```sh
+    open ios/Runner.xcworkspace
+    ```
+
+2. Configure App Information: 
+    
+    In Xcode, select the `Runner` project in the Project Navigator. Under the `General` tab, configure the following:
+
+    * Display Name
+    * Bundle Identifer
+    * Team (select your Apple Developer account)
+    * Version and Build number
+
+3. Configure Signing & Capabilities:
+    
+    Under the `Signing & Capabilities` tab, ensure that Automatically manage signing is checked. Select your Development Team.
+
+4. Build the iOSS App:
+
+    Run the following command to build the iOS app:
+    ```sh
+    flutter build ios --release --dart-define-from-file env.prod.json
+    ```
+
+5. Archive the App:
+
+    In Xcode, select `Product > Archive` to create an archive of your app.
+
+6. Distribute the App:
+
+    After the archive is created, the Xcode Organizer window will appear. Select your archive and click `Distribute App`. Follow the prompts to upload your app to the App Store or export it for Ad Hoc distribution.
+
+## Web
+To build and deploy your Flutter web app, follow thoes steps:
+
+1. Build the Web App:
+
+    Run the following command to create a release build for the web:
+    ```sh
+    flutter build web --web-renderer canvaskit --dart-define-from-file env.prod.json
+    ```
+
+2. Deploy the Web App:
+
+    Upload the contents of the `build/web` directory to your web server or hosing provider.
+
+# Project Structure
+The project structure is organized into logical modules and directories, each serving a specific purpose in the application's architecture. Here's a brief overview of the main directories and their contents:
+
+<sup>
+
+```sh
+    src
+     ├── assets/    # Contains all the non-Dart resources used in the app, such as images and localization files.
+     │    ├── images/  # Stores image assets.
+     │    │     ├── logo_dark.svg  # The dark version of the app logo.
+     │    │     └── logo_light.svg # The light version of the app logo.
+     │    │
+     │    └── locales/  # Contains localization files for different languages
+     │          ├── en_US.json  # Localization file for US English.
+     │          └── ka_GE.json  # Localization file for Georgian.
+     └── lib  # Contains the main Dart code for the application.
+          ├── app/  # Contains the main app structure.
+          │    ├── pages/  # Directory for different pages/screens of the app.
+          │    ├── widgets/  # Directory for reusable widgets.
+          │    └── app_view.dart  # Main view of the application.
+          ├── config/  # Contains configuration files for the app.
+          │    ├── app_config.dart  # General configuration settings for the app.
+          │    ├── theme_config.dart  # Configuration related to theming and appearance.
+          │    └── preference_config.dart  # Configuration related user preferences and settings
+          ├── data/  # Manages data-related components.
+          │    ├── blocs/  # Contains BLoC (Business Logic Component) classes for state management.
+          │    ├── model/  # Contains data models.
+          │    └── services/  # Contains service classes for making API calls or handling data.
+          ├── routes/  # Manages app navigation.
+          │    └── app_routes.dart  # Defines the routes for navigating between different pages.
+          ├── utils/  # Contains utility functions and helpers used throughout the app.
+          │    └── ...
+          └── main.dart  # The entry point of the application.
+```
+
+</sup>
+
+# Additional Configuration
+
+## Deep Linking
+
+> \[!NOTE]
+>
+> Before you start **Configure Your Domain**: ensure that you have a domain to use for deep linking. For Android and iOS, you will need to host configuration file.
+> Android [Hosting assetlinks.json file](https://docs.flutter.dev/cookbook/navigation/set-up-app-links#3-hosting-assetlinks-json-file)
+> Ios [Host apple-app-site-association](https://docs.flutter.dev/cookbook/navigation/set-up-universal-links?tab=xcode-ide#create-and-host-apple-app-site-association-json-file) JSON file
+
+### Android
+
+1. Open `AndroidManifest.xml` located at `android/app/src/main/AndroidManifest.xml`
+
+2. Inside the `<activity>` tag for your main activity. Replace `www.yourdomain.com` with your actual domain.
+
+    ```xml
+    <activity
+    android:name=".MainActivity"
+    android:launchMode="singleTask"
+    android:theme="@style/LaunchTheme"
+    android:configChanges="keyboard|keyboardHidden|orientation|screenSize|smallestScreenSize|screenLayout|density|uiMode"
+    android:hardwareAccelerated="true"
+    android:windowSoftInputMode="adjustResize">
+    
+        <!-- Deeplink -->
+        <meta-data android:name="flutter_deeplinking_enabled" android:value="true" />
+        <intent-filter android:autoVerify="true">
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.DEFAULT" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="http" android:host="www.yourdomain.com" />
+            <data android:scheme="https" />
+        </intent-filter>
+    
+    <!-- Existing configurations -->
+    </activity>
+    ```
+
+### iOS
+
+1. Open `Info.plist` located at `ios/Runner/Info.plist`.
+
+2. Add a new entry for URL types. Replace `your_scheme` with your actual URL scheme and `yourdomain.com` with your actual domain. 
+
+    ```xml
+        <dict>
+            <key>CFBundleURLTypes</key>
+       	    <!-- Deep linking -->
+            <array>
+                <dict>
+                    <key>CFBundleURLSchemes</key>
+                    <array>
+                        <string>your_scheme</string>
+                    </array>
+                    <key>CFBundleURLName</key>
+                    <string>www.yourdomain.com</string>
+                </dict>
+            </array>
+    	    <!--End of the Deep linking-->
+        </dict>
+    ```
 
 
 # Contribution

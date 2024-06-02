@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "331197130107",
+    "project_id": "optimistic-math-420814",
+    "storage_bucket": "optimistic-math-420814.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331197130107:android:d0d17c93d7f6dc51bf89de",
+        "android_client_info": {
+          "package_name": "com.example.superfrog"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "331197130107-68vequ6gadvqq8e7468bkmtjgpnurpik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAftz8FgdHORB06MkWseFDsrl_0vV1wPUI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "331197130107-68vequ6gadvqq8e7468bkmtjgpnurpik.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "331197130107-c8ssjjgbgej3hfqc47cji1apl16u28f2.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.superfrog"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
