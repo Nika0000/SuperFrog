@@ -46,6 +46,14 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   build_runner: ^2.4.8
   json_serializable: ^6.7.1
+#  flutter_launcher_icons: ^0.13.1
+
+#flutter_launcher_icons:
+#  image_path: "assets/images/logo.png"
+#  android: true
+#  ios: true 
+#  web:
+#    generate: true
 
 flutter:  
   uses-material-design: true

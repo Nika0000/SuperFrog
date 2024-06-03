@@ -13,11 +13,11 @@ class HomeButton extends StatelessWidget {
         onTap: () => context.go('/home'),
         child: switch (Theme.of(context).brightness) {
           Brightness.light => SvgPicture.asset(
-              'assets/images/logo_dark.svg',
+              'assets/images/logo_light.svg',
               height: 24.0,
             ),
           Brightness.dark => SvgPicture.asset(
-              'assets/images/logo_light.svg',
+              'assets/images/logo_dark.svg',
               height: 24.0,
             ),
         },
