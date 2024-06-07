@@ -124,14 +124,20 @@ class AuthService {
     );
   }
 
-  Future<User?> verifyToken({required String token, OtpType type = OtpType.recovery}) async {
+  Future<User?> verifyToken({
+    String? email,
+    String token = '',
+    String? tokenHash,
+    OtpType type = OtpType.recovery,
+  }) async {
     final res = await _supabase.auth.verifyOTP(
-      email: '',
-      token: '',
-      tokenHash: token,
-      type: OtpType.recovery,
+      email: email,
+      token: token,
+      tokenHash: tokenHash,
+      type: type,
       captchaToken: await Captcha.getToken(),
     );
+
     return res.user;
   }
 

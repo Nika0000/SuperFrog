@@ -25,7 +25,9 @@ enum AppPages {
   AUTH(path: '/auth', name: 'auth'),
   SIGN_IN(path: 'signin', name: 'signin', pathFull: '/auth/signin'),
   SIGN_UP(path: 'signup', name: 'signup', pathFull: '/auth/signup'),
-  RECOVERY(path: 'recovery', name: 'recovery', pathFull: '/auth/recovery');
+  RECOVERY(path: 'recovery', name: 'recovery', pathFull: '/auth/recovery'),
+
+  AUTH_CALLBACK(path: 'callback/verify', name: 'callback');
 
   final String path;
   final String name;
@@ -106,13 +108,16 @@ class AppRouter {
             builder: (_, __) => const AuthPage(AuthPageRoutes.RECOVERY),
           ),
           GoRoute(
-            path: 'callback/verify',
+            path: AppPages.AUTH_CALLBACK.path,
+            name: AppPages.AUTH_CALLBACK.name,
             builder: (context, state) {
-              String? token = state.uri.queryParameters['token'];
-              String? type = state.uri.queryParameters['type'];
+              final String? token = state.uri.queryParameters['token'];
+              final String? type = state.uri.queryParameters['type'];
+              final metaData = state.extra as Map<String, dynamic>?;
               return AuthCallBackPage(
                 token: token,
                 type: type,
+                metadata: metaData,
               );
             },
           ),

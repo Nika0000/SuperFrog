@@ -39,5 +39,12 @@ class AuthenticationEvent with _$AuthenticationEvent {
     required String password,
   }) = _UpdatePassword;
 
+  const factory AuthenticationEvent.verifyOTP({
+    String? email,
+    required String token,
+    required OtpType type,
+    Function()? onVerified,
+  }) = _VerifyOTP;
+
   const factory AuthenticationEvent.signOut() = _SignOut;
 }

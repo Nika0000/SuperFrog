@@ -194,7 +194,7 @@ class _SignInPageState extends State<_SignInPage> {
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
-                            onTap: () => context.pushNamed(AppPages.RECOVERY.name),
+                            onTap: () => context.goNamed(AppPages.RECOVERY.name),
                             child: Text(
                               'auth.sign_in.forgot_password'.tr(),
                               style:

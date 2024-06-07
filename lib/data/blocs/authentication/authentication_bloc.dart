@@ -166,6 +166,17 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
               'If you registered using your email and password, you will receive a password reset email.',
             ),
           );
+
+          Future.delayed(const Duration(seconds: 1)).then(
+            (_) => AppRouter.router.pushNamed(
+              AppPages.AUTH_CALLBACK.name,
+              extra: {
+                'email': event.email,
+                'type': OtpType.recovery,
+              },
+            ),
+          );
+
           emit(const AuthenticationState.unitialized());
         },
         onError: (error) => emit(AuthenticationState.error(error)),
@@ -200,12 +211,12 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
         () async {
           emit(const AuthenticationState.loading());
 
-          if (!_authService.isSignedIn) {
+          if (!_authService.isSignedIn && event.token != null) {
             if (event.token.isNullOrEmpty) {
               return emit(const AuthenticationState.error('Token is not valid or expired.'));
             }
 
-            await _authService.verifyToken(token: event.token!);
+            await _authService.verifyToken(tokenHash: event.token);
           }
 
           User? newUser = await _authService.updatePassword(event.password);
@@ -215,6 +226,21 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
             emit(AuthenticationState.authenticated(newUser));
             AppRouter.router.refresh();
           });
+        },
+        onError: (error) => emit(AuthenticationState.error(error)),
+      ),
+    );
+
+    on<_VerifyOTP>(
+      (event, emit) => catchAsync(
+        () async {
+          emit(const AuthenticationState.loading());
+
+          await _authService.verifyToken(email: event.email, token: event.token, type: event.type);
+
+          event.onVerified?.call();
+
+          emit(const AuthenticationState.unitialized());
         },
         onError: (error) => emit(AuthenticationState.error(error)),
       ),
