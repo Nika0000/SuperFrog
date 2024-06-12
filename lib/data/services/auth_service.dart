@@ -18,7 +18,7 @@ class AuthService {
     final AuthResponse res = await _supabase.auth.signInWithPassword(
       email: email,
       password: password,
-      captchaToken: await Captcha.getToken(),
+      captchaToken: await Captcha.token,
     );
     return res.user;
   }

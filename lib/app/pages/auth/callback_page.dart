@@ -4,7 +4,6 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:superfrog/app/pages/error_page.dart';
 import 'package:superfrog/app/widgets/home_button.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 import 'package:superfrog/routes/app_routes.dart';
@@ -32,7 +31,9 @@ class _AuthCallBackPageState extends State<AuthCallBackPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: context.moonColors?.gohan,
       appBar: AppBar(
+        backgroundColor: context.moonColors?.gohan,
         automaticallyImplyLeading: false,
         title: const HomeButton(),
         actions: [
@@ -48,13 +49,11 @@ class _AuthCallBackPageState extends State<AuthCallBackPage> {
       body: switch (widget.type) {
         'recovery' => _UpdatePassword(token: widget.token),
         'magiclink' => _MagicLink(token: widget.token),
-        _ => widget.metadata != null
-            ? _VerifyToken(
-                token: widget.token,
-                email: widget.metadata?['email'],
-                tokenType: widget.metadata?['type'] ?? OtpType.recovery,
-              )
-            : const ErrorPage(),
+        _ => _VerifyToken(
+            token: widget.token,
+            email: widget.metadata?['email'],
+            tokenType: widget.metadata?['type'] ?? OtpType.recovery,
+          )
       },
     );
   }
@@ -329,23 +328,27 @@ class __VerifyTokenState extends State<_VerifyToken> {
     }
   }
 
+  final RegExp _otpValidation = RegExp(r'^\d{6}$');
+
   void submitForm() {
-    context.read<AuthenticationBloc>().add(
-          AuthenticationEvent.verifyOTP(
-            email: widget.email,
-            token: _otpController.text,
-            type: widget.tokenType,
-            onVerified: () {
-              switch (widget.tokenType) {
-                case OtpType.recovery:
-                  context.pushReplacementNamed(AppPages.AUTH_CALLBACK.name, queryParameters: {'type': 'recovery'});
-                default:
-                  AppRouter.router.refresh();
-                  break;
-              }
-            },
-          ),
-        );
+    if (_otpValidation.hasMatch(_otpController.text)) {
+      context.read<AuthenticationBloc>().add(
+            AuthenticationEvent.verifyOTP(
+              email: widget.email,
+              token: _otpController.text,
+              type: widget.tokenType,
+              onVerified: () {
+                switch (widget.tokenType) {
+                  case OtpType.recovery:
+                    context.pushReplacementNamed(AppPages.AUTH_CALLBACK.name, queryParameters: {'type': 'recovery'});
+                  default:
+                    AppRouter.router.refresh();
+                    break;
+                }
+              },
+            ),
+          );
+    }
   }
 
   @override
@@ -393,16 +396,13 @@ class __VerifyTokenState extends State<_VerifyToken> {
                         keyboardType: TextInputType.number,
                         textInputAction: TextInputAction.go,
                         errorAnimationType: ErrorAnimationType.shake,
-                        gap: 12.0,
-                        height: constraints.maxWidth / 6.2,
-                        width: (constraints.maxWidth - 60) / 6,
+                        gap: 16.0,
+                        height: (constraints.maxWidth - 80) / 5.5,
+                        width: (constraints.maxWidth - 80) / 6,
                         validator: (String? pin) {
-                          if (pin.isNullOrEmpty) return null;
-
-                          // Matches all numbers.
-                          final RegExp regex = RegExp(r'^[0-9]+$');
-
-                          return pin != null && !regex.hasMatch(pin) ? 'The input must only contain numbers' : null;
+                          return pin != null && pin.length == 6 && !_otpValidation.hasMatch(pin)
+                              ? 'The input must only contain numbers'
+                              : null;
                         },
                         errorBuilder: (BuildContext context, String? errorText) {
                           return Align(
@@ -448,10 +448,5 @@ class __VerifyTokenState extends State<_VerifyToken> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 }
