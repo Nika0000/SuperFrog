@@ -27,7 +27,7 @@ class AuthService {
     final AuthResponse res = await _supabase.auth.signUp(
       email: email,
       password: password,
-      captchaToken: await Captcha.getToken(),
+      captchaToken: await Captcha.token,
     );
     return res.user;
   }
@@ -108,7 +108,7 @@ class AuthService {
   }
 
   Future<void> signInWithOTP(String? email) async {
-    return _supabase.auth.signInWithOtp(email: email, captchaToken: await Captcha.getToken());
+    return _supabase.auth.signInWithOtp(email: email, captchaToken: await Captcha.token);
   }
 
   Future<User?> verifySession(Uri url) async {
@@ -120,7 +120,7 @@ class AuthService {
     return _supabase.auth.resetPasswordForEmail(
       email,
       redirectTo: kIsWeb ? null : 'com.example.app/auth/callback',
-      captchaToken: await Captcha.getToken(),
+      captchaToken: await Captcha.token,
     );
   }
 
@@ -135,7 +135,7 @@ class AuthService {
       token: token,
       tokenHash: tokenHash,
       type: type,
-      captchaToken: await Captcha.getToken(),
+      captchaToken: await Captcha.token,
     );
 
     return res.user;

@@ -12,8 +12,10 @@ import 'package:superfrog/app/widgets/home_button.dart';
 import 'package:superfrog/app/widgets/text_divider.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
 import 'package:superfrog/routes/app_routes.dart';
+import 'package:superfrog/utils/captcha.dart';
 import 'package:superfrog/utils/extensions.dart';
 import 'package:superfrog/utils/form_validation.dart';
+import 'package:cloudflare_turnstile/cloudflare_turnstile.dart';
 
 class AuthPage extends StatefulWidget {
   final AuthPageRoutes route;
@@ -24,6 +26,8 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
+  final TurnstileController _captchaController = TurnstileController();
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<AuthenticationBloc, AuthenticationState>(
@@ -31,6 +35,7 @@ class _AuthPageState extends State<AuthPage> {
       listener: (context, state) {
         state.whenOrNull(
           error: (error) {
+            _captchaController.refreshToken();
             return MoonToast.show(
               context,
               toastShadows: context.moonShadows?.sm,
@@ -63,11 +68,21 @@ class _AuthPageState extends State<AuthPage> {
             padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 24.0),
             child: ConstrainedBox(
               constraints: BoxConstraints(maxWidth: context.responsiveWhen(480, sm: double.maxFinite)),
-              child: switch (widget.route) {
-                AuthPageRoutes.SIGNIN => const _SignInPage(),
-                AuthPageRoutes.SIGNUP => const _SignUpPage(),
-                AuthPageRoutes.RECOVERY => const RecoveryPage(),
-              },
+              child: Column(
+                children: [
+                  switch (widget.route) {
+                    AuthPageRoutes.SIGNIN => const _SignInPage(),
+                    AuthPageRoutes.SIGNUP => const _SignUpPage(),
+                    AuthPageRoutes.RECOVERY => const RecoveryPage(),
+                  },
+                  CloudFlareTurnstile(
+                    controller: _captchaController,
+                    siteKey: const String.fromEnvironment('TURNSTILE_SITE_KEY'),
+                    options: TurnstileOptions(mode: TurnstileMode.invisible),
+                    onTokenRecived: (token) => Captcha.newToken = token,
+                  ),
+                ],
+              ),
             ),
           ),
         ),
