@@ -665,10 +665,10 @@ packages:
     dependency: "direct main"
     description:
       name: moon_design
-      sha256: "5410b06cacdc145f4dfdd9dc8ce7e5ebe2811c16cae46e29184d379b6925f35d"
+      sha256: "9c639e4eb51ca90f4278d459395812ba7827bbc10df439f0eee5332c8c6372ac"
       url: "https://pub.dev"
     source: hosted
-    version: "0.57.0"
+    version: "0.59.1"
   moon_icons:
     dependency: transitive
     description:

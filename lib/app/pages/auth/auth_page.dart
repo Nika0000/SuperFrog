@@ -8,6 +8,7 @@ import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:superfrog/app/pages/auth/recovery_page.dart';
+import 'package:superfrog/app/widgets/alert_notification.dart';
 import 'package:superfrog/app/widgets/home_button.dart';
 import 'package:superfrog/app/widgets/text_divider.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
@@ -36,19 +37,17 @@ class _AuthPageState extends State<AuthPage> {
         state.whenOrNull(
           error: (error) {
             _captchaController.refreshToken();
-            return MoonToast.show(
+            return AlertNotification.show(
               context,
-              toastShadows: context.moonShadows?.sm,
               label: Text(error),
-              leading: const Icon(MoonIcons.generic_alarm_24_light),
+              variant: AlertVariant.error,
             );
           },
           message: (message) {
-            return MoonToast.show(
+            return AlertNotification.show(
               context,
-              toastShadows: context.moonShadows?.sm,
-              leading: const Icon(MoonIcons.generic_check_rounded_24_light),
               label: Text(message),
+              variant: AlertVariant.success,
             );
           },
         );

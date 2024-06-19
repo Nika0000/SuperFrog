@@ -19,7 +19,7 @@ dependencies:
   freezed_annotation: ^2.4.1
   freezed: ^2.5.2
   flutter_bloc: ^8.1.5
-  moon_design: ^0.57.0
+  moon_design: ^0.59.1
   easy_localization: ^3.0.7
   flutter_svg: ^2.0.9
   hive: ^2.2.3
