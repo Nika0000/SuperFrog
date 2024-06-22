@@ -17,7 +17,7 @@ class Captcha {
   static set newToken(token) => _token = token;
 
   static Future<String?> getToken() async {
-    var context = GetIt.I.get<NavigationKeySingleton>().key.currentState?.context;
+    var context = GetIt.I.get<RootNavigationKey>().key.currentState?.context;
     String? token;
     if (context != null) {
       token = await showDialog<String>(context: context, builder: (context) => const CaptchaDialog());

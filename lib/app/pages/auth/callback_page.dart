@@ -337,15 +337,6 @@ class __VerifyTokenState extends State<_VerifyToken> {
               email: widget.email,
               token: _otpController.text,
               type: widget.tokenType,
-              onVerified: () {
-                switch (widget.tokenType) {
-                  case OtpType.recovery:
-                    context.pushReplacementNamed(AppPages.AUTH_CALLBACK.name, queryParameters: {'type': 'recovery'});
-                  default:
-                    AppRouter.router.refresh();
-                    break;
-                }
-              },
             ),
           );
     }
@@ -450,3 +441,33 @@ class __VerifyTokenState extends State<_VerifyToken> {
     );
   }
 }
+
+/* class Countdown extends AnimatedWidget {
+  final Animation<int> animation;
+  final TextStyle? style;
+  final Function? onCompleted;
+
+  const Countdown({
+    super.key,
+    required this.animation,
+    this.style,
+    this.onCompleted,
+  }) : super(listenable: animation);
+
+  @override
+  build(BuildContext context) {
+    Duration clockTimer = Duration(seconds: animation.value);
+
+    String timerText =
+        '${clockTimer.inMinutes.remainder(60).toString()}:${clockTimer.inSeconds.remainder(60).toString().padLeft(2, '0')}';
+
+    if (animation.isCompleted) {
+      onCompleted?.call();
+    }
+    return Text(
+      timerText,
+      style: style,
+    );
+  }
+}
+ */

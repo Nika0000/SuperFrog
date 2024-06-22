@@ -238,7 +238,12 @@ class AuthenticationBloc extends Bloc<AuthenticationEvent, AuthenticationState> 
 
           await _authService.verifyToken(email: event.email, token: event.token, type: event.type);
 
-          event.onVerified?.call();
+          switch (event.type) {
+            case OtpType.recovery:
+              AppRouter.router.pushReplacementNamed(AppPages.AUTH_CALLBACK.name, queryParameters: {'type': 'recovery'});
+            default:
+              break;
+          }
 
           emit(const AuthenticationState.unitialized());
         },

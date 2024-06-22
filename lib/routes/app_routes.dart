@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:moon_design/moon_design.dart';
 import 'package:superfrog/app/pages/auth/auth_page.dart';
 import 'package:superfrog/app/pages/auth/callback_page.dart';
+import 'package:superfrog/app/pages/auth/recovery_page.dart';
 import 'package:superfrog/app/pages/error_page.dart';
 import 'package:superfrog/app/pages/main_page.dart';
 import 'package:superfrog/data/blocs/authentication/authentication_bloc.dart';
@@ -43,7 +44,7 @@ class AppRouter {
   const AppRouter._();
 
   static GoRouter router = GoRouter(
-    navigatorKey: GetIt.I<NavigationKeySingleton>().key,
+    navigatorKey: GetIt.I<RootNavigationKey>().key,
     debugLogDiagnostics: kDebugMode,
     initialLocation: AppPages.HOME.path,
     errorBuilder: (BuildContext context, __) => ErrorPage(
@@ -105,7 +106,7 @@ class AppRouter {
           GoRoute(
             name: AppPages.RECOVERY.name,
             path: AppPages.RECOVERY.path,
-            builder: (_, __) => const AuthPage(AuthPageRoutes.RECOVERY),
+            builder: (_, __) => const RecoveryPage(),
           ),
           GoRoute(
             path: AppPages.AUTH_CALLBACK.path,

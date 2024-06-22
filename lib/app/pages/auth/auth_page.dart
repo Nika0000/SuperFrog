@@ -7,7 +7,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:moon_design/moon_design.dart';
-import 'package:superfrog/app/pages/auth/recovery_page.dart';
 import 'package:superfrog/app/widgets/alert_notification.dart';
 import 'package:superfrog/app/widgets/home_button.dart';
 import 'package:superfrog/app/widgets/text_divider.dart';
@@ -72,7 +71,6 @@ class _AuthPageState extends State<AuthPage> {
                   switch (widget.route) {
                     AuthPageRoutes.SIGNIN => const _SignInPage(),
                     AuthPageRoutes.SIGNUP => const _SignUpPage(),
-                    AuthPageRoutes.RECOVERY => const RecoveryPage(),
                   },
                   CloudFlareTurnstile(
                     controller: _captchaController,
@@ -208,7 +206,7 @@ class _SignInPageState extends State<_SignInPage> {
                         MouseRegion(
                           cursor: SystemMouseCursors.click,
                           child: GestureDetector(
-                            onTap: () => context.goNamed(AppPages.RECOVERY.name),
+                            onTap: () => context.pushNamed(AppPages.RECOVERY.name),
                             child: Text(
                               'auth.sign_in.forgot_password'.tr(),
                               style:
@@ -487,4 +485,4 @@ class _SignUpPageState extends State<_SignUpPage> {
   }
 }
 
-enum AuthPageRoutes { SIGNIN, SIGNUP, RECOVERY }
+enum AuthPageRoutes { SIGNIN, SIGNUP }

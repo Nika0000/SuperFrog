@@ -149,8 +149,8 @@ class AuthService {
   Future<void> signOut() async {
     await _supabase.auth.signOut();
     if (PlatformUtils.isMobile) {
-      if (GoogleSignIn().currentUser != null) {
-        await GoogleSignIn().disconnect();
+      if (await GoogleSignIn().isSignedIn()) {
+        await GoogleSignIn().signOut();
       }
     }
   }

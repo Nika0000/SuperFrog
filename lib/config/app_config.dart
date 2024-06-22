@@ -61,8 +61,7 @@ class AppConfig {
       //GetIt
       CommonBloc.register();
       CommonService.register();
-
-      NavigationKeySingleton.register();
+      RootNavigationKey.register();
 
       _initialized = true;
     }
