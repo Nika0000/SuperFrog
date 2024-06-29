@@ -43,7 +43,7 @@ class _RecoveryPageState extends State<RecoveryPage> {
           appBar: AppBar(
             automaticallyImplyLeading: false,
             backgroundColor: context.moonColors?.gohan,
-            //shape: const Border(),
+            centerTitle: false,
             title: const HomeButton(),
           ),
           body: Align(

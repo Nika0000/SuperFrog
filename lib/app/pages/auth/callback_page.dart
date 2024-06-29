@@ -35,6 +35,7 @@ class _AuthCallBackPageState extends State<AuthCallBackPage> {
       appBar: AppBar(
         backgroundColor: context.moonColors?.gohan,
         automaticallyImplyLeading: false,
+        centerTitle: false,
         title: const HomeButton(),
         actions: [
           if (PlatformUtils.isMobile && context.canPop())

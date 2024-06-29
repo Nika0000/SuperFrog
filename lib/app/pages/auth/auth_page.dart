@@ -56,7 +56,7 @@ class _AuthPageState extends State<AuthPage> {
         appBar: AppBar(
           automaticallyImplyLeading: false,
           backgroundColor: context.moonColors?.gohan,
-          //shape: const Border(),
+          centerTitle: false,
           title: const HomeButton(),
         ),
         body: Align(
