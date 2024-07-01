@@ -1,0 +1,16 @@
+name: Flutter CI
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - ".github/**"
+      - ".vscode/**"
+      - "docs/**" 
+      - "README.md"
+
+jobs:
+  run-ci:
+    uses: ./.github/workflows/build.yml

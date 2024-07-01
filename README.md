@@ -28,6 +28,30 @@ This project aims to build a scalable and powerful architecture for production-r
     </p>
 </details>
 
+## Features
+
+- [ ] __Supabase Integration__
+    + [x] __Authentication__: User authentication with Supabase`s built-in authentication services.
+    + [ ] __Database__: Real-time database integration for dynamic data handling.
+    + [x] __Storage__: Efficient file storage and retrival with Supabase`s storage solutions.
+- [x] __State Management__: Organized and testable state management using BLoC pattern.
+- [x] __Routing__: Easy and scallable routing solution.
+- [x] __Localization__: Simplefied localization setup supporting multiple languages and dynamic translations.
+- [x] __Theming__: Easily customizable light and dark themes.
+- [x] __Dependency Injection__: For better modularity and testability.
+- [ ] __Network Handling__
+    + [ ] __Robust HTTP Client__: Handling network requests and responses.
+    + [ ] __Connectivity Plus__: Real-time network status tracking.
+- [x] __Error Handling__: Centralized error handling for consistent error management across the app.
+- [x] __Storage Service Design__: Simple key-value storage for app preferences and settings.
+- [ ] __Testing__: 
+    + [ ] __Unit Testing__: Comprehensive unit tests for business logic.
+    + [ ] __Widget Testing__: Thorough widget tests to ensure UI correctness.
+- [ ] __Linting and Formatting__: Consistent code style enforcement and automatic code formatting to maintain code quality.
+- [ ] __CI/CD__: Pre-configured workflows for automated testing, building, and deployment.
+- [ ] __Documentation__
+    + [ ] __Well-documented Code__: In-code documentation and comments for better understanding and maintainability.
+    + [ ] __README.MD__: Detailed Readme file with instructions and feature descriptions.
 
 ## Get Started
 

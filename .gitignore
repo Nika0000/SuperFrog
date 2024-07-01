@@ -31,6 +31,7 @@ migrate_working_dir/
 .pub/
 /build/
 /docs/
+/test/
 env.prod.json
 env.dev.json
 

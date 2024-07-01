@@ -1,0 +1,79 @@
+name: Build App
+
+on:
+  workflow_call:
+    inputs:
+      upload-artifact:
+        type: boolean
+        default: false
+      upload-tag:
+        type: string
+        default: "actions"
+
+env:
+  FLUTTER_VERSION: "3.22.2"
+  ANDROID_SIGNING_KEY: "${{ secrets.ANDROID_SIGNING_KEY }}"
+
+
+jobs:
+  build-for-Android:
+    name: build android apk ${{ matrix.job.target }}
+    runs-on: ${{ matrix.job.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - {
+              arch: aarch64,
+              target: android-arm64,
+              os: ubuntu-latest,
+            }
+          - {
+              arch: armv7,
+              target: android-arm,
+              os: ubuntu-latest,
+            }
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+          fetch-depth: 0
+
+      - name: Install flutter
+        uses: subosito/flutter-action@v2.4.0
+        with:
+          channel: 'stable'
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+
+      - name: Setting up
+        run: |
+          flutter pub get
+          dart run build_runner build --delete-conflictiong-outputs
+      
+      - name: Flutter analyze
+        run: flutter analyze
+
+      - name: Build Release apk
+        shell: bash
+        id: build-apk-unsigned-${{ matrix.job.target }}
+        run: |
+          sed -i "s/signingConfigs.release/signingConfigs.debug/g" ./android/app/build.gradle
+          flutter build apk --release --target-platform ${{ matrix.job.target }} --split-per-abi
+
+      - name: Sign app
+        uses: r0adkll/sign-android-release@v1
+        if: env.ANDROID_SIGNING_KEY != null
+        id: build-apk-signed-${{ matrix.job.target }}
+        with: 
+          releaseDirectory: build/app/outputs/flutter-apk/
+          signingKeyBase64: ${{ secrets.ANDROID_SIGNING_KEY }}
+          alias: ${{ secrets.ANDROID_SIGNING_ALIAS }}
+          keyStorePassword: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+
+      # - name: Upload Artifact
+      #   if: env.ANDROID_SIGNING_KEY != null
+      #   uses: actions/upload-artifact@master
+      #   with:
+      #     name: 
