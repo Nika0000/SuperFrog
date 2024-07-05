@@ -1,9 +1,6 @@
 name: "Initializes Flutter"
 description: 'Initialize Flutter and Prepare for build'
 inputs:
-  generate_code:
-    description: "Whether to generate code"
-    required: false
   flutter_version:
     description: "Flutter version"
     default: "3.19.6"
@@ -41,14 +38,12 @@ runs:
           flutter-version: ${{ inputs.flutter_version }}
 
       - name: Generate code
-        if: ${{ inputs.generate_code == true }}
         shell: bash
         run: |
           flutter pub get
           dart run build_runner build --delete-conflicting-outputs        
         
       - name: Create env.json file
-        if: ${{ inputs.generate_code == true }}
         shell: bash
         run: |
           echo "Creating env.json file"
