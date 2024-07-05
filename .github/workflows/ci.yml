@@ -12,5 +12,8 @@ on:
       - "README.md"
 
 jobs:
+  run-check:
+    uses: ./.github/workflows/flutter-analysis.yml
   run-ci:
+    needs: run-check
     uses: ./.github/workflows/build.yml

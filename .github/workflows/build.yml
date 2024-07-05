@@ -11,13 +11,12 @@ on:
         default: "actions"
 
 env:
-  FLUTTER_VERSION: "3.19.6"
   ANDROID_SIGNING_KEY: "${{ secrets.ANDROID_SIGNING_KEY }}"
 
 
 jobs:
   build-for-Android:
-    name: build android apk ${{ matrix.job.target }}
+    name: build-android-apk-${{ matrix.job.target }}
     runs-on: ${{ matrix.job.os }}
     strategy:
       fail-fast: false
@@ -41,6 +40,17 @@ jobs:
     steps:
     - name: Checkout source
       uses: actions/checkout@v4
+      
+    - name: Initialize flutter
+      uses: ./.github/actions/initialize-flutter
+      with:
+        supabase_url: ${{ secrets.SUPABASE_URL }}
+        supabase_anon_key: ${{ secrets.SUPABASE_ANON_KEY }}
+        supabase_bucket_name: ${{ secrets.SUPABASE_BUCKET_NAME }}
+        google_web_client_id: ${{ secrets.GOOGLE_WEB_CLIENT_ID }}
+        google_ios_client_id: ${{ secrets.GOOGLE_IOS_CLIENT_ID }}
+        apple_client_id: ${{ secrets.APPLE_CLIENT_ID }}
+        turnstile_site_key: ${{ secrets.TURNSTILE_SITE_KEY }}
         
     - name: Set up JDK
       uses: actions/setup-java@v4
@@ -51,23 +61,12 @@ jobs:
     - name: Set up Android SDK
       uses: android-actions/setup-android@v3
     
-    - name: Set up Flutter
-      uses: subosito/flutter-action@v2
-      with:
-        channel: 'stable'
-        flutter-version: ${{ env.FLUTTER_VERSION }}
-    
-    - name: Prepare for build
-      run: |
-        flutter pub get
-        dart run build_runner build --delete-conflicting-outputs
-        
-    - run: flutter analyze
-    
     - name: Build unsigned apk
+      shell: bash
       run: |
         sed -i "s/signingConfigs.release/signingConfigs.debug/g" ./android/app/build.gradle
-        flutter build apk --release --target-platform ${{ matrix.job.target }}
+        flutter build apk --release --target-platform ${{ matrix.job.target }} \
+          --dart-define-from-file env.json
 
     - name: Sign release Apk
       uses: r0adkll/sign-android-release@v1
@@ -79,3 +78,59 @@ jobs:
         alias: ${{ secrets.ANDROID_KEY_ALIAS }}
         keyStorePassword: ${{ secrets.ANDROID_KEY_STORE_PASSWORD }}
         keyPassword: ${{ secrets.ANDROID_KEY_PASSWORD }}
+  
+  build-for-ios:
+    name: build-ios-ipa-${{ matrix.job.target }}
+    runs-on: ${{ matrix.job.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        job:
+          - {
+              arch: aarch64,
+              target: aarch64-apple-ios,
+              os: macos-latest,
+            }
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v4
+
+    - name: Initialize flutter
+      uses: ./.github/actions/initialize-flutter
+      with:
+        supabase_url: ${{ secrets.SUPABASE_URL }}
+        supabase_anon_key: ${{ secrets.SUPABASE_ANON_KEY }}
+        supabase_bucket_name: ${{ secrets.SUPABASE_BUCKET_NAME }}
+        google_web_client_id: ${{ secrets.GOOGLE_WEB_CLIENT_ID }}
+        google_ios_client_id: ${{ secrets.GOOGLE_IOS_CLIENT_ID }}
+        apple_client_id: ${{ secrets.APPLE_CLIENT_ID }}
+        turnstile_site_key: ${{ secrets.TURNSTILE_SITE_KEY }}
+
+    - name: Build ipa
+      shell: bash
+      run: |
+        flutter build ipa --release --no-codesign --dart-define-from-file env.json
+       
+  build-for-web:
+    if: false
+    name: build web
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v4
+
+    - name: Initialize flutter
+      uses: ./.github/actions/initialize-flutter
+      with:
+        supabase_url: ${{ secrets.SUPABASE_URL }}
+        supabase_anon_key: ${{ secrets.SUPABASE_ANON_KEY }}
+        supabase_bucket_name: ${{ secrets.SUPABASE_BUCKET_NAME }}
+        google_web_client_id: ${{ secrets.GOOGLE_WEB_CLIENT_ID }}
+        google_ios_client_id: ${{ secrets.GOOGLE_IOS_CLIENT_ID }}
+        apple_client_id: ${{ secrets.APPLE_CLIENT_ID }}
+        turnstile_site_key: ${{ secrets.TURNSTILE_SITE_KEY }}
+
+    - name: Build web
+      shell: bash
+      run: |
+        flutter build web --release --dart-define-from-file env.json

@@ -1,0 +1,65 @@
+name: flutter-analysis
+
+on:
+    workflow_call:
+
+jobs:
+    analysis:
+        name: format
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout source
+              uses: actions/checkout@v4
+      
+            - name: Initialize flutter
+              uses: ./.github/actions/initialize-flutter
+ 
+            - name: Check code format
+              id: dart-format
+              run: |
+                git diff > before.patch
+                dart format .
+                git diff > after.patch
+                if ! cmp -s before.patch after.patch; then
+                  echo "Formatting issues found."
+                  echo "::set-output name=formatting::fail"
+                else
+                  echo "::set-output name=formatting::pass"
+                fi
+
+            - name: Save formatted changes
+              if: steps.dart-format.outputs.formatting == 'fail'
+              run: |
+                git diff > dart-format-changes.patch
+                echo "There are formatting issues in the code. The changes have been saved to an artifac."
+
+            - name: Upload formatted changes artifact
+              if: steps.dart-format.outputs.formatting == 'fail'
+              uses: actions/upload-artifact@v2
+              with:
+                name: "dart-format-changes"
+                path: dart-format-changes.patch
+
+            - name: Create a warning comment
+              if: steps.dart-format.outputs.formatting == 'fail' && github.event_name == 'pull_request'
+              env:
+                GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+              run: |
+                gh pr comment ${{ github.event.pull_request.number }} --body "⚠️ Formatting issues found. Please check the [artifact](https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}) for details and apply the changes."
+
+            - name: Analyze code
+              run: dart analyze .
+
+    #test:
+    #    name: test
+    #    runs-on: ubuntu-lates
+    #    needs: analysis
+    #    steps:
+    #        - name: Checkout source
+    #          uses: actions/checkout@v4
+    #  
+    #        - name: Initialize flutter
+    #          uses: ./.github/actions/initialize-flutter
+    #
+    #        - name: Run tests
+    #          run: flutter test

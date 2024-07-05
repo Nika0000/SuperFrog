@@ -1,0 +1,65 @@
+name: "Initializes Flutter"
+description: 'Initialize Flutter and Prepare for build'
+inputs:
+  generate_code:
+    description: "Whether to generate code"
+    required: false
+  flutter_version:
+    description: "Flutter version"
+    default: "3.19.6"
+    required: false
+  supabase_url:
+    description: "Supabase URL"
+    required: false
+  supabase_anon_key:
+    description: "Supabase Anonymous Key"
+    required: false
+  supabase_bucket_name:
+    description: "Supabase Bucket Name"
+    required: false
+  google_web_client_id:
+    description: "Google Web Client ID"
+    required: false
+  google_ios_client_id:
+    description: "Google iOS Client ID"
+    required: false
+  apple_client_id:
+    description: "Apple Client ID"
+    required: false
+  turnstile_site_key:
+    description: "Turnstile Site Key"
+    required: false
+
+
+runs:
+    using: "composite"
+    steps:
+      - name: Install flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          flutter-version: ${{ inputs.flutter_version }}
+
+      - name: Generate code
+        if: ${{ inputs.generate_code == true }}
+        shell: bash
+        run: |
+          flutter pub get
+          dart run build_runner build --delete-conflicting-outputs        
+        
+      - name: Create env.json file
+        if: ${{ inputs.generate_code == true }}
+        shell: bash
+        run: |
+          echo "Creating env.json file"
+          cat <<EOF > env.json
+          {
+            "SUPABASE_URL": "${{ inputs.supabase_url }}",
+            "SUPABASE_ANON_KEY": "${{ inputs.supabase_anon_key }}",
+            "SUPABASE_BUCKET_NAME": "${{ inputs.supabase_bucket_name }}",
+            "GOOGLE_WEB_CLIENT_ID": "${{ inputs.google_web_client_id }}",
+            "GOOGLE_IOS_CLIENT_ID": "${{ inputs.google_ios_client_id }}",
+            "APPLE_CLIENT_ID": "${{ inputs.apple_client_id }}",
+            "TURNSTILE_SITE_KEY": "${{ inputs.turnstile_site_key }}"
+          }
+          EOF
