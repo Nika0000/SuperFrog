@@ -112,7 +112,6 @@ jobs:
         flutter build ipa --release --no-codesign --dart-define-from-file env.json
        
   build-for-web:
-    if: false
     name: build web
     runs-on: ubuntu-latest
     steps:
