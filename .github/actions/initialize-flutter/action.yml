@@ -3,7 +3,7 @@ description: 'Initialize Flutter and Prepare for build'
 inputs:
   flutter_version:
     description: "Flutter version"
-    default: "3.19.6"
+    default: "3.22.3"
     required: false
   supabase_url:
     description: "Supabase URL"
