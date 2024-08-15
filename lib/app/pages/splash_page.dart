@@ -1,8 +1,8 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:moon_design/moon_design.dart';
+import 'package:rive/rive.dart';
 import 'package:superfrog/app/widgets/alert_notification.dart';
 
 class SplashPage extends StatefulWidget {
@@ -13,22 +13,10 @@ class SplashPage extends StatefulWidget {
 }
 
 class _SplashPageState extends State<SplashPage> {
-  late Timer _opacityTimer;
   late Timer _alertTimer;
-
-  double _opacityValue = 1.0;
 
   @override
   void initState() {
-    _opacityTimer = Timer.periodic(
-      const Duration(seconds: 1),
-      (_) {
-        setState(() {
-          _opacityValue != 1.0 ? _opacityValue = 1.0 : _opacityValue = .5;
-        });
-      },
-    );
-
     _alertTimer = Timer(const Duration(seconds: 10), () {
       AlertNotification.show(
         context,
@@ -45,28 +33,19 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          AnimatedOpacity(
-            opacity: _opacityValue,
-            duration: const Duration(milliseconds: 250),
-            child: SvgPicture.asset(
-              'assets/images/logo_small.svg',
-              width: 64.0,
-              height: 64.0,
-            ),
-          ),
-        ],
+    return const Center(
+      child: SizedBox(
+        width: 32.0,
+        height: 32.0,
+        child: RiveAnimation.asset(
+          'assets/animations/logo_small.riv',
+        ),
       ),
     );
   }
 
   @override
   void dispose() {
-    _opacityTimer.cancel();
     _alertTimer.cancel();
     MoonToast.clearToastQueue();
     super.dispose();

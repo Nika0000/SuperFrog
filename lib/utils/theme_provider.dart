@@ -43,11 +43,14 @@ class ThemeProvider extends Cubit<ThemeMode> {
   );
   static final MoonTokens _darkToken = MoonTokens.dark.copyWith(
     colors: MoonColors.dark.copyWith(
-      piccolo: const Color(0xFF37996B),
-      goku: const Color(0xFF1C1C1C),
-      gohan: const Color(0xFF232323),
-      beerus: const Color(0xFF2E2E2E),
-      trunks: const Color(0xFF7E7E7E),
+      piccolo: const Color(0xFF01BD8D), // accent color
+      goku: const Color(0xFF121212), // background primary
+      gohan: const Color(0xFF171717), // background secondary
+      beerus: const Color(0xFF272727), // borders and lines
+      bulma: const Color(0xFFF1F1F1), // Text and Icons
+      trunks: const Color(0xFF6C6C6C), // Text and Icons secondary
+      textPrimary: const Color(0xFFF1F1F1),
+      textSecondary: const Color(0xFF6C6C6C),
       jiren: const Color(0x2910B981),
       chichi: const Color(0xFFE5484D),
       chichi10: const Color(0x1AE5484D),
@@ -80,9 +83,9 @@ class ThemeProvider extends Cubit<ThemeMode> {
       backgroundColor: _lightToken.colors.goku,
       surfaceTintColor: Colors.transparent,
       titleTextStyle: MoonTypography.typography.heading.text18.copyWith(color: _lightToken.colors.bulma),
-      shape: Border(
+      /*      shape: Border(
         bottom: BorderSide(color: _lightToken.colors.beerus, width: 1),
-      ),
+      ), */
     ),
     dividerTheme: DividerThemeData(color: _lightToken.colors.beerus),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
@@ -113,9 +116,9 @@ class ThemeProvider extends Cubit<ThemeMode> {
       backgroundColor: _darkToken.colors.goku,
       surfaceTintColor: Colors.transparent,
       titleTextStyle: MoonTypography.typography.heading.text18.copyWith(color: _darkToken.colors.bulma),
-      shape: Border(
+      /*     shape: Border(
         bottom: BorderSide(color: _darkToken.colors.beerus, width: 1),
-      ),
+      ), */
     ),
     dividerTheme: DividerThemeData(color: _darkToken.colors.beerus),
     bottomNavigationBarTheme: BottomNavigationBarThemeData(
